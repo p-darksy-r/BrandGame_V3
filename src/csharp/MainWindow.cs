@@ -13,7 +13,6 @@ namespace BrandGame
     {
         private WebView2 webView;
 
-        // Dynamic Loading Delegates for C++ DLL
         private delegate double CalculateMatchDelegate(string s1, string s2);
         private delegate int CalculateScoreDelegate(int t, int L);
 
@@ -63,13 +62,13 @@ namespace BrandGame
                         _calculateMatchCpp = Marshal.GetDelegateForFunctionPointer<CalculateMatchDelegate>(matchAddr);
                         _calculateScoreCpp = Marshal.GetDelegateForFunctionPointer<CalculateScoreDelegate>(scoreAddr);
                         _useCppEngine = true;
-                        System.Diagnostics.Debug.WriteLine("Successfully loaded native C++ BrandEngine.dll");
+                        System.Diagnostics.Debug.WriteLine("Loaded native C++ BrandEngine.dll");
                     }
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Failed to load C++ DLL. Falling back to C# engine. Error: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"C++ DLL load failed, using C# engine: {ex.Message}");
                 _useCppEngine = false;
             }
         }
@@ -78,7 +77,7 @@ namespace BrandGame
         {
             if (_useCppEngine && _calculateMatchCpp != null)
             {
-                try { return _calculateMatchCpp(s1, s2); } catch { /* Fallback */ }
+                try { return _calculateMatchCpp(s1, s2); } catch { }
             }
             return CalculateMatchCSharp(s1, s2);
         }
@@ -87,7 +86,7 @@ namespace BrandGame
         {
             if (_useCppEngine && _calculateScoreCpp != null)
             {
-                try { return _calculateScoreCpp(t, L); } catch { /* Fallback */ }
+                try { return _calculateScoreCpp(t, L); } catch { }
             }
             return CalculateScoreCSharp(t, L);
         }
@@ -134,11 +133,13 @@ namespace BrandGame
 
         public MainWindow()
         {
-            string engineStr = _useCppEngine ? " [C++ Dynamic Engine Active]" : " [C# Fallback Dynamic Engine]";
-            this.Text = "BrandGame_V3 - Host Console" + engineStr;
-            this.Width = 1080;
-            this.Height = 820;
+            string engineStr = _useCppEngine ? " [C++ Active]" : " [C# Active]";
+            this.Text = "BrandGame_V3" + engineStr;
+            this.Width = 1024;
+            this.Height = 768;
             this.StartPosition = FormStartPosition.CenterScreen;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle; // Prevent unintended window warping
+            this.MaximizeBox = false;
 
             webView = new WebView2 { Dock = DockStyle.Fill };
             this.Controls.Add(webView);
@@ -158,31 +159,15 @@ namespace BrandGame
                 while (!string.IsNullOrEmpty(currentDir))
                 {
                     string candidate = Path.Combine(currentDir, "src", "frontend");
-                    if (Directory.Exists(candidate))
-                    {
-                        frontendPath = candidate;
-                        found = true;
-                        break;
-                    }
+                    if (Directory.Exists(candidate)) { frontendPath = candidate; found = true; break; }
                     candidate = Path.Combine(currentDir, "frontend");
-                    if (Directory.Exists(candidate))
-                    {
-                        frontendPath = candidate;
-                        found = true;
-                        break;
-                    }
+                    if (Directory.Exists(candidate)) { frontendPath = candidate; found = true; break; }
                     currentDir = Directory.GetParent(currentDir)?.FullName;
                 }
 
                 if (!found)
                 {
-                    MessageBox.Show(
-                        $"Could not locate the frontend directory folder!\n" +
-                        $"Checked local build and parental folders starting from:\n{appDir}",
-                        "Asset Initialization Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
+                    MessageBox.Show($"Could not locate frontend files in: {appDir}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }
@@ -206,12 +191,7 @@ namespace BrandGame
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"WebView2 Runtime Exception: {ex.Message}",
-                    "Browser Engine Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                MessageBox.Show($"WebView2 Exception: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -222,6 +202,8 @@ namespace BrandGame
             public string? UserGuess { get; set; }
             public string? CorrectAnswer { get; set; }
             public int? TimeElapsed { get; set; }
+            public int? Width { get; set; }
+            public int? Height { get; set; }
         }
 
         private async void OnWebMessageReceived(object? sender, CoreWebView2WebMessageReceivedEventArgs e)
@@ -236,7 +218,15 @@ namespace BrandGame
                 
                 if (payload != null)
                 {
-                    // --- Persistency Routing Handler ---
+                    // SYSTEM RESOLUTION RESIZING
+                    if (payload.Action == "resize_window" && payload.Width.HasValue && payload.Height.HasValue)
+                    {
+                        this.Width = payload.Width.Value;
+                        this.Height = payload.Height.Value;
+                        this.CenterToScreen(); // Keep aligned centered
+                        return;
+                    }
+
                     if (payload.Action == "load_save")
                     {
                         string savedJson = "null";
@@ -258,7 +248,6 @@ namespace BrandGame
                         return;
                     }
 
-                    // --- Scoring Engine Solver Routing ---
                     if (payload.UserGuess != null && payload.CorrectAnswer != null && payload.TimeElapsed.HasValue)
                     {
                         double matchPercentage = CalculateMatch(payload.UserGuess, payload.CorrectAnswer);
@@ -278,7 +267,7 @@ namespace BrandGame
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Bridge Processing Exception: {ex.Message}", "Bridge Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Host Exception: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
