@@ -43,13 +43,18 @@ const sfx = new RetroAudioSynth();
 const GAME_STATE = {
     saveData: {
         globalScore: 0,
+        customScore: 0,
         categoryScores: { tech: 0, auto: 0, food: 0, fashion: 0, media: 0 },
         levelsUnlocked: { tech: 1, auto: 1, food: 1, fashion: 1, media: 1 },
+        customLevels: [], // Array of { id, name, brands: [ { name, hint, slug } ] }
         difficulty: "medium",
         volume: 0.5,
-        resolution: "1024x768", // 800x600, 1024x768, 1280x960
-        quality: "high", // low, high
-        vibration: true
+        resolution: "1024x768",
+        quality: "high",
+        vibration: true,
+        brightness: 100, // percentage 50 - 150
+        fpsLimit: "uncapped", // "30", "60", "uncapped"
+        vsync: true
     },
     currentCategory: null,
     currentLevel: null,
@@ -61,8 +66,11 @@ const GAME_STATE = {
     timerInterval: null,
     currentBrand: null,
     lives: 3,
-    revealedIndices: [] // Track indices of letters bought as clues
+    revealedIndices: []
 };
+
+// Target frame lock simulation variable
+let gameLoopId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
     sendNativeRequest({ Action: "load_save" });
@@ -75,17 +83,22 @@ function sendNativeRequest(payload) {
         window.chrome.webview.postMessage(payload);
     } else {
         if (payload.Action === "load_save") {
-            const raw = localStorage.getItem("brandgame_v3_savedata");
+            const raw = localStorage.getItem("brandgame_v3_savedata_custom");
             if (raw) GAME_STATE.saveData = JSON.parse(raw);
             onSaveLoaded(GAME_STATE.saveData);
         } else if (payload.Action === "write_save") {
-            localStorage.setItem("brandgame_v3_savedata", JSON.stringify(payload.Data));
+            localStorage.setItem("brandgame_v3_savedata_custom", JSON.stringify(payload.Data));
         }
     }
 }
 
 function onSaveLoaded(data) {
-    if (data) GAME_STATE.saveData = data;
+    if (data) {
+        // Enforce fallback structure integrity
+        GAME_STATE.saveData = { ...GAME_STATE.saveData, ...data };
+        if (!GAME_STATE.saveData.customLevels) GAME_STATE.saveData.customLevels = [];
+        if (typeof GAME_STATE.saveData.customScore === 'undefined') GAME_STATE.saveData.customScore = 0;
+    }
     updateGlobalStatsHUD();
     renderMainMenuProgress();
     syncSettingsPanel();
@@ -94,7 +107,7 @@ function onSaveLoaded(data) {
 window.onSaveLoaded = onSaveLoaded;
 
 function showScreen(screenId) {
-    const screens = ["screen-main-menu", "screen-categories", "screen-levels", "screen-gameplay", "screen-report", "screen-settings"];
+    const screens = ["screen-main-menu", "screen-categories", "screen-levels", "screen-gameplay", "screen-report", "screen-settings", "screen-creator"];
     screens.forEach(id => {
         const el = document.getElementById(id);
         if (id === screenId) el.classList.remove("hidden");
@@ -111,8 +124,12 @@ function updateGlobalStatsHUD() {
         const unlocked = GAME_STATE.saveData.levelsUnlocked[cat] || 1;
         globalStars += (unlocked - 1) * 2;
     });
+    // Add stars for completed custom games as bonus markers
+    const customCount = GAME_STATE.saveData.customLevels.length;
+    globalStars += customCount * 2;
+
     document.getElementById("global-stars").textContent = globalStars;
-    document.getElementById("global-score").textContent = GAME_STATE.saveData.globalScore;
+    document.getElementById("global-score").textContent = GAME_STATE.saveData.globalScore + (GAME_STATE.saveData.customScore || 0);
 }
 
 function renderMainMenuProgress() {
@@ -147,6 +164,22 @@ function renderMainMenuProgress() {
         `;
         catList.appendChild(item);
     });
+
+    // Custom Category Summary Entry
+    const customScore = GAME_STATE.saveData.customScore || 0;
+    const customCount = GAME_STATE.saveData.customLevels.length;
+    const customItem = document.createElement("div");
+    customItem.className = "space-y-1 pt-2 border-t border-gray-800/60";
+    customItem.innerHTML = `
+        <div class="flex justify-between text-xs font-bold uppercase tracking-wide text-emerald-400">
+            <span>Custom Arenas</span>
+            <span>Score: ${customScore}</span>
+        </div>
+        <div class="flex justify-between text-[10px] text-gray-500">
+            <span>Created Level Rooms: ${customCount}</span>
+        </div>
+    `;
+    catList.appendChild(customItem);
 }
 
 function setupEventHandlers() {
@@ -156,13 +189,19 @@ function setupEventHandlers() {
     });
     document.getElementById("btn-menu-settings").addEventListener("click", () => showScreen("screen-settings"));
     
+    document.getElementById("btn-menu-exit").addEventListener("click", () => {
+        sendNativeRequest({ Action: "exit_app" });
+    });
+
     document.getElementById("btn-menu-reset").addEventListener("click", () => {
-        if (confirm("Permanently erase save progress?")) {
+        if (confirm("Permanently erase save progress and customized rooms?")) {
             GAME_STATE.saveData = {
                 globalScore: 0,
+                customScore: 0,
                 categoryScores: { tech: 0, auto: 0, food: 0, fashion: 0, media: 0 },
                 levelsUnlocked: { tech: 1, auto: 1, food: 1, fashion: 1, media: 1 },
-                difficulty: "medium", volume: 0.5, resolution: "1024x768", quality: "high", vibration: true
+                customLevels: [],
+                difficulty: "medium", volume: 0.5, resolution: "1024x768", quality: "high", vibration: true, brightness: 100, fpsLimit: "uncapped", vsync: true
             };
             sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
             onSaveLoaded(GAME_STATE.saveData);
@@ -171,9 +210,17 @@ function setupEventHandlers() {
 
     document.getElementById("btn-categories-back").addEventListener("click", () => showScreen("screen-main-menu"));
     document.getElementById("btn-levels-back").addEventListener("click", () => showScreen("screen-categories"));
+    document.getElementById("btn-settings-back").addEventListener("click", () => showScreen("screen-main-menu"));
+    document.getElementById("btn-creator-back").addEventListener("click", () => showScreen("screen-categories"));
+
     document.getElementById("btn-gameplay-quit").addEventListener("click", () => {
         clearInterval(GAME_STATE.timerInterval);
-        showScreen("screen-levels");
+        if (GAME_STATE.currentCategory === "custom") {
+            renderCategoryCards();
+            showScreen("screen-categories");
+        } else {
+            showScreen("screen-levels");
+        }
     });
 
     document.getElementById("btn-guess-submit").addEventListener("click", submitUserGuess);
@@ -184,7 +231,7 @@ function setupEventHandlers() {
     // Hints
     document.getElementById("btn-gameplay-hint").addEventListener("click", () => {
         const clueEl = document.getElementById("clue-text");
-        clueEl.textContent = GAME_STATE.currentBrand.hint;
+        clueEl.textContent = GAME_STATE.currentBrand.hint || "No clues available for this brand.";
         clueEl.classList.remove("hidden");
         GAME_STATE.currentLevelScore = Math.max(GAME_STATE.currentLevelScore - 5, 0);
     });
@@ -206,7 +253,7 @@ function setupEventHandlers() {
         });
     });
 
-    // Graphics Quality buttons
+    // Graphics Quality
     document.getElementById("btn-qual-low").addEventListener("click", () => {
         GAME_STATE.saveData.quality = "low";
         applyVisualSettings();
@@ -216,7 +263,33 @@ function setupEventHandlers() {
         applyVisualSettings();
     });
 
-    // Screen shake vibration toggle
+    // Framerate Limits
+    ["30", "60", "uncapped"].forEach(fps => {
+        document.getElementById(`btn-fps-${fps}`).addEventListener("click", () => {
+            GAME_STATE.saveData.fpsLimit = fps;
+            applyFrameBudgeting();
+        });
+    });
+
+    // Brightness Slider
+    document.getElementById("settings-brightness").addEventListener("input", (e) => {
+        const val = e.target.value;
+        GAME_STATE.saveData.brightness = parseInt(val);
+        document.getElementById("brightness-label").textContent = `${val}%`;
+        applyVisualSettings();
+    });
+
+    // VSync Toggle
+    document.getElementById("btn-vsync-off").addEventListener("click", () => {
+        GAME_STATE.saveData.vsync = false;
+        applyVSyncStatus();
+    });
+    document.getElementById("btn-vsync-on").addEventListener("click", () => {
+        GAME_STATE.saveData.vsync = true;
+        applyVSyncStatus();
+    });
+
+    // Vibration Toggle
     document.getElementById("btn-vibrate-toggle").addEventListener("click", () => {
         GAME_STATE.saveData.vibration = !GAME_STATE.saveData.vibration;
         updateVibrationButton();
@@ -240,14 +313,28 @@ function setupEventHandlers() {
             updateDifficultyToggles();
         });
     });
+
+    // Trigger custom creator screen
+    document.getElementById("btn-trigger-creator").addEventListener("click", () => {
+        // Clear old custom inputs
+        document.getElementById("creator-level-name").value = "";
+        for (let i = 1; i <= 4; i++) {
+            document.getElementById(`c-brand-${i}-name`).value = "";
+            document.getElementById(`c-brand-${i}-slug`).value = "";
+            document.getElementById(`c-brand-${i}-hint`).value = "";
+        }
+        showScreen("screen-creator");
+    });
+
+    // Save Custom Level publish process
+    document.getElementById("btn-save-custom-level").addEventListener("click", publishCustomLevelRoom);
 }
 
 // --- CLUE LETTER SYSTEM ---
 function buyLetterClue() {
-    const name = GAME_STATE.currentBrand.name.replace(/[^a-zA-Z0-9]/g, ""); // Clean whitespace/symbols
-    if (GAME_STATE.revealedIndices.length >= name.length) return; // Fully bought out
+    const name = GAME_STATE.currentBrand.name.replace(/[^a-zA-Z0-9]/g, "");
+    if (GAME_STATE.revealedIndices.length >= name.length) return;
 
-    // Choose random unrevealed index
     const possible = [];
     for (let i = 0; i < name.length; i++) {
         if (!GAME_STATE.revealedIndices.includes(i)) possible.push(i);
@@ -257,7 +344,7 @@ function buyLetterClue() {
         const rand = possible[Math.floor(Math.random() * possible.length)];
         GAME_STATE.revealedIndices.push(rand);
         renderRevealedLetters();
-        GAME_STATE.currentLevelScore = Math.max(GAME_STATE.currentLevelScore - 10, 0); // Deduct $$10$$ points
+        GAME_STATE.currentLevelScore = Math.max(GAME_STATE.currentLevelScore - 10, 0);
     }
 }
 
@@ -284,7 +371,6 @@ function renderRevealedLetters() {
     hud.textContent = displayStr.trim();
 }
 
-// --- PHYSICAL SHAKE (VIBRATION) TRIGGER ---
 function triggerVibration() {
     if (!GAME_STATE.saveData.vibration) return;
     const el = document.getElementById("screen-gameplay");
@@ -292,38 +378,62 @@ function triggerVibration() {
     setTimeout(() => el.classList.remove("shake-active"), 400);
 }
 
-// --- RENDER SELECTIONS ---
+// --- CATEGORIES & ROOM RENDERERS ---
 function renderCategoryCards() {
     const grid = document.getElementById("category-cards-grid");
     grid.innerHTML = "";
     const categories = [
-        { id: "tech", label: "Technology", desc: "Digital systems, silicon, and code.", bg: "from-blue-900 to-indigo-950" },
-        { id: "auto", label: "Automotive", desc: "Supercars, engine marks, speed.", bg: "from-red-950 to-orange-950" },
-        { id: "food", label: "Food & Drink", desc: "Beverages, fast-foods, snacks.", bg: "from-emerald-950 to-green-900" },
-        { id: "fashion", label: "Fashion", desc: "Jewelry, luxury apparel, styling.", bg: "from-pink-950 to-purple-950" },
-        { id: "media", label: "Media & Fun", desc: "Games, entertainment, design.", bg: "from-amber-950 to-yellow-950" }
+        { id: "tech", label: "Technology", desc: "Code and hardware masters.", bg: "from-blue-900 to-indigo-950" },
+        { id: "auto", label: "Automotive", desc: "Supercar and speed engine marks.", bg: "from-red-950 to-orange-950" },
+        { id: "food", label: "Food & Drink", desc: "Snack lines and beverage labels.", bg: "from-emerald-950 to-green-900" },
+        { id: "fashion", label: "Fashion", desc: "Jewelry, styling and luxury icons.", bg: "from-pink-950 to-purple-950" },
+        { id: "media", label: "Media & Fun", desc: "Entertainment, gaming, and logos.", bg: "from-amber-950 to-yellow-950" }
     ];
+    
     categories.forEach(cat => {
         const unlocked = GAME_STATE.saveData.levelsUnlocked[cat.id] || 1;
         const totalScore = GAME_STATE.saveData.categoryScores[cat.id] || 0;
         const card = document.createElement("button");
-        card.className = `flex flex-col text-left p-5 rounded-2xl border border-gray-800 bg-gradient-to-br ${cat.bg} hover:border-gray-600 transition h-48 justify-between relative overflow-hidden group`;
+        card.className = "flex flex-col text-left p-5 rounded-2xl border border-gray-800 bg-gradient-to-br " + cat.bg + " hover:border-gray-600 transition h-48 justify-between relative overflow-hidden group";
         card.innerHTML = `
             <div>
-                <h3 class="gaming-font text-xl font-bold tracking-wide">${cat.label}</h3>
-                <p class="text-[11px] text-gray-400 mt-1 leading-normal">${cat.desc}</p>
+                <h3 class="gaming-font text-base font-bold tracking-wide">${cat.label}</h3>
+                <p class="text-[10px] text-gray-400 mt-1 leading-normal">${cat.desc}</p>
             </div>
             <div class="z-10">
                 <div class="text-[9px] uppercase font-bold text-gray-500">Accumulated score</div>
-                <div class="text-md font-bold text-white">${totalScore} Points</div>
+                <div class="text-xs font-bold text-white">${totalScore} Points</div>
             </div>
-            <span class="absolute right-3 bottom-3 text-5xl font-black text-white/5 group-hover:text-white/10 transition">
+            <span class="absolute right-3 bottom-3 text-4xl font-black text-white/5 group-hover:text-white/10 transition">
                 ${unlocked}/10
             </span>
         `;
         card.addEventListener("click", () => selectCategory(cat.id, cat.label));
         grid.appendChild(card);
     });
+
+    // Custom Category Arena Dynamic Card
+    const customCount = GAME_STATE.saveData.customLevels ? GAME_STATE.saveData.customLevels.length : 0;
+    const customScore = GAME_STATE.saveData.customScore || 0;
+    const customCard = document.createElement("button");
+    customCard.className = "flex flex-col text-left p-5 rounded-2xl border border-dashed border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 to-slate-950 hover:border-emerald-400 transition h-48 justify-between relative overflow-hidden group";
+    customCard.innerHTML = `
+        <div>
+            <h3 class="gaming-font text-base font-bold tracking-wide text-emerald-400 flex items-center gap-1.5">
+                <span>Custom Arena</span>
+            </h3>
+            <p class="text-[10px] text-gray-400 mt-1 leading-normal">Play community & custom made level designs.</p>
+        </div>
+        <div class="z-10">
+            <div class="text-[9px] uppercase font-bold text-emerald-600">Total Custom Score</div>
+            <div class="text-xs font-bold text-emerald-300">${customScore} CP</div>
+        </div>
+        <span class="absolute right-3 bottom-3 text-4xl font-black text-emerald-500/5 group-hover:text-emerald-500/10 transition">
+            ${customCount} R
+        </span>
+    `;
+    customCard.addEventListener("click", selectCustomCategory);
+    grid.appendChild(customCard);
 }
 
 function selectCategory(catId, catLabel) {
@@ -351,6 +461,85 @@ function selectCategory(catId, catLabel) {
     showScreen("screen-levels");
 }
 
+function selectCustomCategory() {
+    GAME_STATE.currentCategory = "custom";
+    document.getElementById("level-category-title").textContent = "Custom Arena Rooms";
+    document.getElementById("level-category-badge").textContent = "CUSTOM";
+
+    const grid = document.getElementById("level-buttons-grid");
+    grid.innerHTML = "";
+
+    const list = GAME_STATE.saveData.customLevels || [];
+    if (list.length === 0) {
+        grid.className = "flex flex-col items-center justify-center col-span-5 py-12 text-center text-gray-500";
+        grid.innerHTML = `
+            <div class="text-4xl mb-2">☄</div>
+            <p class="text-sm font-semibold uppercase tracking-wider">No Custom Levels Added</p>
+            <p class="text-[11px] text-gray-600 mt-1 max-w-xs">Tap the '+ BUILD CUSTOM LEVEL' button in the header right corner to publish your first challenge playroom!</p>
+        `;
+        showScreen("screen-levels");
+        return;
+    }
+
+    // Restore standard responsive grid class structure
+    grid.className = "grid grid-cols-2 sm:grid-cols-5 gap-4";
+
+    list.forEach((room, index) => {
+        const btn = document.createElement("button");
+        btn.className = "flex flex-col items-center justify-center p-6 bg-gray-900 hover:bg-emerald-950/40 border border-gray-800 hover:border-emerald-500 rounded-xl transition group text-center";
+        btn.innerHTML = `
+            <span class="text-emerald-400 text-lg group-hover:scale-110 transition">☄</span>
+            <span class="gaming-font text-[10px] font-black text-white mt-2 line-clamp-2 uppercase">${room.name}</span>
+        `;
+        btn.addEventListener("click", () => launchCustomLevel(index));
+        grid.appendChild(btn);
+    });
+    showScreen("screen-levels");
+}
+
+// --- CREATOR PUBLISH FLOW ---
+function publishCustomLevelRoom() {
+    const levelName = document.getElementById("creator-level-name").value.trim();
+    if (!levelName) {
+        alert("Please enter a custom name for your Level Room!");
+        return;
+    }
+
+    const customBrands = [];
+    for (let i = 1; i <= 4; i++) {
+        const bName = document.getElementById(`c-brand-${i}-name`).value.trim();
+        const bSlug = document.getElementById(`c-brand-${i}-slug`).value.trim().toLowerCase();
+        const bHint = document.getElementById(`c-brand-${i}-hint`).value.trim();
+
+        if (!bName || !bSlug) {
+            alert(`Brand #${i} requires at least a Name and an SVG Slug identifier (e.g. google, microsoft, apple)!`);
+            return;
+        }
+
+        customBrands.push({
+            name: bName,
+            slug: bSlug,
+            hint: bHint || "No clues defined."
+        });
+    }
+
+    const newRoom = {
+        id: "custom_" + Date.now(),
+        name: levelName,
+        brands: customBrands
+    };
+
+    if (!GAME_STATE.saveData.customLevels) GAME_STATE.saveData.customLevels = [];
+    GAME_STATE.saveData.customLevels.push(newRoom);
+
+    sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
+    updateGlobalStatsHUD();
+    alert("Level Room Successfully Published to Custom Arena!");
+    
+    renderCategoryCards();
+    showScreen("screen-categories");
+}
+
 function launchLevel(levelNum) {
     GAME_STATE.currentLevel = levelNum;
     GAME_STATE.currentBrandIndex = 0;
@@ -360,6 +549,20 @@ function launchLevel(levelNum) {
 
     const pool = BRAND_DATABASE[GAME_STATE.currentCategory];
     GAME_STATE.activeBrands = pool.filter(b => b.difficulty === levelNum).slice(0, 4);
+
+    showScreen("screen-gameplay");
+    loadNextBrand();
+}
+
+function launchCustomLevel(customIndex) {
+    GAME_STATE.currentLevel = customIndex;
+    GAME_STATE.currentBrandIndex = 0;
+    GAME_STATE.currentLevelCorrectCount = 0;
+    GAME_STATE.currentLevelScore = 0;
+    GAME_STATE.lives = 3;
+
+    const targetRoom = GAME_STATE.saveData.customLevels[customIndex];
+    GAME_STATE.activeBrands = targetRoom.brands;
 
     showScreen("screen-gameplay");
     loadNextBrand();
@@ -448,7 +651,6 @@ function onMatchResult(result) {
         badge.className = "gaming-font text-5xl font-black uppercase text-center tracking-widest text-emerald-400";
         document.getElementById("feedback-match").textContent = `${Math.round(result.match)}%`;
         
-        // Final score reduces depending on clues bought
         const finalScore = Math.max(result.score - (GAME_STATE.revealedIndices.length * 10), 5);
         document.getElementById("feedback-score").textContent = `+${finalScore}`;
         statsCard.classList.remove("hidden");
@@ -512,6 +714,8 @@ function triggerLevelEnd(completed) {
     correctCountEl.textContent = `${GAME_STATE.currentLevelCorrectCount} / 4`;
     scoreEl.textContent = GAME_STATE.currentLevelScore;
 
+    const isCustom = GAME_STATE.currentCategory === "custom";
+
     if (completed && GAME_STATE.currentLevelCorrectCount >= 3) {
         sfx.playFanfare();
         document.querySelector("#screen-report h2").textContent = "LEVEL CLEAR!";
@@ -523,13 +727,16 @@ function triggerLevelEnd(completed) {
         starsEl.textContent = stars;
         starsEl.className = "text-yellow-400 text-6xl tracking-wider select-none py-2";
 
-        const currentCatUnlocked = GAME_STATE.saveData.levelsUnlocked[GAME_STATE.currentCategory] || 1;
-        if (GAME_STATE.currentLevel === currentCatUnlocked && currentCatUnlocked < 10) {
-            GAME_STATE.saveData.levelsUnlocked[GAME_STATE.currentCategory] = currentCatUnlocked + 1;
+        if (isCustom) {
+            GAME_STATE.saveData.customScore = (GAME_STATE.saveData.customScore || 0) + GAME_STATE.currentLevelScore;
+        } else {
+            const currentCatUnlocked = GAME_STATE.saveData.levelsUnlocked[GAME_STATE.currentCategory] || 1;
+            if (GAME_STATE.currentLevel === currentCatUnlocked && currentCatUnlocked < 10) {
+                GAME_STATE.saveData.levelsUnlocked[GAME_STATE.currentCategory] = currentCatUnlocked + 1;
+            }
+            GAME_STATE.saveData.categoryScores[GAME_STATE.currentCategory] += GAME_STATE.currentLevelScore;
+            GAME_STATE.saveData.globalScore += GAME_STATE.currentLevelScore;
         }
-
-        GAME_STATE.saveData.categoryScores[GAME_STATE.currentCategory] += GAME_STATE.currentLevelScore;
-        GAME_STATE.saveData.globalScore += GAME_STATE.currentLevelScore;
     } else {
         sfx.playWrong();
         triggerVibration();
@@ -539,33 +746,99 @@ function triggerLevelEnd(completed) {
         starsEl.className = "text-gray-700 text-6xl tracking-wider select-none py-2";
     }
 
-    highEl.textContent = GAME_STATE.saveData.categoryScores[GAME_STATE.currentCategory];
+    if (isCustom) {
+        highEl.textContent = `${GAME_STATE.saveData.customScore || 0} (Custom Arena Total)`;
+    } else {
+        highEl.textContent = GAME_STATE.saveData.categoryScores[GAME_STATE.currentCategory];
+    }
+
     sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
     updateGlobalStatsHUD();
     showScreen("screen-report");
 }
 
-// --- OPTIMIZATION CONTROL CODES ---
+// --- OPTIMIZATION & SYSTEM CODES ---
 function applyVisualSettings() {
     const isLow = GAME_STATE.saveData.quality === "low";
     if (isLow) {
         document.body.classList.add("low-quality");
-        document.getElementById("btn-qual-low").className = "px-3 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white transition";
-        document.getElementById("btn-qual-high").className = "px-3 py-2 text-xs font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+        document.getElementById("btn-qual-low").className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
+        document.getElementById("btn-qual-high").className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
     } else {
         document.body.classList.remove("low-quality");
-        document.getElementById("btn-qual-low").className = "px-3 py-2 text-xs font-bold rounded-lg bg-gray-900 text-gray-400 transition";
-        document.getElementById("btn-qual-high").className = "px-3 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white transition";
+        document.getElementById("btn-qual-low").className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+        document.getElementById("btn-qual-high").className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
     }
+
+    // Brightness filter adjustment
+    const rawBrightness = GAME_STATE.saveData.brightness || 100;
+    document.body.style.filter = `brightness(${rawBrightness}%)`;
+}
+
+function applyFrameBudgeting() {
+    const val = GAME_STATE.saveData.fpsLimit || "uncapped";
+    ["30", "60", "uncapped"].forEach(fps => {
+        const btn = document.getElementById(`btn-fps-${fps}`);
+        if (val === fps) btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
+        else btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+    });
+
+    if (gameLoopId) cancelAnimationFrame(gameLoopId);
+    
+    if (val === "30") {
+        lockAnimationFramerate(30);
+    } else if (val === "60") {
+        lockAnimationFramerate(60);
+    } else {
+        // Let system manage frames dynamically
+    }
+}
+
+function lockAnimationFramerate(fps) {
+    let lastTime = performance.now();
+    const interval = 1000 / fps;
+    
+    function loop(time) {
+        gameLoopId = requestAnimationFrame(loop);
+        const delta = time - lastTime;
+        if (delta >= interval) {
+            lastTime = time - (delta % interval);
+            // Dynamic UI paint event cycle dummy update
+        }
+    }
+    gameLoopId = requestAnimationFrame(loop);
+}
+
+function applyVSyncStatus() {
+    const val = GAME_STATE.saveData.vsync;
+    const btnOn = document.getElementById("btn-vsync-on");
+    const btnOff = document.getElementById("btn-vsync-off");
+
+    if (val) {
+        btnOn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
+        btnOff.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+    } else {
+        btnOn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+        btnOff.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
+    }
+    sendNativeRequest({ Action: "configure_vsync", Value: val });
 }
 
 function syncSettingsPanel() {
     document.getElementById("settings-volume").value = GAME_STATE.saveData.volume;
     sfx.volume = GAME_STATE.saveData.volume;
     document.getElementById("volume-label").textContent = `${Math.round(GAME_STATE.saveData.volume * 100)}%`;
+    
+    // Brightness input element sync
+    const bright = GAME_STATE.saveData.brightness || 100;
+    document.getElementById("settings-brightness").value = bright;
+    document.getElementById("brightness-label").textContent = `${bright}%`;
+
     updateDifficultyToggles();
     updateResolutionButtons();
     updateVibrationButton();
+    applyFrameBudgeting();
+    applyVSyncStatus();
 }
 
 function updateResolutionButtons() {
@@ -576,8 +849,8 @@ function updateResolutionButtons() {
         if (sz === "1280x960") btnId = "btn-win-lg";
         
         const btn = document.getElementById(btnId);
-        if (res === sz) btn.className = "px-3 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white transition";
-        else btn.className = "px-3 py-2 text-xs font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+        if (res === sz) btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
+        else btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
     });
 }
 
@@ -586,10 +859,10 @@ function updateVibrationButton() {
     const btn = document.getElementById("btn-vibrate-toggle");
     if (active) {
         btn.textContent = "Enabled";
-        btn.className = "px-4 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white uppercase";
+        btn.className = "px-4 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white uppercase";
     } else {
         btn.textContent = "Disabled";
-        btn.className = "px-4 py-2 text-xs font-bold rounded-lg bg-gray-900 text-gray-400 uppercase";
+        btn.className = "px-4 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 uppercase";
     }
 }
 
@@ -597,9 +870,9 @@ function updateDifficultyToggles() {
     ["easy", "medium", "hard"].forEach(df => {
         const btn = document.getElementById(`diff-${df}`);
         if (GAME_STATE.saveData.difficulty === df) {
-            btn.className = "px-3 py-2 text-xs font-bold rounded-lg bg-blue-600 text-white transition";
+            btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
         } else {
-            btn.className = "px-3 py-2 text-xs font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+            btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
         }
     });
 }

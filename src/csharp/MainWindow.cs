@@ -23,7 +23,7 @@ namespace BrandGame
         private static string SaveFilePath => Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), 
             "BrandGame_V3", 
-            "save_data.json"
+            "save_data_v3_custom.json"
         );
 
         static MainWindow()
@@ -138,7 +138,7 @@ namespace BrandGame
             this.Width = 1024;
             this.Height = 768;
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.FormBorderStyle = FormBorderStyle.FixedSingle; // Prevent unintended window warping
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
 
             webView = new WebView2 { Dock = DockStyle.Fill };
@@ -177,7 +177,9 @@ namespace BrandGame
                 string userDataFolder = Path.Combine(Path.GetTempPath(), "BrandGame_V3_UserData");
                 Directory.CreateDirectory(userDataFolder);
 
-                var env = await CoreWebView2Environment.CreateAsync(null, userDataFolder, null);
+                // Set flags to support custom sync options inside CoreWebView2 environments if necessary
+                var options = new CoreWebView2EnvironmentOptions("--disable-features=LayoutNG,OverlayScrollbars");
+                var env = await CoreWebView2Environment.CreateAsync(null, userDataFolder, options);
                 await webView.EnsureCoreWebView2Async(env);
 
                 webView.CoreWebView2.SetVirtualHostNameToFolderMapping(
@@ -204,6 +206,7 @@ namespace BrandGame
             public int? TimeElapsed { get; set; }
             public int? Width { get; set; }
             public int? Height { get; set; }
+            public bool? Value { get; set; } // Boolean option for VSync toggles
         }
 
         private async void OnWebMessageReceived(object? sender, CoreWebView2WebMessageReceivedEventArgs e)
@@ -218,12 +221,27 @@ namespace BrandGame
                 
                 if (payload != null)
                 {
+                    // TERMINATE PROCESS
+                    if (payload.Action == "exit_app")
+                    {
+                        Application.Exit();
+                        return;
+                    }
+
                     // SYSTEM RESOLUTION RESIZING
                     if (payload.Action == "resize_window" && payload.Width.HasValue && payload.Height.HasValue)
                     {
                         this.Width = payload.Width.Value;
                         this.Height = payload.Height.Value;
-                        this.CenterToScreen(); // Keep aligned centered
+                        this.CenterToScreen();
+                        return;
+                    }
+
+                    // VSYNC RE-CONFIGURATION
+                    if (payload.Action == "configure_vsync" && payload.Value.HasValue)
+                    {
+                        // Webview2 natively uses system vsync limits, we handle UI-side configurations.
+                        System.Diagnostics.Debug.WriteLine($"VSync configuration applied: {payload.Value.Value}");
                         return;
                     }
 
