@@ -1,0 +1,24 @@
+# MSBuild / Visual Studio / .NET outputs
+bin/
+obj/
+*.user
+*.userprefs
+*.suo
+*.sln.docstates
+
+# VS Code directory
+.vscode/
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# WebView2 Runtime Cache Folders
+BrandGame_V3_UserData/
+EBWebView/
+
+# Compiled Native Binaries
+*.dll
+*.exe
+*.pdb
+*.lib
+*.obj
+*.exp

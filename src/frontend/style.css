@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap');
+
+:root {
+    --bg-color: #0b0c10;
+    --container-bg: #1f2833;
+    --primary-glow: #66fcf1;
+    --secondary-glow: #45f3ff;
+    --text-main: #c5c6c7;
+    --text-highlight: #ffffff;
+    --wrong-color: #ff4d4d;
+    --correct-color: #2ecc71;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Rajdhani', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#game-container {
+    width: 85%;
+    max-width: 800px;
+    background: linear-gradient(145deg, #112233, #0f1626);
+    border: 2px solid var(--primary-glow);
+    box-shadow: 0 0 25px rgba(102, 252, 241, 0.2);
+    border-radius: 12px;
+    padding: 25px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(102, 252, 241, 0.3);
+    padding-bottom: 15px;
+}
+
+.logo-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    color: var(--primary-glow);
+    text-shadow: 0 0 10px rgba(102, 252, 241, 0.5);
+    font-weight: 700;
+}
+
+.stats {
+    display: flex;
+    gap: 15px;
+}
+
+.stat-box {
+    background-color: var(--container-bg);
+    border: 1px solid var(--primary-glow);
+    border-radius: 6px;
+    padding: 8px 15px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--text-highlight);
+}
+
+.brand-display-card {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    border: 1px dashed rgba(102, 252, 241, 0.4);
+    position: relative;
+    margin-bottom: 15px;
+}
+
+#logo-container {
+    width: 100%;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#logo-container svg {
+    max-width: 60%;
+    max-height: 80%;
+    filter: drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.8));
+    transition: all 0.3s ease;
+}
+
+.pixelated {
+    filter: blur(14px) grayscale(100%) !important;
+}
+
+.hint-container {
+    margin-top: 5px;
+    font-size: 1.1rem;
+    color: var(--primary-glow);
+}
+
+#controls {
+    display: flex;
+    gap: 10px;
+}
+
+#guess-input {
+    flex-grow: 1;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--text-main);
+    border-radius: 6px;
+    padding: 12px 20px;
+    color: #fff;
+    font-size: 1.2rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#guess-input:focus {
+    border-color: var(--primary-glow);
+    box-shadow: 0 0 10px rgba(102, 252, 241, 0.3);
+}
+
+#submit-btn {
+    background-color: var(--primary-glow);
+    border: none;
+    color: var(--bg-color);
+    padding: 12px 25px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+#submit-btn:hover {
+    background-color: var(--secondary-glow);
+    box-shadow: 0 0 15px rgba(69, 243, 255, 0.6);
+}
+
+#submit-btn:active {
+    transform: scale(0.97);
+}
+
+#feedback-message {
+    height: 30px;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.correct {
+    color: var(--correct-color);
+    text-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
+    animation: pulse 0.5s ease;
+}
+
+.wrong {
+    color: var(--wrong-color);
+    text-shadow: 0 0 8px rgba(255, 77, 77, 0.5);
+    animation: shake 0.4s ease;
+}
+
+footer {
+    text-align: center;
+    font-size: 0.9rem;
+    color: rgba(197, 198, 199, 0.5);
+    border-top: 1px solid rgba(102, 252, 241, 0.1);
+    padding-top: 10px;
+}
+
+.author {
+    color: var(--primary-glow);
+    font-weight: bold;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
