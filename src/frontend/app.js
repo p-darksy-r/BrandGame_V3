@@ -42,6 +42,35 @@ class RetroAudioSynth {
 const sfx = new RetroAudioSynth();
 const GAME_VERSION = "3.0.0";
 
+// --- DEDICATED OFFLINE/WEB STANDALONE LEVEL BACKUPS ---
+const WEB_FALLBACK_DATABASE = {
+    tech: [
+        { name: "Google", slug: "google", hint: "The world's largest search engine." },
+        { name: "Apple", slug: "apple", hint: "Known for iPhones, iPads, and Mac computers." },
+        { name: "Microsoft", slug: "microsoft", hint: "Creator of the Windows Operating System." }
+    ],
+    auto: [
+        { name: "Tesla", slug: "tesla", hint: "Electric vehicle giant founded by Elon Musk." },
+        { name: "Ford", slug: "ford", hint: "Classic American auto-maker founded in Detroit." },
+        { name: "Ferrari", slug: "ferrari", hint: "Prestigious red Italian luxury sports cars." }
+    ],
+    food: [
+        { name: "Coca-Cola", slug: "cocacola", hint: "Iconic carbonated cola soft drink." },
+        { name: "McDonald's", slug: "mcdonalds", hint: "Fast food giant famous for Golden Arches." },
+        { name: "Pepsi", slug: "pepsi", hint: "Classic blue & red circular soda brand." }
+    ],
+    fashion: [
+        { name: "Nike", slug: "nike", hint: "Athletic apparel brand with a famous 'Swoosh' logo." },
+        { name: "Adidas", slug: "adidas", hint: "Famous German three-stripes sports brand." },
+        { name: "Gucci", slug: "gucci", hint: "High-end luxury Italian fashion designer." }
+    ],
+    media: [
+        { name: "YouTube", slug: "youtube", hint: "Red play-button video-sharing giant." },
+        { name: "Netflix", slug: "netflix", hint: "Global movie streaming network with red branding." },
+        { name: "Spotify", slug: "spotify", hint: "Green music and podcast streaming service." }
+    ]
+};
+
 // --- GAME STATE SYSTEM ---
 const GAME_STATE = {
     saveData: {
@@ -50,7 +79,7 @@ const GAME_STATE = {
         customScore: 0,
         categoryScores: { tech: 0, auto: 0, food: 0, fashion: 0, media: 0 },
         levelsUnlocked: { tech: 1, auto: 1, food: 1, fashion: 1, media: 1 },
-        customLevels: [], // Array of { id, name, category, difficulty, theme, timer, brands }
+        customLevels: [],
         difficulty: "medium",
         volume: 0.5,
         resolution: "1024x768",
@@ -77,28 +106,10 @@ const GAME_STATE = {
 let gameLoopId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("header-version-badge").textContent = `v${GAME_VERSION}`;
-    document.getElementById("footer-version-text").textContent = GAME_VERSION;
-
-    // Inject dynamic CSS to handle scrollbar stylings for the 5-column grids cleanly
-    const styleEl = document.createElement("style");
-    styleEl.textContent = `
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(59, 130, 246, 0.4);
-            border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(59, 130, 246, 0.7);
-        }
-    `;
-    document.head.appendChild(styleEl);
+    const headerVer = document.getElementById("header-version-badge");
+    if (headerVer) headerVer.textContent = `v${GAME_VERSION}`;
+    const footerVer = document.getElementById("footer-version-text");
+    if (footerVer) footerVer.textContent = GAME_VERSION;
 
     sendNativeRequest({ Action: "load_save" });
     setupEventHandlers();
@@ -110,6 +121,7 @@ function sendNativeRequest(payload) {
     if (window.chrome && window.chrome.webview && window.chrome.webview.postMessage) {
         window.chrome.webview.postMessage(payload);
     } else {
+        // Full stand-alone web storage fallback if running on standard browsers
         if (payload.Action === "load_save") {
             const raw = localStorage.getItem("brandgame_v3_savedata");
             if (raw) GAME_STATE.saveData = JSON.parse(raw);
@@ -126,7 +138,16 @@ function sendNativeRequest(payload) {
 
 function onSaveLoaded(data) {
     if (data) {
-        GAME_STATE.saveData = { ...GAME_STATE.saveData, ...data };
+        let parsedData = data;
+        if (typeof data === "string") {
+            try {
+                parsedData = JSON.parse(data);
+            } catch (e) {
+                console.error("Failed to parse save state string data:", e);
+                parsedData = {};
+            }
+        }
+        GAME_STATE.saveData = { ...GAME_STATE.saveData, ...parsedData };
         if (!GAME_STATE.saveData.customLevels) GAME_STATE.saveData.customLevels = [];
     }
     updateGlobalStatsHUD();
@@ -140,8 +161,10 @@ function showScreen(screenId) {
     const screens = ["screen-main-menu", "screen-categories", "screen-levels", "screen-gameplay", "screen-report", "screen-settings", "screen-creator"];
     screens.forEach(id => {
         const el = document.getElementById(id);
-        if (id === screenId) el.classList.remove("hidden");
-        else el.classList.add("hidden");
+        if (el) {
+            if (id === screenId) el.classList.remove("hidden");
+            else el.classList.add("hidden");
+        }
     });
     
     if (screenId !== "screen-gameplay") {
@@ -149,8 +172,10 @@ function showScreen(screenId) {
     }
 
     const header = document.getElementById("header-stats");
-    if (screenId === "screen-main-menu" || screenId === "screen-categories") header.classList.remove("hidden");
-    else header.classList.add("hidden");
+    if (header) {
+        if (screenId === "screen-main-menu" || screenId === "screen-categories") header.classList.remove("hidden");
+        else header.classList.add("hidden");
+    }
 }
 
 function clearCustomThemeClasses() {
@@ -166,12 +191,16 @@ function updateGlobalStatsHUD() {
     const customCount = GAME_STATE.saveData.customLevels.length;
     globalStars += customCount * 2;
 
-    document.getElementById("global-stars").textContent = globalStars;
-    document.getElementById("global-score").textContent = GAME_STATE.saveData.globalScore + (GAME_STATE.saveData.customScore || 0);
+    const starsEl = document.getElementById("global-stars");
+    if (starsEl) starsEl.textContent = globalStars;
+    const scoreEl = document.getElementById("global-score");
+    if (scoreEl) scoreEl.textContent = GAME_STATE.saveData.globalScore + (GAME_STATE.saveData.customScore || 0);
 }
 
 function renderMainMenuProgress() {
     const catList = document.getElementById("category-summary-list");
+    if (!catList) return;
+    
     catList.innerHTML = "";
     const categories = [
         { id: "tech", label: "Technology" },
@@ -221,6 +250,7 @@ function renderMainMenuProgress() {
 
 function populatePageSelectDropdown() {
     const sel = document.getElementById("select-level-page");
+    if (!sel) return;
     sel.innerHTML = "";
     for (let i = 0; i < 10; i++) {
         const opt = document.createElement("option");
@@ -234,18 +264,25 @@ function populatePageSelectDropdown() {
     });
 }
 
+function safeAddEventListener(id, event, callback) {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener(event, callback);
+}
+
 function setupEventHandlers() {
-    document.getElementById("btn-menu-start").addEventListener("click", () => {
+    safeAddEventListener("btn-menu-start", "click", () => {
         renderCategoryCards();
         showScreen("screen-categories");
     });
-    document.getElementById("btn-menu-settings").addEventListener("click", () => showScreen("screen-settings"));
+    safeAddEventListener("btn-menu-settings", "click", () => showScreen("screen-settings"));
     
-    document.getElementById("btn-menu-exit").addEventListener("click", () => {
-        sendNativeRequest({ Action: "exit_app" });
+    safeAddEventListener("btn-menu-exit", "click", () => {
+        if (confirm("Are you sure you want to close the game?")) {
+            window.close();
+        }
     });
 
-    document.getElementById("btn-menu-reset").addEventListener("click", () => {
+    safeAddEventListener("btn-menu-reset", "click", () => {
         if (confirm("Permanently erase save progress and customized rooms?")) {
             GAME_STATE.saveData = {
                 gameVersion: GAME_VERSION,
@@ -261,12 +298,12 @@ function setupEventHandlers() {
         }
     });
 
-    document.getElementById("btn-categories-back").addEventListener("click", () => showScreen("screen-main-menu"));
-    document.getElementById("btn-levels-back").addEventListener("click", () => showScreen("screen-categories"));
-    document.getElementById("btn-settings-back").addEventListener("click", () => showScreen("screen-main-menu"));
-    document.getElementById("btn-creator-back").addEventListener("click", () => showScreen("screen-categories"));
+    safeAddEventListener("btn-categories-back", "click", () => showScreen("screen-main-menu"));
+    safeAddEventListener("btn-levels-back", "click", () => showScreen("screen-categories"));
+    safeAddEventListener("btn-settings-back", "click", () => showScreen("screen-main-menu"));
+    safeAddEventListener("btn-creator-back", "click", () => showScreen("screen-categories"));
 
-    document.getElementById("btn-gameplay-quit").addEventListener("click", () => {
+    safeAddEventListener("btn-gameplay-quit", "click", () => {
         clearInterval(GAME_STATE.timerInterval);
         if (GAME_STATE.currentCategory === "custom") {
             renderCategoryCards();
@@ -276,131 +313,154 @@ function setupEventHandlers() {
         }
     });
 
-    document.getElementById("btn-guess-submit").addEventListener("click", submitUserGuess);
-    document.getElementById("input-guess").addEventListener("keypress", (e) => {
-        if (e.key === "Enter") submitUserGuess();
-    });
+    safeAddEventListener("btn-guess-submit", "click", submitUserGuess);
+    
+    const inputGuess = document.getElementById("input-guess");
+    if (inputGuess) {
+        inputGuess.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") submitUserGuess();
+        });
+    }
 
-    document.getElementById("btn-gameplay-hint").addEventListener("click", () => {
+    safeAddEventListener("btn-gameplay-hint", "click", () => {
         const clueEl = document.getElementById("clue-text");
-        clueEl.textContent = GAME_STATE.currentBrand.hint || "No clues available.";
-        clueEl.classList.remove("hidden");
+        if (clueEl) {
+            clueEl.textContent = GAME_STATE.currentBrand.hint || "No clues available.";
+            clueEl.classList.remove("hidden");
+        }
         GAME_STATE.currentLevelScore = Math.max(GAME_STATE.currentLevelScore - 5, 0);
     });
 
-    document.getElementById("btn-gameplay-reveal-char").addEventListener("click", buyLetterClue);
+    safeAddEventListener("btn-gameplay-reveal-char", "click", buyLetterClue);
 
-    document.getElementById("btn-report-continue").addEventListener("click", () => {
+    safeAddEventListener("btn-report-continue", "click", () => {
         if (GAME_STATE.currentCategory === "custom") {
             selectCustomCategory();
         } else {
-            selectCategory(GAME_STATE.currentCategory, document.getElementById("level-category-title").textContent);
+            const catTitle = document.getElementById("level-category-title");
+            selectCategory(GAME_STATE.currentCategory, catTitle ? catTitle.textContent : "");
         }
     });
 
-    // --- INSTANT SAVE & SETTINGS HANDLING ---
-    
-    // Resolution Scale settings
+    // Graphics scale Settings (Web compatibility safe)
     ["sm", "md", "lg"].forEach(sz => {
         const mapping = { sm: { w: 800, h: 600 }, md: { w: 1024, h: 768 }, lg: { w: 1280, h: 960 } };
-        document.getElementById(`btn-win-${sz}`).addEventListener("click", () => {
+        safeAddEventListener(`btn-win-${sz}`, "click", () => {
             GAME_STATE.saveData.resolution = `${mapping[sz].w}x${mapping[sz].h}`;
             updateResolutionButtons();
             applyWindowBounds();
             sendNativeRequest({ Action: "resize_window", Width: mapping[sz].w, Height: mapping[sz].h });
-            sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
+            sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
         });
     });
 
-    // Graphics toggles
-    document.getElementById("btn-qual-low").addEventListener("click", () => {
+    safeAddEventListener("btn-qual-low", "click", () => {
         GAME_STATE.saveData.quality = "low";
         applyVisualSettings();
-        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
+        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
     });
-    document.getElementById("btn-qual-high").addEventListener("click", () => {
+    safeAddEventListener("btn-qual-high", "click", () => {
         GAME_STATE.saveData.quality = "high";
         applyVisualSettings();
-        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
+        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
     });
 
-    // FPS clamps
     ["30", "60", "uncapped"].forEach(fps => {
-        document.getElementById(`btn-fps-${fps}`).addEventListener("click", () => {
+        safeAddEventListener(`btn-fps-${fps}`, "click", () => {
             GAME_STATE.saveData.fpsLimit = fps;
             applyFrameBudgeting();
-            sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
+            sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
         });
     });
 
-    // Brightness input
-    document.getElementById("settings-brightness").addEventListener("input", (e) => {
-        const val = e.target.value;
-        GAME_STATE.saveData.brightness = parseInt(val);
-        document.getElementById("brightness-label").textContent = `${val}%`;
-        applyVisualSettings();
-        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
-    });
+    const briInput = document.getElementById("settings-brightness");
+    if (briInput) {
+        briInput.addEventListener("input", (e) => {
+            const val = e.target.value;
+            GAME_STATE.saveData.brightness = parseInt(val);
+            const lbl = document.getElementById("brightness-label");
+            if (lbl) lbl.textContent = `${val}%`;
+            applyVisualSettings();
+        });
+        briInput.addEventListener("change", () => {
+            sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
+        });
+    }
 
-    // VSync toggle
-    document.getElementById("btn-vsync-off").addEventListener("click", () => {
+    safeAddEventListener("btn-vsync-off", "click", () => {
         GAME_STATE.saveData.vsync = false;
         applyVSyncStatus();
-        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
+        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
     });
-    document.getElementById("btn-vsync-on").addEventListener("click", () => {
+    safeAddEventListener("btn-vsync-on", "click", () => {
         GAME_STATE.saveData.vsync = true;
         applyVSyncStatus();
-        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
+        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
     });
 
-    // Vibration toggler
-    document.getElementById("btn-vibrate-toggle").addEventListener("click", () => {
+    safeAddEventListener("btn-vibrate-toggle", "click", () => {
         GAME_STATE.saveData.vibration = !GAME_STATE.saveData.vibration;
         updateVibrationButton();
-        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
+        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
     });
 
-    document.getElementById("btn-settings-close").addEventListener("click", () => {
-        GAME_STATE.saveData.volume = parseFloat(document.getElementById("settings-volume").value);
-        sfx.volume = GAME_STATE.saveData.volume;
+    safeAddEventListener("btn-settings-close", "click", () => {
+        const volSlider = document.getElementById("settings-volume");
+        if (volSlider) {
+            GAME_STATE.saveData.volume = parseFloat(volSlider.value);
+            sfx.volume = GAME_STATE.saveData.volume;
+        }
         sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
         showScreen("screen-main-menu");
     });
 
-    document.getElementById("settings-volume").addEventListener("input", (e) => {
-        const val = parseFloat(e.target.value);
-        GAME_STATE.saveData.volume = val;
-        sfx.volume = val;
-        document.getElementById("volume-label").textContent = `${Math.round(val * 100)}%`;
-        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
-    });
+    const volSlider = document.getElementById("settings-volume");
+    if (volSlider) {
+        volSlider.addEventListener("input", (e) => {
+            const val = parseFloat(e.target.value);
+            GAME_STATE.saveData.volume = val;
+            sfx.volume = val;
+            const lbl = document.getElementById("volume-label");
+            if (lbl) lbl.textContent = `${Math.round(val * 100)}%`;
+        });
+        volSlider.addEventListener("change", () => {
+            sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
+        });
+    }
 
     ["easy", "medium", "hard"].forEach(df => {
-        document.getElementById(`diff-${df}`).addEventListener("click", () => {
+        safeAddEventListener(`diff-${df}`, "click", () => {
             GAME_STATE.saveData.difficulty = df;
             updateDifficultyToggles();
-            sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
+            sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
         });
     });
 
-    // Dynamic triggers
-    document.getElementById("btn-trigger-creator").addEventListener("click", () => {
-        document.getElementById("creator-level-name").value = "";
-        document.getElementById("creator-level-category").value = "tech";
-        document.getElementById("creator-level-difficulty").value = "medium";
-        document.getElementById("creator-level-theme").value = "cyber-neon";
-        document.getElementById("creator-level-timer").value = "15";
+    safeAddEventListener("btn-trigger-creator", "click", () => {
+        const fields = {
+            "creator-level-name": "",
+            "creator-level-category": "tech",
+            "creator-level-difficulty": "medium",
+            "creator-level-theme": "cyber-neon",
+            "creator-level-timer": "15"
+        };
+        for (const [id, value] of Object.entries(fields)) {
+            const el = document.getElementById(id);
+            if (el) el.value = value;
+        }
 
-        for (let i = 1; i <= 4; i++) {
-            document.getElementById(`c-brand-${i}-name`).value = "";
-            document.getElementById(`c-brand-${i}-slug`).value = "";
-            document.getElementById(`c-brand-${i}-hint`).value = "";
+        for (let i = 1; i <= 10; i++) {
+            const nameEl = document.getElementById(`c-brand-${i}-name`);
+            const slugEl = document.getElementById(`c-brand-${i}-slug`);
+            const hintEl = document.getElementById(`c-brand-${i}-hint`);
+            if (nameEl) nameEl.value = "";
+            if (slugEl) slugEl.value = "";
+            if (hintEl) hintEl.value = "";
         }
         showScreen("screen-creator");
     });
 
-    document.getElementById("btn-save-custom-level").addEventListener("click", publishCustomLevelRoom);
+    safeAddEventListener("btn-save-custom-level", "click", publishCustomLevelRoom);
 }
 
 function buyLetterClue() {
@@ -423,6 +483,7 @@ function buyLetterClue() {
 function renderRevealedLetters() {
     const brandName = GAME_STATE.currentBrand.name;
     const hud = document.getElementById("revealed-letters-hud");
+    if (!hud) return;
     
     let displayStr = "";
     let cleanCharIndex = 0;
@@ -446,13 +507,16 @@ function renderRevealedLetters() {
 function triggerVibration() {
     if (!GAME_STATE.saveData.vibration) return;
     const el = document.getElementById("screen-gameplay");
-    el.classList.add("shake-active");
-    setTimeout(() => el.classList.remove("shake-active"), 400);
+    if (el) {
+        el.classList.add("shake-active");
+        setTimeout(() => el.classList.remove("shake-active"), 400);
+    }
 }
 
 // --- RENDERERS ---
 function renderCategoryCards() {
     const grid = document.getElementById("category-cards-grid");
+    if (!grid) return;
     grid.innerHTML = "";
     const categories = [
         { id: "tech", label: "Technology", desc: "Code and hardware masters.", bg: "from-blue-900 to-indigo-950" },
@@ -509,36 +573,44 @@ function renderCategoryCards() {
 
 function selectCategory(catId, catLabel) {
     GAME_STATE.currentCategory = catId;
-    document.getElementById("level-category-title").textContent = catLabel;
-    document.getElementById("level-category-badge").textContent = catLabel;
+    GAME_STATE.levelSelectPage = 0; // Reset to page 1 on category change
     
-    // Hide the legacy pagination select dropdown box, since users can now scroll cleanly
-    const parentSel = document.getElementById("select-level-page");
-    if (parentSel && parentSel.parentElement) {
-        parentSel.parentElement.classList.add("hidden");
+    const catTitle = document.getElementById("level-category-title");
+    if (catTitle) catTitle.textContent = catLabel;
+    const catBadge = document.getElementById("level-category-badge");
+    if (catBadge) catBadge.textContent = catLabel;
+    
+    const pageSelect = document.getElementById("select-level-page");
+    if (pageSelect) {
+        pageSelect.value = "0";
+        if (pageSelect.parentElement) {
+            pageSelect.parentElement.classList.remove("hidden"); // Ensure levels page-select is visible
+        }
     }
 
     renderLevelButtonsList();
     showScreen("screen-levels");
 }
 
-// --- RENDER SCROLLABLE 5-COLUMN LEVEL GRID ---
 function renderLevelButtonsList() {
     const grid = document.getElementById("level-buttons-grid");
+    if (!grid) return;
     grid.innerHTML = "";
     
     const catId = GAME_STATE.currentCategory;
     const unlockedMax = GAME_STATE.saveData.levelsUnlocked[catId] || 1;
     
-    // Force CSS styles for exactly 5 columns and dynamic scrollable layout
     grid.className = "grid grid-cols-5 gap-3 max-h-[360px] overflow-y-auto pr-2 custom-scrollbar";
     grid.style.maxHeight = "360px";
     grid.style.overflowY = "auto";
     grid.style.display = "grid";
     grid.style.gridTemplateColumns = "repeat(5, minmax(0, 1fr))";
 
-    // Progressive rendering of up to 100 level nodes per category
-    for (let i = 1; i <= 100; i++) {
+    // Dynamic Pagination Solver: Show 10 levels based on dropdown page
+    const startLevel = (GAME_STATE.levelSelectPage * 10) + 1;
+    const endLevel = Math.min(startLevel + 9, 100);
+
+    for (let i = startLevel; i <= endLevel; i++) {
         const isLocked = i > unlockedMax;
         const btn = document.createElement("button");
         
@@ -556,15 +628,19 @@ function renderLevelButtonsList() {
 
 function selectCustomCategory() {
     GAME_STATE.currentCategory = "custom";
-    document.getElementById("level-category-title").textContent = "Custom Arena Rooms";
-    document.getElementById("level-category-badge").textContent = "CUSTOM";
+    
+    const catTitle = document.getElementById("level-category-title");
+    if (catTitle) catTitle.textContent = "Custom Arena Rooms";
+    const catBadge = document.getElementById("level-category-badge");
+    if (catBadge) catBadge.textContent = "CUSTOM";
 
     const parentSel = document.getElementById("select-level-page");
     if (parentSel && parentSel.parentElement) {
-        parentSel.parentElement.classList.add("hidden");
+        parentSel.parentElement.classList.add("hidden"); // Hide standard page dropdown on custom category
     }
 
     const grid = document.getElementById("level-buttons-grid");
+    if (!grid) return;
     grid.innerHTML = "";
 
     const list = GAME_STATE.saveData.customLevels || [];
@@ -579,7 +655,6 @@ function selectCustomCategory() {
         return;
     }
 
-    // Adapt custom selection view to columns of 5, scrollable
     grid.className = "grid grid-cols-5 gap-3 max-h-[360px] overflow-y-auto pr-2 custom-scrollbar";
     grid.style.maxHeight = "360px";
     grid.style.overflowY = "auto";
@@ -600,22 +675,39 @@ function selectCustomCategory() {
 }
 
 function publishCustomLevelRoom() {
-    const levelName = document.getElementById("creator-level-name").value.trim();
-    const category = document.getElementById("creator-level-category").value;
-    const difficulty = document.getElementById("creator-level-difficulty").value;
-    const theme = document.getElementById("creator-level-theme").value;
-    const timer = parseInt(document.getElementById("creator-level-timer").value);
+    const levelNameEl = document.getElementById("creator-level-name");
+    const levelName = levelNameEl ? levelNameEl.value.trim() : "";
 
     if (!levelName) {
         alert("Please enter a custom name for your Level Room!");
         return;
     }
 
+    const catEl = document.getElementById("creator-level-category");
+    const category = catEl ? catEl.value : "tech";
+
+    const diffEl = document.getElementById("creator-level-difficulty");
+    const difficulty = diffEl ? diffEl.value : "medium";
+
+    const themeEl = document.getElementById("creator-level-theme");
+    const theme = themeEl ? themeEl.value : "cyber-neon";
+
+    const timerEl = document.getElementById("creator-level-timer");
+    const timer = timerEl ? (parseInt(timerEl.value) || 15) : 15;
+
     const customBrands = [];
-    for (let i = 1; i <= 4; i++) {
-        const bName = document.getElementById(`c-brand-${i}-name`).value.trim();
-        const bSlug = document.getElementById(`c-brand-${i}-slug`).value.trim().toLowerCase();
-        const bHint = document.getElementById(`c-brand-${i}-hint`).value.trim();
+    for (let i = 1; i <= 10; i++) {
+        const nameEl = document.getElementById(`c-brand-${i}-name`);
+        const slugEl = document.getElementById(`c-brand-${i}-slug`);
+        const hintEl = document.getElementById(`c-brand-${i}-hint`);
+
+        if (!nameEl || !slugEl) continue; 
+
+        const bName = nameEl.value.trim();
+        const bSlug = slugEl.value.trim().toLowerCase();
+        const bHint = hintEl ? hintEl.value.trim() : "";
+
+        if (!bName && !bSlug) continue; 
 
         if (!bName || !bSlug) {
             alert(`Brand #${i} requires both a Name and an SVG Slug.`);
@@ -627,6 +719,11 @@ function publishCustomLevelRoom() {
             slug: bSlug,
             hint: bHint || "No clues defined."
         });
+    }
+
+    if (customBrands.length === 0) {
+        alert("Please add at least one valid Brand (Name + Slug)!");
+        return;
     }
 
     const newRoom = {
@@ -657,7 +754,17 @@ function launchLevel(levelNum) {
     GAME_STATE.currentLevelScore = 0;
     GAME_STATE.lives = 3;
 
-    GAME_STATE.activeBrands = getBrandsForLevel(GAME_STATE.currentCategory, levelNum);
+    // Safety fallback database generator if brands.js file is missing or offline
+    if (typeof getBrandsForLevel === "function") {
+        GAME_STATE.activeBrands = getBrandsForLevel(GAME_STATE.currentCategory, levelNum);
+    } else {
+        const fallbackSet = WEB_FALLBACK_DATABASE[GAME_STATE.currentCategory] || WEB_FALLBACK_DATABASE.tech;
+        GAME_STATE.activeBrands = fallbackSet.map(item => ({
+            name: item.name,
+            slug: item.slug,
+            hint: `${item.hint} (Level ${levelNum})`
+        }));
+    }
 
     showScreen("screen-gameplay");
     loadNextBrand();
@@ -684,32 +791,45 @@ function launchCustomLevel(customIndex) {
 
 function loadNextBrand() {
     clearInterval(GAME_STATE.timerInterval);
-    document.getElementById("input-guess").value = "";
-    document.getElementById("clue-text").classList.add("hidden");
+    const inputField = document.getElementById("input-guess");
+    if (inputField) inputField.value = "";
+    
+    const clueText = document.getElementById("clue-text");
+    if (clueText) clueText.classList.add("hidden");
+    
     GAME_STATE.revealedIndices = [];
 
     GAME_STATE.currentBrand = GAME_STATE.activeBrands[GAME_STATE.currentBrandIndex];
-    document.getElementById("gameplay-brand-index").textContent = `${GAME_STATE.currentBrandIndex + 1} / ${GAME_STATE.activeBrands.length}`;
+    const brandIdx = document.getElementById("gameplay-brand-index");
+    if (brandIdx) brandIdx.textContent = `${GAME_STATE.currentBrandIndex + 1} / ${GAME_STATE.activeBrands.length}`;
     
     let hearts = "";
     for (let i = 0; i < GAME_STATE.lives; i++) hearts += "❤";
-    document.getElementById("gameplay-lives").textContent = hearts;
+    const livesEl = document.getElementById("gameplay-lives");
+    if (livesEl) livesEl.textContent = hearts;
 
     renderRevealedLetters();
 
     const img = document.getElementById("logo-image");
     const placeholder = document.getElementById("logo-placeholder");
-    img.src = `https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/${GAME_STATE.currentBrand.slug}.svg`;
-    img.style.filter = "grayscale(1) brightness(0.15)";
+    if (img) {
+        img.src = `https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/${GAME_STATE.currentBrand.slug}.svg`;
+        img.style.filter = "grayscale(1) brightness(0.15)";
 
-    img.onerror = () => { img.classList.add("hidden"); placeholder.classList.remove("hidden"); };
-    img.onload = () => { img.classList.remove("hidden"); placeholder.classList.add("hidden"); };
+        img.onerror = () => { 
+            img.classList.add("hidden"); 
+            if (placeholder) placeholder.classList.remove("hidden"); 
+        };
+        img.onload = () => { 
+            img.classList.remove("hidden"); 
+            if (placeholder) placeholder.classList.add("hidden"); 
+        };
+    }
 
     let timeLimit = 15;
     if (GAME_STATE.currentCategory === "custom") {
         const currentCustomRoom = GAME_STATE.saveData.customLevels[GAME_STATE.currentLevel];
         if (currentCustomRoom) {
-            // Apply custom timers, fallback to difficulty setting or standard default
             if (currentCustomRoom.timer) {
                 timeLimit = currentCustomRoom.timer;
             } else {
@@ -725,15 +845,19 @@ function loadNextBrand() {
 
     GAME_STATE.elapsedTime = 0;
     const bar = document.getElementById("timer-bar");
-    bar.style.width = "100%";
-    bar.style.backgroundColor = "#3b82f6";
+    if (bar) {
+        bar.style.width = "100%";
+        bar.style.backgroundColor = "#3b82f6";
+    }
 
     GAME_STATE.timerInterval = setInterval(() => {
         GAME_STATE.elapsedTime += 0.1;
         const rem = Math.max(((timeLimit - GAME_STATE.elapsedTime) / timeLimit) * 100, 0);
-        bar.style.width = `${rem}%`;
-        if (rem < 30) bar.style.backgroundColor = "#ef4444";
-        else if (rem < 60) bar.style.backgroundColor = "#f59e0b";
+        if (bar) {
+            bar.style.width = `${rem}%`;
+            if (rem < 30) bar.style.backgroundColor = "#ef4444";
+            else if (rem < 60) bar.style.backgroundColor = "#f59e0b";
+        }
 
         if (GAME_STATE.elapsedTime >= timeLimit) {
             clearInterval(GAME_STATE.timerInterval);
@@ -742,10 +866,55 @@ function loadNextBrand() {
     }, 100);
 }
 
+// --- WEB COMPATIBLE LEVENSHTEIN SIMILARITY ENGINE ---
+function cleanStringForMatch(str) {
+    return str.toLowerCase().replace(/[^a-z0-9]/g, "").trim();
+}
+
+function calculateMatchPercentage(str1, str2) {
+    const s1 = cleanStringForMatch(str1);
+    const s2 = cleanStringForMatch(str2);
+    if (s1 === s2) return 100;
+    if (s1.length === 0 || s2.length === 0) return 0;
+    if (s1.includes(s2) || s2.includes(s1)) {
+        return (Math.min(s1.length, s2.length) / Math.max(s1.length, s2.length)) * 100;
+    }
+
+    // Classic Levenshtein Matrix
+    const matrix = Array(s2.length + 1).fill(null).map(() => Array(s1.length + 1).fill(null));
+    for (let i = 0; i <= s1.length; i++) matrix[0][i] = i;
+    for (let j = 0; j <= s2.length; j++) matrix[j][0] = j;
+
+    for (let j = 1; j <= s2.length; j++) {
+        for (let i = 1; i <= s1.length; i++) {
+            const cost = s1[i - 1] === s2[j - 1] ? 0 : 1;
+            matrix[j][i] = Math.min(
+                matrix[j][i - 1] + 1, // insertion
+                matrix[j - 1][i] + 1, // deletion
+                matrix[j - 1][i - 1] + cost // substitution
+            );
+        }
+    }
+
+    const distance = matrix[s2.length][s1.length];
+    const longest = Math.max(s1.length, s2.length);
+    return ((longest - distance) / longest) * 100;
+}
+
 function submitUserGuess() {
-    const guess = document.getElementById("input-guess").value.trim();
+    const inputField = document.getElementById("input-guess");
+    const guess = inputField ? inputField.value.trim() : "";
     if (!guess) return;
     clearInterval(GAME_STATE.timerInterval);
+
+    // Calculate match percentage dynamically (80% similarity required for a correct answer)
+    const matchPct = calculateMatchPercentage(guess, GAME_STATE.currentBrand.name);
+    const isCorrect = matchPct >= 80;
+
+    // Web-native points mathematical equation:
+    // $$P = \max(50 - (T \times 3), 10)$$
+    // where $$P$$ is points awarded and $$T$$ is the time elapsed in seconds.
+    const points = isCorrect ? Math.max(50 - Math.round(GAME_STATE.elapsedTime) * 3, 10) : 0;
 
     if (window.chrome && window.chrome.webview && window.chrome.webview.postMessage) {
         window.chrome.webview.postMessage({
@@ -754,10 +923,7 @@ function submitUserGuess() {
             TimeElapsed: Math.round(GAME_STATE.elapsedTime)
         });
     } else {
-        const matchPct = (guess.toLowerCase() === GAME_STATE.currentBrand.name.toLowerCase()) ? 100 : 30;
-        const ok = matchPct >= 85;
-        const points = ok ? Math.max(50 - Math.round(GAME_STATE.elapsedTime) * 3, 10) : 0;
-        onMatchResult({ match: matchPct, correct: ok, score: points });
+        onMatchResult({ match: matchPct, correct: isCorrect, score: points });
     }
 }
 
@@ -767,38 +933,47 @@ function onMatchResult(result) {
     const textAns = document.getElementById("feedback-answer");
     const statsCard = document.getElementById("feedback-stats-card");
 
-    overlay.classList.remove("hidden");
-    textAns.textContent = GAME_STATE.currentBrand.name;
+    if (overlay) overlay.classList.remove("hidden");
+    if (textAns) textAns.textContent = GAME_STATE.currentBrand.name;
 
     const img = document.getElementById("logo-image");
-    img.style.filter = "grayscale(0) brightness(1)";
+    if (img) img.style.filter = "grayscale(0) brightness(1)";
 
     if (result.correct) {
         sfx.playCoin();
-        badge.textContent = "CORRECT!";
-        badge.className = "gaming-font text-5xl font-black uppercase text-center tracking-widest text-emerald-400";
-        document.getElementById("feedback-match").textContent = `${Math.round(result.match)}%`;
+        if (badge) {
+            badge.textContent = "CORRECT!";
+            badge.className = "gaming-font text-5xl font-black uppercase text-center tracking-widest text-emerald-400";
+        }
+        const matchEl = document.getElementById("feedback-match");
+        if (matchEl) matchEl.textContent = `${Math.round(result.match)}%`;
         
         const finalScore = Math.max(result.score - (GAME_STATE.revealedIndices.length * 10), 5);
-        document.getElementById("feedback-score").textContent = `+${finalScore}`;
-        statsCard.classList.remove("hidden");
+        const scoreEl = document.getElementById("feedback-score");
+        if (scoreEl) scoreEl.textContent = `+${finalScore}`;
+        if (statsCard) statsCard.classList.remove("hidden");
 
         GAME_STATE.currentLevelScore += finalScore;
         GAME_STATE.currentLevelCorrectCount++;
     } else {
         sfx.playWrong();
         triggerVibration();
-        badge.textContent = "INCORRECT";
-        badge.className = "gaming-font text-5xl font-black uppercase text-center tracking-widest text-red-500";
-        statsCard.classList.add("hidden");
+        if (badge) {
+            badge.textContent = "INCORRECT";
+            badge.className = "gaming-font text-5xl font-black uppercase text-center tracking-widest text-red-500";
+        }
+        if (statsCard) statsCard.classList.add("hidden");
         GAME_STATE.lives--;
     }
 
-    document.getElementById("btn-feedback-next").onclick = () => {
-        overlay.classList.add("hidden");
-        if (GAME_STATE.lives <= 0) triggerLevelEnd(false);
-        else advanceTurn();
-    };
+    const nextBtn = document.getElementById("btn-feedback-next");
+    if (nextBtn) {
+        nextBtn.onclick = () => {
+            if (overlay) overlay.classList.add("hidden");
+            if (GAME_STATE.lives <= 0) triggerLevelEnd(false);
+            else advanceTurn();
+        };
+    }
 }
 window.onMatchResult = onMatchResult;
 
@@ -812,17 +987,22 @@ function processLossOfLife() {
     const textAns = document.getElementById("feedback-answer");
     const statsCard = document.getElementById("feedback-stats-card");
 
-    overlay.classList.remove("hidden");
-    badge.textContent = "TIME OUT";
-    badge.className = "gaming-font text-5xl font-black uppercase text-center tracking-widest text-red-500";
-    textAns.textContent = GAME_STATE.currentBrand.name;
-    statsCard.classList.add("hidden");
+    if (overlay) overlay.classList.remove("hidden");
+    if (badge) {
+        badge.textContent = "TIME OUT";
+        badge.className = "gaming-font text-5xl font-black uppercase text-center tracking-widest text-red-500";
+    }
+    if (textAns) textAns.textContent = GAME_STATE.currentBrand.name;
+    if (statsCard) statsCard.classList.add("hidden");
 
-    document.getElementById("btn-feedback-next").onclick = () => {
-        overlay.classList.add("hidden");
-        if (GAME_STATE.lives <= 0) triggerLevelEnd(false);
-        else advanceTurn();
-    };
+    const nextBtn = document.getElementById("btn-feedback-next");
+    if (nextBtn) {
+        nextBtn.onclick = () => {
+            if (overlay) overlay.classList.add("hidden");
+            if (GAME_STATE.lives <= 0) triggerLevelEnd(false);
+            else advanceTurn();
+        };
+    }
 }
 
 function advanceTurn() {
@@ -833,29 +1013,35 @@ function advanceTurn() {
 
 function triggerLevelEnd(completed) {
     clearInterval(GAME_STATE.timerInterval);
-    const screenReport = document.getElementById("screen-report");
     const starsEl = document.getElementById("report-stars");
     const correctCountEl = document.getElementById("report-correct-count");
     const scoreEl = document.getElementById("report-score");
     const highEl = document.getElementById("report-cat-high");
 
     const totalBrands = GAME_STATE.activeBrands.length;
-    correctCountEl.textContent = `${GAME_STATE.currentLevelCorrectCount} / ${totalBrands}`;
-    scoreEl.textContent = GAME_STATE.currentLevelScore;
+    if (correctCountEl) correctCountEl.textContent = `${GAME_STATE.currentLevelCorrectCount} / ${totalBrands}`;
+    if (scoreEl) scoreEl.textContent = GAME_STATE.currentLevelScore;
 
     const isCustom = GAME_STATE.currentCategory === "custom";
     const passingThreshold = Math.ceil(totalBrands * 0.75);
 
+    const reportHeader = document.querySelector("#screen-report h2");
+
     if (completed && GAME_STATE.currentLevelCorrectCount >= passingThreshold) {
         sfx.playFanfare();
-        document.querySelector("#screen-report h2").textContent = "LEVEL CLEAR!";
-        document.querySelector("#screen-report h2").className = "gaming-font text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-500 uppercase tracking-widest";
+        if (reportHeader) {
+            reportHeader.textContent = "LEVEL CLEAR!";
+            reportHeader.className = "gaming-font text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-500 uppercase tracking-widest";
+        }
 
         let stars = "★☆☆";
         if (GAME_STATE.currentLevelCorrectCount === totalBrands) stars = "★★★";
         else if (GAME_STATE.currentLevelCorrectCount >= passingThreshold) stars = "★★☆";
-        starsEl.textContent = stars;
-        starsEl.className = "text-yellow-400 text-6xl tracking-wider select-none py-2";
+        
+        if (starsEl) {
+            starsEl.textContent = stars;
+            starsEl.className = "text-yellow-400 text-6xl tracking-wider select-none py-2";
+        }
 
         if (isCustom) {
             GAME_STATE.saveData.customScore = (GAME_STATE.saveData.customScore || 0) + GAME_STATE.currentLevelScore;
@@ -870,16 +1056,22 @@ function triggerLevelEnd(completed) {
     } else {
         sfx.playWrong();
         triggerVibration();
-        document.querySelector("#screen-report h2").textContent = "LEVEL FAILED";
-        document.querySelector("#screen-report h2").className = "gaming-font text-3xl font-black text-red-500 uppercase tracking-widest";
-        starsEl.textContent = "☆☆☆";
-        starsEl.className = "text-gray-700 text-6xl tracking-wider select-none py-2";
+        if (reportHeader) {
+            reportHeader.textContent = "LEVEL FAILED";
+            reportHeader.className = "gaming-font text-3xl font-black text-red-500 uppercase tracking-widest";
+        }
+        if (starsEl) {
+            starsEl.textContent = "☆☆☆";
+            starsEl.className = "text-gray-700 text-6xl tracking-wider select-none py-2";
+        }
     }
 
-    if (isCustom) {
-        highEl.textContent = `${GAME_STATE.saveData.customScore || 0} (Custom Arena Total)`;
-    } else {
-        highEl.textContent = GAME_STATE.saveData.categoryScores[GAME_STATE.currentCategory];
+    if (highEl) {
+        if (isCustom) {
+            highEl.textContent = `${GAME_STATE.saveData.customScore || 0} (Custom Arena Total)`;
+        } else {
+            highEl.textContent = GAME_STATE.saveData.categoryScores[GAME_STATE.currentCategory];
+        }
     }
 
     sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
@@ -887,7 +1079,6 @@ function triggerLevelEnd(completed) {
     showScreen("screen-report");
 }
 
-// --- HARDWARE BINDINGS & OPTIMIZATIONS ---
 function applyWindowBounds() {
     const res = GAME_STATE.saveData.resolution || "1024x768";
     const parts = res.split("x");
@@ -905,14 +1096,17 @@ function applyWindowBounds() {
 
 function applyVisualSettings() {
     const isLow = GAME_STATE.saveData.quality === "low";
+    const btnLow = document.getElementById("btn-qual-low");
+    const btnHigh = document.getElementById("btn-qual-high");
+
     if (isLow) {
         document.body.classList.add("low-quality");
-        document.getElementById("btn-qual-low").className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
-        document.getElementById("btn-qual-high").className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+        if (btnLow) btnLow.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
+        if (btnHigh) btnHigh.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
     } else {
         document.body.classList.remove("low-quality");
-        document.getElementById("btn-qual-low").className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
-        document.getElementById("btn-qual-high").className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
+        if (btnLow) btnLow.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+        if (btnHigh) btnHigh.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
     }
 
     const rawBrightness = GAME_STATE.saveData.brightness || 100;
@@ -923,8 +1117,10 @@ function applyFrameBudgeting() {
     const val = GAME_STATE.saveData.fpsLimit || "uncapped";
     ["30", "60", "uncapped"].forEach(fps => {
         const btn = document.getElementById(`btn-fps-${fps}`);
-        if (val === fps) btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
-        else btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+        if (btn) {
+            if (val === fps) btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
+            else btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+        }
     });
 
     if (gameLoopId) cancelAnimationFrame(gameLoopId);
@@ -956,23 +1152,29 @@ function applyVSyncStatus() {
     const btnOff = document.getElementById("btn-vsync-off");
 
     if (val) {
-        btnOn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
-        btnOff.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+        if (btnOn) btnOn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
+        if (btnOff) btnOff.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
     } else {
-        btnOn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
-        btnOff.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
+        if (btnOn) btnOn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+        if (btnOff) btnOff.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
     }
     sendNativeRequest({ Action: "configure_vsync", Value: val });
 }
 
 function syncSettingsPanel() {
-    document.getElementById("settings-volume").value = GAME_STATE.saveData.volume;
+    const volSlider = document.getElementById("settings-volume");
+    if (volSlider) volSlider.value = GAME_STATE.saveData.volume;
     sfx.volume = GAME_STATE.saveData.volume;
-    document.getElementById("volume-label").textContent = `${Math.round(GAME_STATE.saveData.volume * 100)}%`;
     
+    const volLabel = document.getElementById("volume-label");
+    if (volLabel) volLabel.textContent = `${Math.round(GAME_STATE.saveData.volume * 100)}%`;
+    
+    const briSlider = document.getElementById("settings-brightness");
     const bright = GAME_STATE.saveData.brightness || 100;
-    document.getElementById("settings-brightness").value = bright;
-    document.getElementById("brightness-label").textContent = `${bright}%`;
+    if (briSlider) briSlider.value = bright;
+    
+    const briLabel = document.getElementById("brightness-label");
+    if (briLabel) briLabel.textContent = `${bright}%`;
 
     updateDifficultyToggles();
     updateResolutionButtons();
@@ -990,30 +1192,36 @@ function updateResolutionButtons() {
         if (sz === "1280x960") btnId = "btn-win-lg";
         
         const btn = document.getElementById(btnId);
-        if (res === sz) btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
-        else btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+        if (btn) {
+            if (res === sz) btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
+            else btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+        }
     });
 }
 
 function updateVibrationButton() {
     const active = GAME_STATE.saveData.vibration;
     const btn = document.getElementById("btn-vibrate-toggle");
-    if (active) {
-        btn.textContent = "Enabled";
-        btn.className = "px-4 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white uppercase";
-    } else {
-        btn.textContent = "Disabled";
-        btn.className = "px-4 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 uppercase";
+    if (btn) {
+        if (active) {
+            btn.textContent = "Enabled";
+            btn.className = "px-4 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white uppercase";
+        } else {
+            btn.textContent = "Disabled";
+            btn.className = "px-4 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 uppercase";
+        }
     }
 }
 
 function updateDifficultyToggles() {
     ["easy", "medium", "hard"].forEach(df => {
         const btn = document.getElementById(`diff-${df}`);
-        if (GAME_STATE.saveData.difficulty === df) {
-            btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
-        } else {
-            btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+        if (btn) {
+            if (GAME_STATE.saveData.difficulty === df) {
+                btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
+            } else {
+                btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
+            }
         }
     });
 }
