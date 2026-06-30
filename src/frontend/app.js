@@ -39,14 +39,17 @@ class RetroAudioSynth {
 
 const sfx = new RetroAudioSynth();
 
+const GAME_VERSION = "4.0.0";
+
 // --- STATE MANAGEMENT ---
 const GAME_STATE = {
     saveData: {
+        gameVersion: GAME_VERSION,
         globalScore: 0,
         customScore: 0,
         categoryScores: { tech: 0, auto: 0, food: 0, fashion: 0, media: 0 },
         levelsUnlocked: { tech: 1, auto: 1, food: 1, fashion: 1, media: 1 },
-        customLevels: [], // Array of { id, name, brands: [ { name, hint, slug } ] }
+        customLevels: [], // Array of { id, name, theme, timer, brands: [ { name, hint, slug } ] }
         difficulty: "medium",
         volume: 0.5,
         resolution: "1024x768",
@@ -66,15 +69,21 @@ const GAME_STATE = {
     timerInterval: null,
     currentBrand: null,
     lives: 3,
-    revealedIndices: []
+    revealedIndices: [],
+    levelSelectPage: 0 // Track level list paging (0-9 blocks of 10 levels)
 };
 
 // Target frame lock simulation variable
 let gameLoopId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Write static game version identifiers to indicators
+    document.getElementById("header-version-badge").textContent = `v${GAME_VERSION}`;
+    document.getElementById("footer-version-text").textContent = GAME_VERSION;
+
     sendNativeRequest({ Action: "load_save" });
     setupEventHandlers();
+    populatePageSelectDropdown();
     showScreen("screen-main-menu");
 });
 
@@ -83,11 +92,17 @@ function sendNativeRequest(payload) {
         window.chrome.webview.postMessage(payload);
     } else {
         if (payload.Action === "load_save") {
-            const raw = localStorage.getItem("brandgame_v3_savedata_custom");
+            const raw = localStorage.getItem("brandgame_v4_savedata_custom");
             if (raw) GAME_STATE.saveData = JSON.parse(raw);
+            
+            // Check version upgrade block
+            if (GAME_STATE.saveData.gameVersion !== GAME_VERSION) {
+                GAME_STATE.saveData.gameVersion = GAME_VERSION;
+                sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
+            }
             onSaveLoaded(GAME_STATE.saveData);
         } else if (payload.Action === "write_save") {
-            localStorage.setItem("brandgame_v3_savedata_custom", JSON.stringify(payload.Data));
+            localStorage.setItem("brandgame_v4_savedata_custom", JSON.stringify(payload.Data));
         }
     }
 }
@@ -113,18 +128,28 @@ function showScreen(screenId) {
         if (id === screenId) el.classList.remove("hidden");
         else el.classList.add("hidden");
     });
+    
+    // Clear theme parameters if moving back to normal interface
+    if (screenId !== "screen-gameplay") {
+        clearCustomThemeClasses();
+    }
+
     const header = document.getElementById("header-stats");
     if (screenId === "screen-main-menu" || screenId === "screen-categories") header.classList.remove("hidden");
     else header.classList.add("hidden");
+}
+
+function clearCustomThemeClasses() {
+    document.body.classList.remove("theme-cyber-neon", "theme-retro-amber", "theme-matrix-green", "theme-midnight-blue");
 }
 
 function updateGlobalStatsHUD() {
     let globalStars = 0;
     ["tech", "auto", "food", "fashion", "media"].forEach(cat => {
         const unlocked = GAME_STATE.saveData.levelsUnlocked[cat] || 1;
+        // 2 Stars earned per unlocked level progression step
         globalStars += (unlocked - 1) * 2;
     });
-    // Add stars for completed custom games as bonus markers
     const customCount = GAME_STATE.saveData.customLevels.length;
     globalStars += customCount * 2;
 
@@ -145,7 +170,7 @@ function renderMainMenuProgress() {
     categories.forEach(cat => {
         const score = GAME_STATE.saveData.categoryScores[cat.id] || 0;
         const unlocked = GAME_STATE.saveData.levelsUnlocked[cat.id] || 1;
-        const percent = Math.min(((unlocked - 1) / 10) * 100, 100);
+        const percent = Math.min(((unlocked - 1) / 100) * 100, 100);
 
         const item = document.createElement("div");
         item.className = "space-y-1";
@@ -158,7 +183,7 @@ function renderMainMenuProgress() {
                 <div class="bg-blue-600 h-full" style="width: ${percent}%"></div>
             </div>
             <div class="flex justify-between text-[10px] text-gray-500">
-                <span>Progress: ${unlocked - 1}/10 Levels</span>
+                <span>Progress: ${unlocked - 1}/100 Levels</span>
                 <span>Max: Level ${unlocked}</span>
             </div>
         `;
@@ -182,6 +207,21 @@ function renderMainMenuProgress() {
     catList.appendChild(customItem);
 }
 
+function populatePageSelectDropdown() {
+    const sel = document.getElementById("select-level-page");
+    sel.innerHTML = "";
+    for (let i = 0; i < 10; i++) {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = `Levels ${i * 10 + 1} - ${i * 10 + 10}`;
+        sel.appendChild(opt);
+    }
+    sel.addEventListener("change", (e) => {
+        GAME_STATE.levelSelectPage = parseInt(e.target.value);
+        renderLevelButtonsList();
+    });
+}
+
 function setupEventHandlers() {
     document.getElementById("btn-menu-start").addEventListener("click", () => {
         renderCategoryCards();
@@ -196,6 +236,7 @@ function setupEventHandlers() {
     document.getElementById("btn-menu-reset").addEventListener("click", () => {
         if (confirm("Permanently erase save progress and customized rooms?")) {
             GAME_STATE.saveData = {
+                gameVersion: GAME_VERSION,
                 globalScore: 0,
                 customScore: 0,
                 categoryScores: { tech: 0, auto: 0, food: 0, fashion: 0, media: 0 },
@@ -239,8 +280,11 @@ function setupEventHandlers() {
     document.getElementById("btn-gameplay-reveal-char").addEventListener("click", buyLetterClue);
 
     document.getElementById("btn-report-continue").addEventListener("click", () => {
-        renderCategoryCards();
-        showScreen("screen-categories");
+        if (GAME_STATE.currentCategory === "custom") {
+            selectCustomCategory();
+        } else {
+            selectCategory(GAME_STATE.currentCategory, document.getElementById("level-category-title").textContent);
+        }
     });
 
     // Window Resolution commands
@@ -316,8 +360,10 @@ function setupEventHandlers() {
 
     // Trigger custom creator screen
     document.getElementById("btn-trigger-creator").addEventListener("click", () => {
-        // Clear old custom inputs
         document.getElementById("creator-level-name").value = "";
+        document.getElementById("creator-level-theme").value = "cyber-neon";
+        document.getElementById("creator-level-timer").value = "15";
+
         for (let i = 1; i <= 4; i++) {
             document.getElementById(`c-brand-${i}-name`).value = "";
             document.getElementById(`c-brand-${i}-slug`).value = "";
@@ -405,7 +451,7 @@ function renderCategoryCards() {
                 <div class="text-xs font-bold text-white">${totalScore} Points</div>
             </div>
             <span class="absolute right-3 bottom-3 text-4xl font-black text-white/5 group-hover:text-white/10 transition">
-                ${unlocked}/10
+                ${unlocked}/100
             </span>
         `;
         card.addEventListener("click", () => selectCategory(cat.id, cat.label));
@@ -440,12 +486,31 @@ function selectCategory(catId, catLabel) {
     GAME_STATE.currentCategory = catId;
     document.getElementById("level-category-title").textContent = catLabel;
     document.getElementById("level-category-badge").textContent = catLabel;
+    
+    // Default to the page of the player's current progression level
+    const maxUnlocked = GAME_STATE.saveData.levelsUnlocked[catId] || 1;
+    GAME_STATE.levelSelectPage = Math.min(Math.floor((maxUnlocked - 1) / 10), 9);
+    document.getElementById("select-level-page").value = GAME_STATE.levelSelectPage;
 
+    // Show jump page selector for official runs
+    document.getElementById("select-level-page").parentElement.classList.remove("hidden");
+
+    renderLevelButtonsList();
+    showScreen("screen-levels");
+}
+
+function renderLevelButtonsList() {
     const grid = document.getElementById("level-buttons-grid");
     grid.innerHTML = "";
+    
+    const catId = GAME_STATE.currentCategory;
     const unlockedMax = GAME_STATE.saveData.levelsUnlocked[catId] || 1;
+    
+    // Page offsets
+    const startIdx = GAME_STATE.levelSelectPage * 10 + 1;
+    const endIdx = startIdx + 9;
 
-    for (let i = 1; i <= 10; i++) {
+    for (let i = startIdx; i <= endIdx; i++) {
         const isLocked = i > unlockedMax;
         const btn = document.createElement("button");
         if (isLocked) {
@@ -458,13 +523,15 @@ function selectCategory(catId, catLabel) {
         }
         grid.appendChild(btn);
     }
-    showScreen("screen-levels");
 }
 
 function selectCustomCategory() {
     GAME_STATE.currentCategory = "custom";
     document.getElementById("level-category-title").textContent = "Custom Arena Rooms";
     document.getElementById("level-category-badge").textContent = "CUSTOM";
+
+    // Hide jump page selector for custom lists
+    document.getElementById("select-level-page").parentElement.classList.add("hidden");
 
     const grid = document.getElementById("level-buttons-grid");
     grid.innerHTML = "";
@@ -500,6 +567,9 @@ function selectCustomCategory() {
 // --- CREATOR PUBLISH FLOW ---
 function publishCustomLevelRoom() {
     const levelName = document.getElementById("creator-level-name").value.trim();
+    const theme = document.getElementById("creator-level-theme").value;
+    const timer = parseInt(document.getElementById("creator-level-timer").value);
+
     if (!levelName) {
         alert("Please enter a custom name for your Level Room!");
         return;
@@ -526,6 +596,8 @@ function publishCustomLevelRoom() {
     const newRoom = {
         id: "custom_" + Date.now(),
         name: levelName,
+        theme: theme,
+        timer: timer,
         brands: customBrands
     };
 
@@ -547,22 +619,29 @@ function launchLevel(levelNum) {
     GAME_STATE.currentLevelScore = 0;
     GAME_STATE.lives = 3;
 
-    const pool = BRAND_DATABASE[GAME_STATE.currentCategory];
-    GAME_STATE.activeBrands = pool.filter(b => b.difficulty === levelNum).slice(0, 4);
+    // Use deterministic dynamic brand pool generator
+    GAME_STATE.activeBrands = getBrandsForLevel(GAME_STATE.currentCategory, levelNum);
 
     showScreen("screen-gameplay");
     loadNextBrand();
 }
 
 function launchCustomLevel(customIndex) {
+    const targetRoom = GAME_STATE.saveData.customLevels[customIndex];
     GAME_STATE.currentLevel = customIndex;
     GAME_STATE.currentBrandIndex = 0;
     GAME_STATE.currentLevelCorrectCount = 0;
     GAME_STATE.currentLevelScore = 0;
     GAME_STATE.lives = 3;
 
-    const targetRoom = GAME_STATE.saveData.customLevels[customIndex];
+    // Apply custom settings and properties
     GAME_STATE.activeBrands = targetRoom.brands;
+
+    // Inject custom sub-theme directly into body element
+    clearCustomThemeClasses();
+    if (targetRoom.theme) {
+        document.body.classList.add(`theme-${targetRoom.theme}`);
+    }
 
     showScreen("screen-gameplay");
     loadNextBrand();
@@ -575,7 +654,7 @@ function loadNextBrand() {
     GAME_STATE.revealedIndices = [];
 
     GAME_STATE.currentBrand = GAME_STATE.activeBrands[GAME_STATE.currentBrandIndex];
-    document.getElementById("gameplay-brand-index").textContent = `${GAME_STATE.currentBrandIndex + 1} / 4`;
+    document.getElementById("gameplay-brand-index").textContent = `${GAME_STATE.currentBrandIndex + 1} / ${GAME_STATE.activeBrands.length}`;
     
     let hearts = "";
     for (let i = 0; i < GAME_STATE.lives; i++) hearts += "❤";
@@ -591,9 +670,18 @@ function loadNextBrand() {
     img.onerror = () => { img.classList.add("hidden"); placeholder.classList.remove("hidden"); };
     img.onload = () => { img.classList.remove("hidden"); placeholder.classList.add("hidden"); };
 
+    // Determine custom timer limit
     let timeLimit = 15;
-    if (GAME_STATE.saveData.difficulty === "easy") timeLimit = 30;
-    if (GAME_STATE.saveData.difficulty === "hard") timeLimit = 8;
+    if (GAME_STATE.currentCategory === "custom") {
+        // Recover custom timer settings
+        const currentCustomRoom = GAME_STATE.saveData.customLevels[GAME_STATE.currentLevel];
+        if (currentCustomRoom && currentCustomRoom.timer) {
+            timeLimit = currentCustomRoom.timer;
+        }
+    } else {
+        if (GAME_STATE.saveData.difficulty === "easy") timeLimit = 30;
+        if (GAME_STATE.saveData.difficulty === "hard") timeLimit = 8;
+    }
 
     GAME_STATE.elapsedTime = 0;
     const bar = document.getElementById("timer-bar");
@@ -699,7 +787,7 @@ function processLossOfLife() {
 
 function advanceTurn() {
     GAME_STATE.currentBrandIndex++;
-    if (GAME_STATE.currentBrandIndex >= 4) triggerLevelEnd(true);
+    if (GAME_STATE.currentBrandIndex >= GAME_STATE.activeBrands.length) triggerLevelEnd(true);
     else loadNextBrand();
 }
 
@@ -711,19 +799,23 @@ function triggerLevelEnd(completed) {
     const scoreEl = document.getElementById("report-score");
     const highEl = document.getElementById("report-cat-high");
 
-    correctCountEl.textContent = `${GAME_STATE.currentLevelCorrectCount} / 4`;
+    const totalBrands = GAME_STATE.activeBrands.length;
+    correctCountEl.textContent = `${GAME_STATE.currentLevelCorrectCount} / ${totalBrands}`;
     scoreEl.textContent = GAME_STATE.currentLevelScore;
 
     const isCustom = GAME_STATE.currentCategory === "custom";
 
-    if (completed && GAME_STATE.currentLevelCorrectCount >= 3) {
+    // Player must guess at least 75% correct to pass the level
+    const passingThreshold = Math.ceil(totalBrands * 0.75);
+
+    if (completed && GAME_STATE.currentLevelCorrectCount >= passingThreshold) {
         sfx.playFanfare();
         document.querySelector("#screen-report h2").textContent = "LEVEL CLEAR!";
         document.querySelector("#screen-report h2").className = "gaming-font text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-500 uppercase tracking-widest";
 
         let stars = "★☆☆";
-        if (GAME_STATE.currentLevelCorrectCount === 4) stars = "★★★";
-        else if (GAME_STATE.currentLevelCorrectCount === 3) stars = "★★☆";
+        if (GAME_STATE.currentLevelCorrectCount === totalBrands) stars = "★★★";
+        else if (GAME_STATE.currentLevelCorrectCount >= passingThreshold) stars = "★★☆";
         starsEl.textContent = stars;
         starsEl.className = "text-yellow-400 text-6xl tracking-wider select-none py-2";
 
@@ -731,7 +823,7 @@ function triggerLevelEnd(completed) {
             GAME_STATE.saveData.customScore = (GAME_STATE.saveData.customScore || 0) + GAME_STATE.currentLevelScore;
         } else {
             const currentCatUnlocked = GAME_STATE.saveData.levelsUnlocked[GAME_STATE.currentCategory] || 1;
-            if (GAME_STATE.currentLevel === currentCatUnlocked && currentCatUnlocked < 10) {
+            if (GAME_STATE.currentLevel === currentCatUnlocked && currentCatUnlocked < 100) {
                 GAME_STATE.saveData.levelsUnlocked[GAME_STATE.currentCategory] = currentCatUnlocked + 1;
             }
             GAME_STATE.saveData.categoryScores[GAME_STATE.currentCategory] += GAME_STATE.currentLevelScore;
@@ -789,8 +881,6 @@ function applyFrameBudgeting() {
         lockAnimationFramerate(30);
     } else if (val === "60") {
         lockAnimationFramerate(60);
-    } else {
-        // Let system manage frames dynamically
     }
 }
 
@@ -803,7 +893,6 @@ function lockAnimationFramerate(fps) {
         const delta = time - lastTime;
         if (delta >= interval) {
             lastTime = time - (delta % interval);
-            // Dynamic UI paint event cycle dummy update
         }
     }
     gameLoopId = requestAnimationFrame(loop);

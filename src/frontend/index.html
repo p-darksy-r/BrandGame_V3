@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brand Revealer V3</title>
+    <title>Brand Revealer V4</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap');
@@ -25,6 +25,24 @@
         }
         body:not(.low-quality) .neon-glow-green {
             box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+        }
+
+        /* CUSTOM PLAYROOM VISUAL SUB-THEMES */
+        body.theme-cyber-neon {
+            background: radial-gradient(circle at center, #2e0854 0%, #0a0118 100%) !important;
+            color: #f472b6 !important;
+        }
+        body.theme-retro-amber {
+            background: radial-gradient(circle at center, #2b1d04 0%, #070401 100%) !important;
+            color: #fbbf24 !important;
+        }
+        body.theme-matrix-green {
+            background: radial-gradient(circle at center, #022c22 0%, #020617 100%) !important;
+            color: #34d399 !important;
+        }
+        body.theme-midnight-blue {
+            background: radial-gradient(circle at center, #1e3a8a 0%, #030712 100%) !important;
+            color: #60a5fa !important;
         }
 
         /* LOW-QUALITY OPTIMIZATION FALLBACKS */
@@ -51,7 +69,7 @@
     <!-- Header -->
     <header class="border-b border-gray-800 bg-gray-900 bg-opacity-70 backdrop-blur-md py-4 px-6 flex justify-between items-center z-10">
         <h1 class="gaming-font text-2xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500">
-            BRAND REVEALER <span class="text-xs align-super bg-indigo-600 text-white py-0.5 px-1.5 rounded">V3</span>
+            BRAND REVEALER <span id="header-version-badge" class="text-xs align-super bg-indigo-600 text-white py-0.5 px-1.5 rounded">v4.0.0</span>
         </h1>
         <div id="header-stats" class="hidden flex items-center gap-6">
             <div class="flex items-center gap-1.5 bg-gray-800 px-3 py-1 rounded-full border border-gray-700">
@@ -73,19 +91,22 @@
             <div class="md:col-span-3 flex flex-col justify-center space-y-6 bg-gray-900 bg-opacity-60 p-8 rounded-2xl border border-gray-800 cyber-border">
                 <div class="space-y-2">
                     <h2 class="gaming-font text-4xl font-black text-white leading-tight">CHALLENGE YOUR <br><span class="text-blue-500">BRAND COGNITION</span></h2>
-                    <p class="text-gray-400 text-sm">Identify 200 of the world's most and least famous logos across 10 levels of progressive difficulty.</p>
+                    <p class="text-gray-400 text-sm">Identify famous logos across 500 levels of progressive difficulty. Play, adjust controls, and build custom spaces.</p>
                 </div>
                 
                 <div class="flex flex-col gap-3">
                     <div class="flex gap-3">
-                        <button id="btn-menu-start" class="gaming-font flex-grow py-4 px-6 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition duration-200 transform hover:-translate-y-1 active:translate-y-0 text-center uppercase tracking-wider">
+                        <button id="btn-menu-start" class="gaming-font flex-grow py-4 px-6 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition duration-200 transform hover:-translate-y-1 active:translate-y-0 flex items-center justify-center gap-2 uppercase tracking-wider text-sm">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             Enter Arena
                         </button>
-                        <button id="btn-menu-settings" class="gaming-font py-4 px-6 bg-gray-800 hover:bg-gray-700 text-gray-200 font-bold rounded-xl transition duration-200 text-center uppercase border border-gray-700">
+                        <button id="btn-menu-settings" class="gaming-font py-4 px-6 bg-gray-800 hover:bg-gray-700 text-gray-200 font-bold rounded-xl transition duration-200 flex items-center justify-center gap-2 uppercase border border-gray-700 text-sm">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             Settings
                         </button>
                     </div>
-                    <button id="btn-menu-exit" class="gaming-font w-full py-3 bg-red-950 hover:bg-red-900 text-red-200 border border-red-800/40 hover:border-red-600 font-bold rounded-xl transition duration-200 text-center uppercase tracking-wider text-xs">
+                    <button id="btn-menu-exit" class="gaming-font w-full py-3 bg-red-950 hover:bg-red-900 text-red-200 border border-red-800/40 hover:border-red-600 font-bold rounded-xl transition duration-200 flex items-center justify-center gap-2 uppercase tracking-wider text-xs">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                         ✖ Close Application
                     </button>
                 </div>
@@ -96,7 +117,7 @@
                     <h3 class="gaming-font font-bold text-lg text-gray-300 border-b border-gray-800 pb-3 mb-4 uppercase tracking-wider">Category Progress</h3>
                     <div id="category-summary-list" class="space-y-4"></div>
                 </div>
-                <button id="btn-menu-reset" class="mt-6 text-xs text-red-500 hover:text-red-400 transition text-left">
+                <button id="btn-menu-reset" class="mt-6 text-xs text-red-500 hover:text-red-400 transition text-left flex items-center gap-1">
                     ⚠ Reset All Save Progress
                 </button>
             </div>
@@ -107,13 +128,15 @@
             <div class="flex justify-between items-end">
                 <div>
                     <button id="btn-categories-back" class="text-gray-400 hover:text-white mb-2 flex items-center gap-1.5 transition text-sm">
-                        ← Back to Main Menu
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                        Back to Main Menu
                     </button>
                     <h2 class="gaming-font text-3xl font-bold">SELECT CATEGORY</h2>
                 </div>
                 <!-- Custom Level Creator trigger -->
-                <button id="btn-trigger-creator" class="gaming-font bg-indigo-900/60 hover:bg-indigo-800 border border-indigo-700 text-indigo-200 px-4 py-2.5 rounded-xl text-xs font-bold tracking-widest transition">
-                    + BUILD CUSTOM LEVEL
+                <button id="btn-trigger-creator" class="gaming-font bg-indigo-900/60 hover:bg-indigo-800 border border-indigo-700 text-indigo-200 px-4 py-2.5 rounded-xl text-xs font-bold tracking-widest transition flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                    BUILD CUSTOM LEVEL
                 </button>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-6 gap-6" id="category-cards-grid"></div>
@@ -121,23 +144,32 @@
 
         <!-- SCREEN 3: LEVEL SELECT -->
         <div id="screen-levels" class="hidden w-full max-w-4xl space-y-6">
-            <div>
-                <button id="btn-levels-back" class="text-gray-400 hover:text-white mb-2 flex items-center gap-1.5 transition text-sm">
-                    ← Back to Categories
-                </button>
-                <div class="flex items-center gap-4">
-                    <span id="level-category-badge" class="px-3 py-1 rounded text-xs uppercase font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30"></span>
-                    <h2 class="gaming-font text-3xl font-bold" id="level-category-title">Levels</h2>
+            <div class="flex justify-between items-end">
+                <div>
+                    <button id="btn-levels-back" class="text-gray-400 hover:text-white mb-2 flex items-center gap-1.5 transition text-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                        Back to Categories
+                    </button>
+                    <div class="flex items-center gap-4">
+                        <span id="level-category-badge" class="px-3 py-1 rounded text-xs uppercase font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30"></span>
+                        <h2 class="gaming-font text-3xl font-bold" id="level-category-title">Levels</h2>
+                    </div>
+                </div>
+                <!-- Dynamic Jump Box for 100 levels navigation -->
+                <div class="flex items-center gap-2 bg-gray-950 p-1.5 rounded-lg border border-gray-800">
+                    <span class="text-[10px] text-gray-500 font-bold uppercase px-2">Jump to Page</span>
+                    <select id="select-level-page" class="bg-gray-900 border border-gray-800 rounded px-2.5 py-1 text-xs font-bold text-white focus:outline-none"></select>
                 </div>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-5 gap-4" id="level-buttons-grid"></div>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-4 max-h-[50vh] overflow-y-auto pr-2" id="level-buttons-grid"></div>
         </div>
 
         <!-- SCREEN 4: GAMEPLAY PANEL -->
         <div id="screen-gameplay" class="hidden w-full max-w-3xl bg-gray-900 bg-opacity-60 p-6 md:p-8 rounded-2xl border border-gray-800 cyber-border flex flex-col gap-6 relative">
             <div class="flex justify-between items-center border-b border-gray-800 pb-4">
-                <button id="btn-gameplay-quit" class="text-gray-400 hover:text-red-400 transition font-bold uppercase tracking-wider text-sm">
-                    ✕ Quit Level
+                <button id="btn-gameplay-quit" class="text-gray-400 hover:text-red-400 transition font-bold uppercase tracking-wider text-xs flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    Quit Arena
                 </button>
                 <div class="flex gap-4 text-sm font-semibold">
                     <div>Brand: <span id="gameplay-brand-index" class="text-blue-400 font-bold">1 / 4</span></div>
@@ -166,7 +198,8 @@
             <div class="space-y-4">
                 <div class="flex gap-2">
                     <input type="text" id="input-guess" autocomplete="off" placeholder="Type your brand guess..." class="flex-grow bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-lg font-bold text-white focus:outline-none focus:border-blue-500 transition shadow-inner">
-                    <button id="btn-guess-submit" class="gaming-font bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 rounded-xl transition uppercase tracking-wider text-sm">
+                    <button id="btn-guess-submit" class="gaming-font bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 rounded-xl transition flex items-center gap-1.5 uppercase tracking-wider text-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                         Submit
                     </button>
                 </div>
@@ -201,8 +234,9 @@
                         <div id="feedback-score" class="text-xl font-bold text-yellow-400">+0</div>
                     </div>
                 </div>
-                <button id="btn-feedback-next" class="gaming-font px-10 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition uppercase tracking-widest text-sm">
+                <button id="btn-feedback-next" class="gaming-font px-10 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition flex items-center gap-2 uppercase tracking-widest text-sm">
                     Continue
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
                 </button>
             </div>
         </div>
@@ -216,7 +250,8 @@
                 <div class="flex justify-between pt-3 text-sm"><span class="text-gray-400">Level Score Earned:</span><span id="report-score" class="font-bold text-yellow-400">0</span></div>
                 <div class="flex justify-between pt-3 text-sm"><span class="text-gray-400">Category Total:</span><span id="report-cat-high" class="font-bold text-blue-400">0</span></div>
             </div>
-            <button id="btn-report-continue" class="gaming-font w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition uppercase tracking-wider text-sm">
+            <button id="btn-report-continue" class="gaming-font w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition flex items-center justify-center gap-2 uppercase tracking-wider text-sm">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 Proceed to Lobby
             </button>
         </div>
@@ -225,7 +260,7 @@
         <div id="screen-settings" class="hidden w-full max-w-2xl bg-gray-900 bg-opacity-60 p-6 md:p-8 rounded-2xl border border-gray-800 cyber-border flex flex-col gap-6 max-h-[85vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
                 <h2 class="gaming-font text-2xl font-bold">ADVANCED SYSTEM SETTINGS</h2>
-                <button id="btn-settings-back" class="text-gray-400 hover:text-white text-xs uppercase font-bold tracking-widest">
+                <button id="btn-settings-back" class="text-gray-400 hover:text-white text-xs uppercase font-bold tracking-widest flex items-center gap-1">
                     ← Return
                 </button>
             </div>
@@ -313,7 +348,8 @@
                 </div>
             </div>
 
-            <button id="btn-settings-close" class="gaming-font py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition uppercase text-xs tracking-wider">
+            <button id="btn-settings-close" class="gaming-font py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition flex items-center justify-center gap-2 uppercase text-xs tracking-wider">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
                 Save & Apply Configuration
             </button>
         </div>
@@ -323,19 +359,41 @@
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
                 <div>
                     <button id="btn-creator-back" class="text-gray-400 hover:text-white mb-1 flex items-center gap-1.5 transition text-xs">
-                        ← Back to Categories
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                        Back to Categories
                     </button>
                     <h2 class="gaming-font text-2xl font-bold">CUSTOM LEVEL DESIGNER</h2>
                 </div>
                 <span class="text-[10px] uppercase font-bold text-gray-500 bg-gray-950 border border-gray-800 px-3 py-1.5 rounded-lg">Custom Engine Arena</span>
             </div>
 
-            <div class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="space-y-1.5">
-                    <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Custom Room Level Name</label>
-                    <input type="text" id="creator-level-name" placeholder="e.g., Ultimate Retro Gaming Brandset" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-blue-500 transition">
+                    <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Level Name</label>
+                    <input type="text" id="creator-level-name" placeholder="e.g., Retro Tech Room" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-blue-500 transition">
                 </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Visual Theme</label>
+                    <select id="creator-level-theme" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-blue-500 transition">
+                        <option value="cyber-neon">Cyberpunk Pink Neon</option>
+                        <option value="retro-amber">Retro Terminal Amber</option>
+                        <option value="matrix-green">Hacker Digital Green</option>
+                        <option value="midnight-blue">Clean Deep Slate Blue</option>
+                    </select>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Match Time Limits</label>
+                    <select id="creator-level-timer" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-blue-500 transition">
+                        <option value="5">Insane (5 Seconds)</option>
+                        <option value="10">Aggressive (10 Seconds)</option>
+                        <option value="15" selected>Standard (15 Seconds)</option>
+                        <option value="20">Casual (20 Seconds)</option>
+                        <option value="30">Unconstrained (30 Seconds)</option>
+                    </select>
+                </div>
+            </div>
 
+            <div class="space-y-4">
                 <!-- Brands Grid Inputs -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Brand 1 -->
@@ -369,15 +427,17 @@
                 </div>
             </div>
 
-            <button id="btn-save-custom-level" class="gaming-font w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition uppercase text-xs tracking-wider">
+            <button id="btn-save-custom-level" class="gaming-font w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition flex items-center justify-center gap-2 uppercase text-xs tracking-wider">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Publish Room to Arena
             </button>
         </div>
 
     </main>
 
-    <footer class="py-3 px-6 text-center text-[10px] text-gray-700 border-t border-gray-950">
-        BrandGame_V3 Framework Engine. Powered by darksy-ctrl Native Desktop Client.
+    <footer class="py-3 px-6 text-center text-[10px] text-gray-700 border-t border-gray-950 flex justify-between items-center bg-gray-950/80">
+        <span>BrandGame Engine Framework. Powered by darksy-ctrl native bindings.</span>
+        <span class="font-bold tracking-widest gaming-font text-indigo-500">VERSION <span id="footer-version-text">4.0.0</span></span>
     </footer>
 
     <script src="brands.js"></script>
