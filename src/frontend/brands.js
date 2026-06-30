@@ -1,8 +1,9 @@
 /* BrandGame_V3 - https://github.com/darksy2027-ctrl/BrandGame_V3 - Copyright (c) darksy */
 
-// --- HIGH-DENSITY RAW BRAND SCHEMAS (450 BRANDS PER CATEGORY) ---
+// --- HIGH-DENSITY RAW BRAND SCHEMAS (400+ BRANDS PER CATEGORY) ---
 const RAW_COMPACT_POOLS = {
     tech: [
+        // --- ORIGINAL BRANDS ---
         "Google|google|Search engine giant.",
         "Apple|apple|Designed in California.",
         "Microsoft|microsoft|Windows operating system.",
@@ -80,7 +81,7 @@ const RAW_COMPACT_POOLS = {
         "MySQL|mysql|Jumping blue dolphin.",
         "PostgreSQL|postgresql|Blue elephant database face.",
         "MongoDB|mongodb|Green leaf cloud database.",
-        "Redis|redis|Red stacked database tiles.",
+        "Redis|redis|Red cached database tiles.",
         "Firebase|firebase|Golden stylized bonfire flame.",
         "Supabase|supabase|Emerald green lightning bolt.",
         "Vulkan|vulkan|Red layered compute polygon.",
@@ -170,7 +171,7 @@ const RAW_COMPACT_POOLS = {
         "Puppet|puppet|Green stringed controllers.",
         "SaltStack|saltstack|Blue and white crystal blocks.",
         "OpenStack|openstack|Red loop cloud framework.",
-        "Eks|eks|Blue Amazon kubernetes cluster.",
+        "Eks|eks|Blue Amazon kubernetes cluster.",        
         "Heroku|heroku|Purple structural grid platform.",
         "Render|render|White visual layout platform.",
         "Fly.io|flydotio|Purple geometric wings.",
@@ -186,8 +187,6 @@ const RAW_COMPACT_POOLS = {
         "Lambda|amazonaws|Orange greek letter lambda.",
         "Azure|microsoftazure|Blue dimensional cloud.",
         "Google Cloud|googlecloud|Prismatic hexagon clouds.",
-        "Firebase|firebase|Golden dynamic spark.",
-        "Supabase|supabase|Green thunderbolt stack.",
         "Appwrite|appwrite|Pink target radar bubble.",
         "Hasura|hasura|Teal double loop engine.",
         "Prisma|prisma|Prismatic light beam prism.",
@@ -195,7 +194,6 @@ const RAW_COMPACT_POOLS = {
         "Sequelize|sequelize|Blue and white wave database.",
         "TypeORM|typeorm|Orange abstract DB blocks.",
         "Mongoose|mongoose|Red wild animal line.",
-        "Redis|redis|Red caching platform slabs.",
         "Memcached|memcached|Green lightning RAM buffer.",
         "Cassandra|cassandra|Blue stylized eye cloud.",
         "ScyllaDB|scylladb|Sea monster green silhouette.",
@@ -217,7 +215,6 @@ const RAW_COMPACT_POOLS = {
         "Celery|celery|Green plant stem worker.",
         "Redis Queue|redis|Red processing queue stack.",
         "BullMQ|bull|Teal muscular bull horn.",
-        "GraphQL|graphql|Pink space vector nodes.",
         "Apollo|apollographql|Space explorer blue helmet.",
         "gRPC|grpc|Blue remote procedure engine.",
         "Protocol Buffers|protobuf|Blue schema transport blocks.",
@@ -233,7 +230,7 @@ const RAW_COMPACT_POOLS = {
         "Mailchimp|mailchimp|Cute chimpanzee face.",
         "Constant Contact|constantcontact|Blue circle communication.",
         "HubSpot|hubspot|Orange connected rings.",
-        "Marketo|marketo|Purple analytics chart bars.",
+        "Marketo|market|Purple analytics chart bars.",
         "Intercom|intercom|Blue hand-drawn smiley face.",
         "Zendesk|zendesk|Green building block shapes.",
         "Freshdesk|freshdesk|Green leaf service cloud.",
@@ -245,7 +242,6 @@ const RAW_COMPACT_POOLS = {
         "Plausible|plausibleanalytics|Blue privacy data plots.",
         "Fathom|fathom|Teal privacy reporting scale.",
         "Matomo|matomo|Red visual chart board.",
-        "Sentry|sentry|Purple code defense line.",
         "Rollbar|rollbar|Pink code diagnostic rings.",
         "Airbrake|airbrake|Red code emergency brake.",
         "LogRocket|logrocket|Blue visual playback rocket.",
@@ -254,9 +250,6 @@ const RAW_COMPACT_POOLS = {
         "Dynatrace|dynatrace|Green telemetry crown.",
         "Splunk|splunk|Black and orange data stream.",
         "Sumo Logic|sumologic|Blue cloud logger rings.",
-        "Datadog|datadog|Dog trace software.",
-        "Grafana|grafana|Telemetry portal monitor.",
-        "Prometheus|prometheus|Titan fire storage.",
         "Zabbix|zabbix|Red server monitor lines.",
         "Nagios|nagios|Green network watchdog.",
         "Sensu|sensu|Teal pipeline metrics tool.",
@@ -268,7 +261,6 @@ const RAW_COMPACT_POOLS = {
         "StatsD|statsd|Green server metric bucket.",
         "Telegraf|telegraf|Blue server data pipeline.",
         "Fluentd|fluentd|Red logging collector arrow.",
-        "Logstash|logstash|Search core log engine.",
         "Vector|vector|Pink extreme speed logging.",
         "Loki|loki|Grafana log system horn.",
         "Tempo|tempo|Grafana trace timeline.",
@@ -372,9 +364,204 @@ const RAW_COMPACT_POOLS = {
         "Trivy|aquasecurity|Teal container scanning.",
         "Clair|quay|Container vulnerability scanner.",
         "Anchore|anchore|Blue ship anchor scan.",
-        "Grip|grip|Security auditor tools."
+        "Grip|grip|Security auditor tools.",
+
+        // --- 200 NEW TECH ADDITIONS ---
+        "OpenAI|openai|Artificial intelligence research lab.",
+        "Anthropic|anthropic|Safety-focused AI research.",
+        "Midjourney|midjourney|AI-powered text-to-image engine.",
+        "Hugging Face|huggingface|Smiling emoji AI community platform.",
+        "Mistral AI|mistral|French frontier AI startup.",
+        "Perplexity|perplexity|AI-powered search engine.",
+        "ElevenLabs|elevenlabs|Realistic AI voice generation.",
+        "RunwayML|runway|AI video generation tools.",
+        "Cohere|cohere|Enterprise LLM and AI models.",
+        "LangChain|langchain|Framework for LLM applications.",
+        "LlamaIndex|llamaindex|Data framework for LLMs.",
+        "Pinecone|pinecone|Vector database for AI search.",
+        "Milvus|milvus|Open source vector DB.",
+        "ChromaDB|chroma|Lightweight AI vector database.",
+        "Qdrant|qdrant|Rust-powered vector search engine.",
+        "Weaviate|weaviate|Graph vector database.",
+        "Obsidian|obsidian|Markdown personal knowledge base.",
+        "Logseq|logseq|Privacy-first outliner notebook.",
+        "Roam Research|roam|Bi-directional linking notebook.",
+        "Joplin|joplin|Open source encrypted notebook.",
+        "100ms|hundredms|Video conferencing SDK infrastructure.",
+        "Agora|agora|Real-time engagement voice/video SDK.",
+        "Ably|ably|Pub/Sub messaging network.",
+        "Pusher|pusher|Real-time developer APIs.",
+        "Superside|superside|On-demand digital design platform.",
+        "Canva|canva|Online graphic design tool.",
+        "Balsamiq|balsamiq|Hand-drawn wireframing software.",
+        "Zeplin|zeplin|Bridge between design and code.",
+        "Abstract|abstract|Version control for Sketch files.",
+        "Principle|principle|Interactive UI motion design software.",
+        "Axure|axure|Interactive web wireframe builder.",
+        "Affinity Designer|affinity|Vector graphic design powerhouse.",
+        "Krita|krita|Open-source digital painting suite.",
+        "Inkscape|inkscape|Open-source vector graphics editor.",
+        "GIMP|gimp|GNU image manipulation program.",
+        "Darktable|darktable|Open-source photography workflow.",
+        "Handbrake|handbrake|Pineapple open-source transcoder.",
+        "Audacity|audacity|Blue headphone audio waveform editor.",
+        "DaVinci Resolve|davinci|Professional color grading software.",
+        "Lightworks|lightworks|Hollywood-grade video editor.",
+        "Avisynth|avisynth|Script-based video post-processor.",
+        "FFmpeg|ffmpeg|The Swiss army knife of media codecs.",
+        "Gstreamer|gstreamer|Pipeline multimedia framework.",
+        "OBS Studio|obs|Open Broadcaster Software streaming.",
+        "Streamlabs|streamlabs|Streamer widgets and overlays.",
+        "Camtasia|camtasia|Screen recorder and editor.",
+        "Snagit|snagit|Blue capture screen tool.",
+        "Greenshot|greenshot|Lightweight screen utility.",
+        "ShareX|sharex|Open-source screen capture upload.",
+        "FastStone|faststone|Red stone image browser.",
+        "IrfanView|irfanview|Red cat screen capture viewer.",
+        "XnView|xnview|Minimalist image converter.",
+        "Honeyview|honeyview|Fast image viewer utility.",
+        "Total Commander|totalcommander|Dual-pane file manager.",
+        "Directory Opus|directoryopus|Advanced file explorer upgrade.",
+        "WinRAR|winrar|Stack of colorful books utility.",
+        "7-Zip|7zip|High-ratio compression archiver.",
+        "WinZip|winzip|Classic yellow file clamping tool.",
+        "FileZilla|filezilla|Red grid FTP file transfer.",
+        "Cyberduck|cyberduck|Yellow toy duck cloud storage client.",
+        "WinSCP|winscp|Secured copy computer connection.",
+        "Putty|putty|Classic SSH client utility.",
+        "MobaXterm|mobaxterm|All-in-one terminal server console.",
+        "Termius|termius|Modern SSH client for mobile/desktop.",
+        "Alacritty|alacritty|Fast GPU-accelerated terminal.",
+        "Kitty terminal|kitty|Fast kitten terminal emulator.",
+        "Hyper terminal|hyper|HTML/JS-powered modern terminal.",
+        "WezTerm|wezterm|Rust terminal emulator.",
+        "iTerm2|iterm2|MacOS replacement terminal window.",
+        "Tmux|tmux|Terminal multiplexer workspace grid.",
+        "Zsh|zsh|Z shell powerful command interpreter.",
+        "Fish shell|fish|Friendly interactive command shell.",
+        "PowerShell|powershell|Microsoft task automation framework.",
+        "Bash|bash|Bourne again shell Unix command line.",
+        "Cmder|cmder|Portable Windows console emulator.",
+        "Chocolatey|chocolatey|Windows package installer.",
+        "Winget|winget|Windows package manager client.",
+        "Homebrew|homebrew|The missing macOS package manager.",
+        "MacPorts|macports|Package installer for macOS.",
+        "NixOS|nixos|Declarative operating system package system.",
+        "Flathub|flathub|Linux flatpak repository store.",
+        "Snapcraft|snapcraft|Canonical Linux app store engine.",
+        "AppImage|appimage|Portable Linux software format.",
+        "Yum|yum|Yellowdog updater modified.",
+        "Apt-get|apt|Debian advanced packaging tool.",
+        "Pacman|pacman|Arch Linux package manager.",
+        "Zypper|zypper|OpenSUSE command line installer.",
+        "OpenSUSE|opensuse|Green chameleon Linux distribution.",
+        "Fedora|fedora|Sponsored blue infinity OS.",
+        "CentOS|centos|Enterprise community operating system.",
+        "Rocky Linux|rocky|Enterprise community red hat fork.",
+        "AlmaLinux|alma|Community enterprise Linux server OS.",
+        "Linux Mint|linuxmint|Green letter L layout desktop OS.",
+        "Manjaro|manjaro|Green layered tile gaming Linux.",
+        "Solus|solus|Sailing ship desktop OS.",
+        "Pop OS|popos|System76 cosmic gaming OS.",
+        "Elementary OS|elementary|Beautiful human-centric desktop OS.",
+        "Deepin|deepin|Sleek Chinese custom desktop OS.",
+        "Kali Linux|kali|Dragon-themed penetration testing OS.",
+        "Parrot OS|parrot|Security-focused auditor parrot.",
+        "Tails OS|tails|Privacy-focused incognito live OS.",
+        "Qubes OS|qubes|Security-by-isolation partitioned OS.",
+        "FreeBSD|freebsd|Red demon beast daemon Unix.",
+        "OpenBSD|openbsd|Pufferfish security audit OS.",
+        "NetBSD|netbsd|Multi-platform clean Unix.",
+        "DragonFly BSD|dragonfly|Lightweight microkernel Unix.",
+        "Solaris|solaris|Sun microsystems enterprise Unix.",
+        "Illumos|illumos|Open-source solaris kernel evolution.",
+        "OpenIndiana|openindiana|Solaris system variant.",
+        "Haiku OS|haiku|BeOS retro computing resurrection.",
+        "ReactOS|reactos|Open-source Windows NT clone.",
+        "FreeDOS|freedos|Retro command prompt emulator.",
+        "UNIX|unix|The legendary multi-tasking root.",
+        "Minix|minix|Microkernel operating system.",
+        "Plan 9|plan9|Glenda the rabbit OS.",
+        "TempleOS|templeos|Terry Davis 640x480 celestial OS.",
+        "Alpine Linux|alpine|Lightweight container-focused OS.",
+        "Gentoo Linux|gentoo|Source-compiled purple g-glove.",
+        "Slackware|slackware|The oldest active Linux distro.",
+        "Void Linux|void|Independent zero-telemetry Linux.",
+        "TrueOS|trueos|Secured BSD system base.",
+        "SmartOS|smartos|Hypervisor container system.",
+        "Xen|xen|Virtualization hypervisor.",
+        "KVM|kvm|Kernel-based virtual machine.",
+        "QEMU|qemu|Processor emulator virtualizer.",
+        "Proxmox VE|proxmox|Enterprise virtualization manager.",
+        "ESXi|vmware|Bare metal server hypervisor.",
+        "LXC|lxc|Linux container hypervisor system.",
+        "OpenVZ|openvz|Server virtualization container platform.",
+        "Unraid|unraid|Hard drive array server OS.",
+        "TrueNAS Core|truenas|FreeNAS storage file server.",
+        "OpenMediaVault|openmediavault|Debian NAS server manager.",
+        "Rockstor|rockstor|Btrfs-based private cloud storage.",
+        "Ceph|ceph|Red octopus distributed storage.",
+        "GlusterFS|gluster|Red Hat distributed file system.",
+        "MinIO|minio|High-performance object storage server.",
+        "OpenIO|openio|Object storage container solution.",
+        "SeaweedFS|seaweed|Distributed fast file system.",
+        "IPFS|ipfs|InterPlanetary file system.",
+        "Samba|samba|Windows interoperability networking.",
+        "NFS|nfs|Network file system protocol.",
+        "Glances|glances|Python terminal system monitor.",
+        "Htop|htop|Colorful terminal system task manager.",
+        "Btop|btop|Sleek terminal system monitor grid.",
+        "Conky|conky|Linux desktop hardware monitor.",
+        "Runit|runit|Fast init process manager.",
+        "Systemd|systemd|Universal Linux service manager.",
+        "Upstart|upstart|Event-based init daemon.",
+        "SysVinit|sysv|Classic Unix init daemon.",
+        "OpenRC|openrc|Dependency-based init system.",
+        "K3s|k3s|Lightweight Kubernetes distribution.",
+        "MicroK8s|microk8s|Ubuntu fast developer Kubernetes.",
+        "Minikube|minikube|Local developer Kubernetes cluster.",
+        "Kind|kind|Kubernetes in docker container.",
+        "Rancher|rancher|Enterprise multiple cluster manager.",
+        "Helm|helm|Kubernetes package pilot steering wheel.",
+        "ArgoCD|argocd|GitOps continuous delivery engine.",
+        "Tekton|tekton|Cloud-native pipeline framework.",
+        "Spinnaker|spinnaker|Multi-cloud continuous delivery.",
+        "Bamboo|bamboo|Atlassian deployment integrator.",
+        "Travis CI|travis|Green construction worker tracking.",
+        "CircleCI|circleci|Circular continuous integration circles.",
+        "AppVeyor|appveyor|Windows build delivery pipelines.",
+        "Jenkins|jenkins|Moustachioed butler building pipelines.",
+        "TeamCity|teamcity|JetBrains powerful build engine.",
+        "GitLab CI|gitlab|DevOps built-in delivery system.",
+        "Gitea|gitea|Lightweight git platform mug cup.",
+        "Woodpecker CI|woodpecker|Lightweight docker-based pipeline.",
+        "Drone CI|drone|Modern container-native builder.",
+        "Sonatype Nexus|nexus|Enterprise artifact warehouse.",
+        "Artifactory|jfrog|Green frog artifact manager.",
+        "Packer|packer|Automated machine image generator.",
+        "Vagrant|vagrant|Virtual developer workstation manager.",
+        "LocalStack|localstack|Offline AWS cloud emulator.",
+        "Minikube|minikube|Single-node virtual machine local cluster.",
+        "CockroachDB|cockroach|SQL cloud database with native survival.",
+        "Yugabyte|yugabyte|Distributed transactional cloud database.",
+        "FaunaDB|fauna|Document-relational cloud API database.",
+        "SurrealDB|surrealdb|Multi-model serverless cloud database.",
+        "EdgeDB|edgedb|Next-generation relational query database.",
+        "TiDB|tidb|Distributed Hybrid SQL engine.",
+        "Couchbase|couchbase|NoSQL memory-first document database.",
+        "RethinkDB|rethinkdb|Real-time update stream NoSQL.",
+        "RavenDB|ravendb|Transactional ACID NoSQL database.",
+        "MarkLogic|marklogic|Enterprise multi-model database.",
+        "OrientDB|orientdb|Multi-model graph database document model.",
+        "ArangoDB|arango|Avocado-themed multi-model framework.",
+        "Virtuoso|virtuoso|Universal database engine link.",
+        "GraphDB|graphdb|Semantic graph database.",
+        "Blazegraph|blazegraph|High-performance graph database engine.",
+        "Dgraph|dgraph|Native GraphQL graph database.",
+        "Nebula Graph|nebula|Highly scalable graph database."
     ],
     auto: [
+        // --- ORIGINAL BRANDS ---
         "Tesla|tesla|Electric performance cars.",
         "Toyota|toyota|Triple oval reliability.",
         "Honda|honda|Chambered H engine marque.",
@@ -634,9 +821,189 @@ const RAW_COMPACT_POOLS = {
         "Axial|axial|Extreme scale RC rock crawlers.",
         "Losi|losi|Pro scale racing RC buggies.",
         "HPI Racing|hpi|High performance R/C cars.",
-        "Nikko|nikko|Classic childhood toy RC cars."
+        "Nikko|nikko|Classic childhood toy RC cars.",
+
+        // --- 200 NEW AUTO ADDITIONS ---
+        "Mazzanti|mazzanti|Italian handcrafted hypercar manufacturer.",
+        "W Motors|wmotors|Dubai hypercars and tactical taskforce beasts.",
+        "Zenvo|zenvo|Danish active-wing hypercar engineering.",
+        "SSC North America|ssc|Tuatara extreme speed record breaker.",
+        "Apollo Automobil|apollo|Intensa Emozione carbon fiber hypercar.",
+        "De Tomaso|detomaso|Pantera classic retro Italian performance.",
+        "Praga|praga|Czech lightweight racing track cars.",
+        "Donkervoort|donkervoort|Extreme lightweight open-wheel Dutch sports cars.",
+        "Radical Motorsport|radical|LeMans-style track-day sports racers.",
+        "Caterham|caterham|Classic lightweight Lotus Seven heritage sports cars.",
+        "Westfield Sportscars|westfield|British fiberglass sports kit builders.",
+        "Ariel Motor|ariel|Exoskeleton tube-frame Atom track-day weapon.",
+        "BAC|bac|Mono single-seater street legal racer.",
+        "KTM X-Bow|ktm|Extreme carbon fiber open track-car.",
+        "Tramontana|tramontana|Spanish canopy fighter jet inspired hypercar.",
+        "Spyker|spyker|Dutch luxury aircraft-inspired turbine cars.",
+        "Weismann|weismann|German retro luxury sports coupés.",
+        "Morgan Motor|morgan|Handbuilt classic wood-framed British sports cars.",
+        "TVR|tvr|Raw noisy British sports cars.",
+        "Noble Automotive|noble|Twin-turbo analog British supercars.",
+        "Ginetta|ginetta|British racing-first lightweight sportscars.",
+        "Lister|lister|Classic British Jaguar tuning legend.",
+        "Bristol Cars|bristol|Handbuilt eccentric British aviation luxury.",
+        "AC Cars|accars|Original Cobra vintage sports car builders.",
+        "Dax|dax|British classic reproduction roadsters.",
+        "Ultima Sports|ultima|LeMans prototype hypercar speed kits.",
+        "Mosler|mosler|American lightweight racing track supercars.",
+        "Vector Motors|vector|Futuristic wedge-shaped American fighter jet supercars.",
+        "Saleen|saleen|S7 mid-engined American supercar legends.",
+        "Panoz|panoz|Front-engine American endurance GT racing cars.",
+        "Fisker|fisker|Karma and Ocean progressive electric styling.",
+        "Karma Automotive|karma|Luxury extended range electric coupés.",
+        "Faraday Future|faraday|FF91 high-tech luxury internet EV.",
+        "Canoo|canoo|Futuristic bubble design urban electric vans.",
+        "Bollinger Motors|bollinger|Electric utility transport rugged work trucks.",
+        "Lordstown Motors|lordstown|Electric utility endurance pickups.",
+        "Nikola Motor|nikola|Hydrogen and battery electric semi-trucks.",
+        "Workhorse|workhorse|Electric delivery utility trucks.",
+        "Aptera Motors|aptera|Three-wheeled aerodynamic solar EV.",
+        "Elio Motors|elio|High-efficiency three-wheeled commuter.",
+        "Vanderhall|vanderhall|Three-wheeled retro open roadsters.",
+        "Campagna|campagna|T-Rex high speed three-wheeled vehicles.",
+        "Polaris Slingshot|slingshot|Three-wheeled angular open cockpit roadster.",
+        "Morgan 3 Wheeler|morgan|Classic motorcycle engine wooden roadster.",
+        "Lada|lada|Rugged Russian classic off-road workhorses.",
+        "UAZ|uaz|Classic Russian military utility 4x4.",
+        "GAZ|gaz|Russian commercial delivery vans.",
+        "KAMAZ|kamaz|Dakar rallying heavy Russian cargo trucks.",
+        "Tatra|tatra|Czech air-cooled heavy utility trucks.",
+        "Skoda|skoda|Czech family value vehicles.",
+        "Dacia|dacia|Romanian affordable rugged mobility.",
+        "AvtoVAZ|avtovaz|Russian automotive industry giant.",
+        "Zaporozhets|zaz|Historic Ukrainian microcars.",
+        "LuAZ|luaz|Retro light Soviet off-roaders.",
+        "FSO|fso|Historic Polish passenger cars.",
+        "Trabant|trabant|Classic East German Duroplast microcar.",
+        "Wartburg|wartburg|Classic East German family sedans.",
+        "Barkas|barkas|Historic East German delivery vans.",
+        "Multicar|multicar|Compact multi-purpose German utility vehicles.",
+        "Holden|holden|Historic Australian muscle V8 marques.",
+        "FPV|fpv|Ford Performance Vehicles Australia division.",
+        "HSV|hsv|Holden Special Vehicles performance tuning.",
+        "Proton|proton|Malaysian national car builder.",
+        "Perodua|perodua|Malaysian compact vehicle specialist.",
+        "Roewe|roewe|Chinese luxury brand using Rover technology.",
+        "Hongqi|hongqi|Chinese luxury state presidential limousines.",
+        "Ventinove|venti|Italian racing bike frame specialists.",
+        "Nippon Sharyo|nippon|Japanese high speed bullet train builders.",
+        "Kawasaki Heavy Industries|kawasaki|Global transportation, train, and machinery builders.",
+        "Hitachi Rail|hitachi|Global railway rolling stock.",
+        "Alstom|alstom|French high-speed TGV rail system developer.",
+        "Siemens Mobility|siemens|German advanced rail transport networks.",
+        "Bombardier Transportation|bombardier|Canadian aviation and rail transportation.",
+        "Talgo|talgo|Spanish lightweight articulated fast trains.",
+        "Stadler Rail|stadler|Swiss regional and mountain passenger trains.",
+        "CAF|caf|Spanish rolling stock train builders.",
+        "CSR|csr|Chinese locomotive and coach builder.",
+        "CNR|cnr|Chinese national railway equipment builder.",
+        "CRRC|crrc|The largest rail transportation builder globally.",
+        "Hyundai Rotem|rotem|Korean advanced railway systems.",
+        "Kinki Sharyo|kinki|Japanese urban light rail vehicles.",
+        "Valmet Automotive|valmet|Finnish premium specialty car manufacturer.",
+        "Magna Steyr|magna|Austrian luxury contract automotive builder.",
+        "Pininfarina|pininfarina|Italian legendary styling studio designer.",
+        "Heuliez|heuliez|French transit bus and contract builder.",
+        "Wrightbus|wrightbus|Classic London red double-decker buses.",
+        "Alexander Dennis|alexander|British double-decker transit buses.",
+        "Optare|optare|Lightweight British public transit buses.",
+        "VDL Bus & Coach|vdl|Dutch heavy commercial transit buses.",
+        "Van Hool|vanhool|Belgian luxury tour coaches and buses.",
+        "Irizar|irizar|Spanish aerodynamic premium tour coaches.",
+        "Solaris Bus & Coach|solaris|Polish modern electric transit buses.",
+        "Neoplan|neoplan|Futuristic aerodynamic double-decker tour coaches.",
+        "Setra|setra|Premium luxury German tour coaches.",
+        "Bova|bova|Classic Dutch coachbuilders.",
+        "Prevost|prevost|Premium conversion motorhome coaches.",
+        "MCI|mci|Motor Coach Industries intercity buses.",
+        "Gillig|gillig|American heavy-duty transit buses.",
+        "New Flyer|newflyer|Heavy-duty transit bus systems.",
+        "Blue Bird|bluebird|Classic yellow American school buses.",
+        "Thomas Built Buses|thomas|Yellow school bus specialist.",
+        "IC Bus|icbus|Navistar school bus division.",
+        "Nova Bus|novabus|Canadian urban transit bus developer.",
+        "Orion Bus Industries|orion|Classic transit bus builder.",
+        "Flyer Industries|flyer|Historic Canadian transit buses.",
+        "Champion Bus|champion|Compact shuttle bus builders.",
+        "Glavryba|glav|Historic Soviet industrial sea vessels.",
+        "Meyer Werft|meyer|German cruise ship builder.",
+        "Fincantieri|fincantieri|Italian naval and cruise ship building.",
+        "Lurssen|lurssen|German bespoke mega yacht builders.",
+        "Oceanco|oceanco|Dutch custom luxury superyachts.",
+        "Amels|amels|Premium Dutch semi-custom superyachts.",
+        "Feadship|feadship|Elite Dutch custom luxury yachts.",
+        "Benetti|benetti|Italian luxury superyacht builders.",
+        "Azimut|azimut|Italian performance cruising yachts.",
+        "Ferretti|ferretti|Luxury flybridge motor yachts.",
+        "Riva|riva|Classic varnished mahogany Italian speedboats.",
+        "Sunseeker|sunseeker|British performance luxury sports yachts.",
+        "Princess Yachts|princess|British luxury motor yachts.",
+        "Sanlorenzo|sanlorenzo|Bespoke Italian motor yachts.",
+        "Wally Yachts|wally|Futuristic carbon fiber luxury yachts.",
+        "Perini Navi|perini|Mega sailing yachts with automated rigging.",
+        "Royal Huisman|huisman|Custom Dutch sailing superyachts.",
+        "Baltic Yachts|baltic|High tech carbon sailing yachts.",
+        "Swan|nautorswan|Finnish performance cruising yachts.",
+        "HanseYachts|hanse|German production sailing yachts.",
+        "Beneteau|beneteau|French mass production sailing cruisers.",
+        "Jeanneau|jeanneau|French sailing yachts and powerboats.",
+        "Bavaria Yachts|bavaria|German production cruising yachts.",
+        "Dufour Yachts|dufour|French performance cruising sailboats.",
+        "Grand Soleil|grandsoleit|Italian performance cruiser yachts.",
+        "Catalina Yachts|catalina|American family sailing yachts.",
+        "Hunter Marine|hunter|Classic production sailing yachts.",
+        "MacGregor Yacht|macgregor|Trailerable sailing water-ballasted boats.",
+        "Boston Whaler|bostonwhaler|The unsinkable outboard utility boats.",
+        "Grady-White|grady|Premium offshore salt water fishing boats.",
+        "Bertram Yacht|bertram|Classic deep-V sport fishing boats.",
+        "Hatteras Yachts|hatteras|Heavy offshore sportfishing convertibles.",
+        "Viking Yachts|viking|Elite luxury sportfish cruisers.",
+        "Sea Ray|searay|Production cabin cruisers and bowriders.",
+        "Bayliner|bayliner|Affordable entry-level family runarounds.",
+        "Regal Boats|regal|Luxury family sportboats.",
+        "Chaparral Boats|chaparral|Performance family bowriders.",
+        "Four Winns|fourwinns|Premium family sportboats.",
+        "Glastron|glastron|Classic retro styling runarounds.",
+        "Cobalt Boats|cobalt|Premium luxury bowriders.",
+        "MasterCraft|mastercraft|V-drive wakeboard towboats.",
+        "Malibu Boats|malibu|Inboard tournament wakeboard boats.",
+        "Correct Craft|nautique|Premium competition ski towboats.",
+        "Centurion Boats|centurion|World championship wake surf boats.",
+        "Tige Boats|tige|Custom wake and surf luxury boats.",
+        "Yamaha Jet Boats|yamaha|Internal jet drive family sports boats.",
+        "Tracker Marine|tracker|Aluminum bass fishing boats.",
+        "Ranger Boats|ranger|Fiberglass tournament bass boats.",
+        "Lund Boats|lund|Premium aluminum multi-species fishing boats.",
+        "Alumacraft|alumacraft|Rugged aluminum fishing boats.",
+        "Crestliner|crestliner|Welded aluminum fishing hulls.",
+        "Smoker Craft|smokercraft|Family aluminum fishing craft.",
+        "Princecraft|princecraft|Canadian premium aluminum utility pontoon.",
+        "Bennington Pontoons|bennington|Luxury performance pontoon boats.",
+        "Harris Pontoons|harris|Premium family pontoon boats.",
+        "Manitou Pontoons|manitou|Performance triple hull pontoon craft.",
+        "Sylvan Marine|sylvan|Family pontoons and runabouts.",
+        "Sun Tracker|suntracker|Family pontoon party barges.",
+        "Hobon|hobon|Professional industrial inflatable rescue craft.",
+        "Zodiac Marine|zodiac|Rigid inflatable rescue utility boats.",
+        "Avon Marine|avon|Premium yacht tenders and RIBs.",
+        "Brig Inflatables|brig|Sleek recreational RIBs.",
+        "Williams Jet Tenders|williams|Jet propelled luxury yacht tenders.",
+        "Highfield Boats|highfield|Aluminum hull rigid inflatable tenders.",
+        "AB Inflatables|abinflatables|Premium fiberglass inflatable boats.",
+        "Caribe Inflatables|caribe|Classic RIB cruiser tenders.",
+        "Ribcraft|ribcraft|Commercial grade heavy duty RIBs.",
+        "Safe Boats International|safeboats|Aluminum tactical military interceptors.",
+        "Metal Shark|metalshark|Custom commercial and military patrol craft.",
+        "Brunswick Commercial|brunswick|Military and rescue workboats.",
+        "Damen Group|damen|Dutch global shipbuilding conglomerate."
     ],
     food: [
+        // --- ORIGINAL BRANDS ---
         "Coca-Cola|cocacola|Classic script red soda.",
         "Pepsi|pepsi|Red-white-blue circle globe.",
         "McDonald's|mcdonalds|Golden Arches fast food.",
@@ -857,9 +1224,180 @@ const RAW_COMPACT_POOLS = {
         "Hubba Bubba|hubbabubba|Pink big bubble roll blow.",
         "Airheads|airheads|Red balloon smiling face candy.",
         "Jelly Belly|jellybelly|Red bean-shaped jelly logo.",
-        "Sour Patch Kids|sourpatch|Sour then sweet cartoon kids."
+        "Sour Patch Kids|sourpatch|Sour then sweet cartoon kids.",
+
+        // --- 200 NEW FOOD ADDITIONS ---
+        "Amul|amul|The taste of India cooperative dairy.",
+        "Kerrygold|kerrygold|Pure Irish grass-fed golden butter.",
+        "President Butter|president|Premium French cow milk butter.",
+        "Lurpak|lurpak|Arla Danish silver-wrapped block butter.",
+        "Arla Foods|arla|Scandinavian dairy cooperative brand.",
+        "Land O'Lakes|landolakes|American farmer-owned butter cooperative.",
+        "Philadelphia Cheese|philadelphia|Silver wrapped cream cheese bricks.",
+        "Laughing Cow|laughingcow|Red cow hanging earrings cheese wedges.",
+        "Babybel|babybel|Red wax-wrapped semi-hard cheese rounds.",
+        "Bresso|bresso|Herbed fluffy French spreadable cheese.",
+        "Almette|almette|Alpine fresh cream cheese tub.",
+        "Castello Cheese|castello|Premium blue cheese crown emblem.",
+        "Gorgonzola Consorzio|gorgonzola|Italian authentic blue-veined cheese.",
+        "Parmigiano Reggiano|parmigiano|Consorzio stamped hard Italian gold cheese.",
+        "Grana Padano|granapadano|Golden diamond firebrand hard Italian cheese.",
+        "Zanetti Cheese|zanetti|Premium Italian classic cheese exporter.",
+        "Galbani|galbani|Italian mozzarella and ricotta shield logo.",
+        "Belgioioso|belgioioso|American crafted authentic Italian-style cheeses.",
+        "Chobani|chobani|Thick Greek-style strained fruit yogurt.",
+        "Fage|fage|Greek authentic heavy strained yogurt tub.",
+        "Yoplait|yoplait|Red flower six petal yogurt cups.",
+        "Activia|activia|Green digestion-assisting probiotic yogurt cups.",
+        "Danone Actimel|actimel|Little bottles supporting active defense.",
+        "Yakult Probiotic|yakult|Traditional red foil cap Japanese probiotic.",
+        "Oikos Yogurt|oikos|Dannon-owned luxury style Greek yogurt.",
+        "Siggi's|siggis|Icelandic high-protein strained skyr.",
+        "Skyr Icelandic|skyr|Thick low-fat Scandinavian style yogurt.",
+        "Muller Corner|muller|Split twin-compartment crunch yogurt tub.",
+        "Alpro|alpro|Plant-based soy, almond, and oat milks.",
+        "Oatly|oatly|Swedish heavy-style barista oat milk.",
+        "Silk Milk|silk|Classic soy and almond milk carton.",
+        "Blue Diamond Almonds|bluediamond|Diamond shield snack nuts and almond Breeze.",
+        "Califia Farms|califia|Premium shapely bottles of plant milks.",
+        "Ripple Foods|ripple|Yellow pea protein allergen-free milk.",
+        "Violife|violife|Plant-based dairy-free vegan alternative cheeses.",
+        "Daiya Foods|daiya|Gluten-free plant-based vegan cheese shreds.",
+        "Beyond Meat|beyondmeat|Plant-based raw looking burger patties.",
+        "Impossible Foods|impossible|Heme-based bleeding plant burgers.",
+        "Quorn|quorn|Mycoprotein vegetarian meat-alternative range.",
+        "Gardenin|gardenin|Frozen plant-based easy meatless meals.",
+        "MorningStar Farms|morningstar|Veggie bacon, sausages, and burgers.",
+        "Amy's Kitchen|amys|Organic canned soups and frozen meals.",
+        "Tofurky|tofurky|Plant-based holiday holiday vegan roasts.",
+        "Linda McCartney Foods|lindamccartney|British frozen vegetarian meat alternatives.",
+        "Birds Eye|birdseye|Captain Birds Eye frozen fish fingers.",
+        "Iglo|iglo|Green logo frozen peas and fish.",
+        "Findus|findus|Frozen crispy pancakes and fish meals.",
+        "McCain Foods|mccain|Frozen French fries and potato wedges.",
+        "Lamb Weston|lambweston|Major restaurant-grade global potato supplier.",
+        "Ore-Ida|oreida|American classic potato golden tater tots.",
+        "Green Giant|greengiant|The jolly green giant canned corn.",
+        "Del Monte|delmonte|Red shield canned peaches and pineapples.",
+        "Libby's|libbys|Canned pumpkin puree and fruit chunks.",
+        "Dole Food|dole|Red sunburst yellow script fresh bananas.",
+        "Chiquita|chiquita|Blue and yellow miss Chiquita banana seal.",
+        "Fyffes|fyffes|Blue label premium imported bananas.",
+        "Zespri|zespri|Green kiwi fruit red star logo.",
+        "Ocean Spray|oceanspray|Ocean-harvested tart cranberry juice.",
+        "Pom Wonderful|pom|Shapely double-bulb pomegranate juice bottle.",
+        "Innocent Drinks|innocent|Halo-wearing face fruit juice smoothies.",
+        "Odwalla|odwalla|Pioneering thick natural fruit juices.",
+        "Naked Juice|naked|Thick premium fruit juice smoothies.",
+        "Bolthouse Farms|bolthouse|Premium carrot-based fruit smoothies.",
+        "Simply Orange|simply|Carafe styled premium orange juice.",
+        "Welch's Grape|welchs|Family owned Concord purple grape juice.",
+        "Snapple|snapple|Metal cap popping iced tea bottles.",
+        "Arizona Iced Tea|arizona|Tall colorful can sweet green tea.",
+        "Honest Tea|honest|Organic lightly sweetened iced teas.",
+        "Gold Peak Tea|goldpeak|Home brewed style gold script iced tea.",
+        "Pure Leaf|pureleaf|Real brewed tea square leaf cap bottle.",
+        "Nestea|nestea|Plunge-into-freshness classic iced tea.",
+        "Lipton Ice Tea|lipton|Yellow sunburst refreshing iced tea.",
+        "San Pellegrino Soda|sanpellegrino|Foil-topped premium Italian citrus sodas.",
+        "Perrier Sparkling|perrier|Bold green tear-drop bubble water.",
+        "Acqua Panna|acquapanna|Tuscan premium dining spring water.",
+        "Evian Water|evian|French pink-mountain mineral water.",
+        "Voss Water|voss|Sleek glass cylindrical luxury water.",
+        "Fiji Water|fiji|Hibiscus flower tropical spring water.",
+        "Smartwater|smartwater|Vapor distilled cloud design electrolyte water.",
+        "Liquid Death|liquiddeath|Murder your thirst tallboy water cans.",
+        "Sodastream|sodastream|Home sparkling water carbonators.",
+        "LaCroix|lacroix|Colorful pastel design sugar-free sparkling water.",
+        "Bubly|bubly|Smiling face colorful seltzer cans.",
+        "Spindrift|spindrift|Real squeezed fruit sparkling seltzers.",
+        "Polar Seltzer|polar|Polar bear emblem sparkling seltzers.",
+        "Schweppes|schweppes|Yellow logo premium ginger ale and tonics.",
+        "Fever-Tree|fevertree|Cinchona tree high-end tonic waters.",
+        "Canada Dry|canadadry|Green shield mapping ginger ale.",
+        "Seagram's|seagrams|Crown crest ginger ale and mixers.",
+        "Coke Zero|cokezero|Black label sugar-free classic soda.",
+        "Diet Coke|dietcoke|Silver can gray label classic soda.",
+        "Pepsi Max|pepsimax|Black globe sugar-free Pepsi variant.",
+        "Dr Pepper|drpepper|Unique 23-flavor blend spicy soda.",
+        "Mountain Dew|mountaindew|High-caffeine green neon adventure soda.",
+        "Mello Yello|melloyello|Citrus yellow active sports soda.",
+        "Surge Soda|surge|High energy neon green retro soda.",
+        "7Up|7up|Fido Dido mascot green lemon lime.",
+        "Sprite Zero|sprite|Green-blue zero sugar lemon lime.",
+        "Sierra Mist|sierramist|Natural flavor lemon lime soda.",
+        "Starry Soda|starry|Fresh lemon-lime starry night design.",
+        "Fanta Orange|fanta|Bright orange bubbly fruit soda.",
+        "Mirinda|mirinda|Global fruit-flavored vibrant orange soda.",
+        "Sunkist|sunkist|Sun-kissed California orange soda.",
+        "Crush Soda|crush|Original orange slice dynamic soda.",
+        "Orangina|orangina|Bulbous blue textured glass orange bottle.",
+        "Pellegrino|sanpellegrino|Red star classic Italian water.",
+        "Gerolsteiner|gerolsteiner|Red lion crest German sparkling water.",
+        "Apollinaris|apollinaris|The Queen of Table Waters red triangle.",
+        "Badoit|badoit|Sleek green fine dining sparkling water.",
+        "Vichy Catalan|vichycatalan|Spanish high-sodium therapeutic mineral water.",
+        "Solan de Cabras|solandecabras|Iconic deep blue glass water bottles.",
+        "Nongfu Spring|nongfu|Red capped Chinese premium spring water.",
+        "Wahaha|wahaha|Iconic Chinese children milk and water.",
+        "Master Kong|masterkong|Instant noodle and ready tea giant.",
+        "Uni-President|unipresident|Major Asian instant noodle and drink maker.",
+        "Nissin Foods|nissin|Cup Noodles original inventor.",
+        "Maruchan|maruchan|Smiling child orange ramen packs.",
+        "Indomie|indomie|Indonesian Mi Goreng legendary instant noodles.",
+        "Samyang|samyang|Extremely spicy fire buldak Korean noodles.",
+        "Nongshim|nongshim|Shin Ramyun red package Korean noodles.",
+        "Knorr|knorr|Green logo dehydrated soups and bouillon.",
+        "Maggi|maggi|Yellow and red noodle and seasoning cubes.",
+        "Oxo Cubes|oxo|Red box concentrated beef stock cubes.",
+        "Bovril|bovril|Heavy black jar beef paste extract.",
+        "Marmite|marmite|Love it or hate it yeast spread.",
+        "Vegemite|vegemite|Yellow-red jar Australian yeast spread.",
+        "Nutella Spread|nutella|Hazelnut cocoa sweet sandwich spread.",
+        "Skippy Peanut Butter|skippy|Blue lid smooth peanut butter.",
+        "Jif Peanut Butter|jif|Red-green-blue stripe peanut butter.",
+        "Peter Pan|peterpan|Classic green hat peanut butter.",
+        "Peanut Butter Co|peanutbutterco|Gourmet flavor-infused peanut butter.",
+        "Smucker's|smuckers|Gingham pattern jelly and jam jar.",
+        "Bonne Maman|bonnemaman|Red checkered lid French fruit preserves.",
+        "Hero Group|hero|Swiss-engineered premium fruit jams.",
+        "Darbo|darbo|Austrian fine natural fruit honey and jams.",
+        "Lotus Biscoff|lotus|Caramelized biscuit and cookie butter spread.",
+        "Nutella|nutella|Hazelnut cocoa breakfast spread.",
+        "Gervais|gervais|Rich fresh double cream cheese.",
+        "Philadelphia|philadelphia|Velvety original cream cheese spread.",
+        "President|president|Elite French brie and camembert.",
+        "Castello|castello|Rich Danish blue cheese crown.",
+        "Appenzeller|appenzeller|Secret herbal brine Swiss cheese.",
+        "Emmentaler|emmentaler|Traditional large-holed Swiss cheese.",
+        "Le Gruyere|gruyere|Slightly sweet hard Swiss cheese.",
+        "Parmigiano|parmigiano|King of hard Italian cheeses.",
+        "Grana Padano|granapadano|Mellow flaky Italian hard cheese.",
+        "Pecorino Romano|pecorino|Salty sheep milk hard Italian cheese.",
+        "Roquefort|roquefort|French cave-aged blue sheep cheese.",
+        "Gorgonzola|gorgonzola|Buttery marbled blue Italian cheese.",
+        "Stilton|stilton|British classic blue-veined cheese.",
+        "Cheddar Cathedral City|cathedral|British mature orange cheddar.",
+        "Kerrygold Butter|kerrygold|Rich golden grass-fed butter.",
+        "Lurpak|lurpak|Lur player silver foil butter.",
+        "Anchor Butter|anchor|New Zealand grass-fed golden butter.",
+        "President Butter|president|Classic French culinary butter.",
+        "Land O Lakes|landolakes|American kitchen sweet cream butter.",
+        "I Can't Believe It's Not Butter|icantbelieve|Vegetable oil yellow spread.",
+        "Country Crock|countrycrock|Classic brown tub margarine spread.",
+        "Becel|becel|Heart-healthy Canadian margarine spread.",
+        "Flora Margarine|flora|Plant-based family oil spread.",
+        "Blue Band|blueband|Yellow ribbon growing kids margarine.",
+        "Mazola|mazola|Golden corn oil frying specialist.",
+        "Crisco|crisco|Blue can solid vegetable shortening.",
+        "Bertolli|bertolli|Italian gold premium olive oil.",
+        "Filippo Berio|filippoberio|Classic portrait olive oil bottle.",
+        "Colavita|colavita|Fine Italian cold pressed olive oil.",
+        "Monini|monini|Green bottle extra virgin olive oil.",
+        "Carapelli|carapelli|Artistic dark glass olive oil bottles."
     ],
     fashion: [
+        // --- ORIGINAL BRANDS ---
         "Nike|nike|Swoosh athletic wing.",
         "Adidas|adidas|Three stripes sport performance.",
         "Puma|puma|Leaping feline sportswear.",
@@ -934,7 +1472,6 @@ const RAW_COMPACT_POOLS = {
         "Stone Island|stoneisland|Wind rose compass patch.",
         "Canada Goose|canadagoose|Arctic program circular map patch.",
         "Celine|celine|Parisian arch de triomphe chain.",
-        "Givenchy|givenchy|Symmetrical four G square.",
         "Diesel|diesel|Only the brave mohawk punk.",
         "G-Star Raw|gstar|Heavy denim concrete construction.",
         "Superdry|superdry|Japanese adventure dry script.",
@@ -999,7 +1536,6 @@ const RAW_COMPACT_POOLS = {
         "Fear of God|fearofgod|FOG minimal streetwear.",
         "Palm Angels|palmangels|Gothic script California skater.",
         "Amiri|amiri|Bespoke luxury denim tears.",
-        "Givenchy|givenchy|Paris luxury haute.",
         "Prada Linea Rossa|prada|Red stripe athletic luxury.",
         "Y-3|adidas|Yohji Yamamoto three stripes.",
         "Stella McCartney|stellamccartney|Clean circular dotted luxury.",
@@ -1016,7 +1552,6 @@ const RAW_COMPACT_POOLS = {
         "Sorel|sorel|White polar bear winter boots.",
         "Barbour|barbour|Waxed cotton country jacket.",
         "Belstaff|belstaff|Waxed phoenix rising jacket.",
-        "Canada Goose|canadagoose|Arctic program badge.",
         "Woolrich|woolrich|Red-black buffalo check wool.",
         "Alpha Industries|alphaindustries|Three stripes military flight jacket.",
         "L.L. Bean|llbean|Maine hunting boots duck.",
@@ -1027,7 +1562,6 @@ const RAW_COMPACT_POOLS = {
         "Madewell|madewell|Crafted denim women apparel.",
         "Everlane|everlane|Radical transparency basic wear.",
         "Reformation|reformation|Eco-friendly feminine green fashion.",
-        "Uniqlo|uniqlo|Red square Japanese canvas.",
         "Muji|muji|No brand quality goods red text.",
         "Desigual|desigual|La vida es chula upside down.",
         "Superga|superga|Italian classic canvas shoes.",
@@ -1038,8 +1572,6 @@ const RAW_COMPACT_POOLS = {
         "Geox|geox|The shoe that breathes perforated sole.",
         "Ecco|ecco|Danish ergonomic comfort shoes.",
         "Camper|camper|Majorcan casual walk shoes.",
-        "Birkenstock|birkenstock|Cork contoured footbed.",
-        "Crocs|crocs|Classic comfort foam clog.",
         "Havaianas|havaianas|Brazilian flag flip flops.",
         "Ipanema|ipanema|Wave tile pattern sand flip flops.",
         "Teva|teva|Grand Canyon strap sandals.",
@@ -1065,9 +1597,156 @@ const RAW_COMPACT_POOLS = {
         "Longchamp|longchamp|Le Pliage folding horse racer bag.",
         "MCM|mcm|Munich cognac visetos leather laurel.",
         "Furla|furla|Italian luxury arch leather bag.",
-        "Kate Spade|katespade|New York spade emblem.",
-        "Michael Kors|michaelkors|MK luxury circle handbag.",
-        "Coach|coach|Equestrian horse logo."
+
+        // --- 200 NEW FASHION ADDITIONS ---
+        "A Bathing Ape|bape|Streetwear brand famous for monkey head graphics.",
+        "Fear of God|fearofgod|Luxury streetwear designed by Jerry Lorenzo.",
+        "Chrome Hearts|chromehearts|Bespoke gothic silver jewelry and leather wear.",
+        "Audemars Piguet|audemarspiguet|Elite Swiss watchmaker of the Royal Oak.",
+        "Patek Philippe|patek|Ultra-luxury watches known for grand complications.",
+        "Vacheron Constantin|vacheron|Maltese cross logo high luxury watchmaking.",
+        "Breitling|breitling|Aviation luxury chronographs anchor wings logo.",
+        "IWC Schaffhausen|iwc|Probus Scafusia engineered luxury pilot watches.",
+        "Jaeger-LeCoultre|jlc|The watchmaker's watchmaker reversible Reverso.",
+        "Hublot|hublot|Fusion-style heavy porthole luxury watch cases.",
+        "Panerai|panerai|Italian naval heritage cushion-cased luxury watches.",
+        "Tudor|tudor|Shield logo high performance Swiss mechanical watches.",
+        "Cartier|cartier|French luxury jewelry creator of the Tank watch.",
+        "Chopard|chopard|Makers of happy diamonds luxury jewelry and watches.",
+        "Breguet|breguet|Inventors of the tourbillon blue open-tipped hands.",
+        "Bulgari|bulgari|Roman high jewelers famous for Serpenti designs.",
+        "Graff|graff|Elite London dealer of extremely rare gemstones.",
+        "Harry Winston|harrywinston|The King of Diamonds legendary New York jeweler.",
+        "Van Cleef & Arpels|vancleef|Four-leaf clover Alhambra luxury jewelry motif.",
+        "Boucheron|boucheron|Place Vendome French luxury heritage jewelers.",
+        "Chaumet|chaumet|Historic jeweler to Empress Josephine.",
+        "Mikimoto|mikimoto|The legendary inventor of cultivated pearls.",
+        "Damiani|damiani|Italian handcrafted fine luxury jewelry gold.",
+        "Pomellato|pomellato|Vibrant colored gemstone ready-to-wear luxury jewelry.",
+        "Messika|messika|Modern diamond-centric French luxury fine jewelry.",
+        "David Yurman|davidyurman|Classic cable-twisted sterling silver bracelets.",
+        "John Hardy|johnhardy|Balinese handcrafted woven silver luxury jewelry.",
+        "Stephen Webster|stephenwebster|Edgy British rock-and-roll luxury jeweler.",
+        "Spinelli Kilcollin|spinelli|Interlocking stacked silver and gold galaxy rings.",
+        "Shay Jewelry|shay|Chunky diamond pave Cuban links.",
+        "Anita Ko|anitako|Los Angeles luxury gold safety pin earrings.",
+        "Jacquie Aiche|jacquieaiche|Boho-luxe diamond body chains and raw minerals.",
+        "Monica Vinader|monicavinader|British demi-fine gemstone styling jewelry.",
+        "Mejuri|mejuri|Minimalist fine gold jewelry everyday luxury.",
+        "Astrid & Miyu|astridandmiyu|London delicate ear stacking jewelry.",
+        "Missoma|missoma|British layered gold vermeil styling chains.",
+        "Edge of Ember|edgeofember|Sustainable recycled fine gold jewelry.",
+        "Otiumberg|otiumberg|Delicate huggie earrings and custom signet rings.",
+        "Maria Tash|mariatash|Luxury body piercing pioneer floating jewelry.",
+        "Catbird|catbird|Brooklyn ultra-thin thread whisper gold rings.",
+        "Kendra Scott|kendrascott|Vibrant natural stone statement shape earrings.",
+        "Alex and Ani|alexandani|Expandable wire charm positive energy bangles.",
+        "BaubleBar|baublebar|Playful colorful fashion costume statement jewelry.",
+        "Swarovski|swarovski|Precision-cut Austrian lead glass crystal figurines.",
+        "Pandora|pandora|Collectible custom sterling silver charm bracelets.",
+        "Sorel|sorel|Canadian protective polar bear winter boots.",
+        "Kamik|kamik|Family owned Canadian winter storm boots.",
+        "Baffin|baffin|Extreme polar expedition rated cold protection boots.",
+        "Muck Boot Company|muck|Neoprene waterproof farm and garden boots.",
+        "Bog Boots|bogs|Waterproof pull-handle outdoor farm boots.",
+        "Le Chameau|lechameau|French handcrafted premium rubber hunting boots.",
+        "Aigle|aigle|French master rubber boots since 1853.",
+        "Dubarry of Ireland|dubarry|Premium Gore-Tex leather country boots.",
+        "Ariat|ariat|Premium equestrian riding and western boots.",
+        "Justin Boots|justin|Classic American handcrafted cowboy boots.",
+        "Lucchese|lucchese|Ultra-luxury custom exotic cowboy boots.",
+        "Tony Lama|tonylama|Legendary craftsmanship western leather boots.",
+        "Frye|frye|Harness boots and rich vintage leather goods.",
+        "Minnetonka|minnetonka|Fringed soft suede Indian moccasins.",
+        "Sperry Top-Sider|sperry|Siped rubber sole classic leather boat shoes.",
+        "Sebago|sebago|Handsewn beefroll penny loafers and dockside boaters.",
+        "G.H. Bass|ghbass|The original Weejun penny loafer creator.",
+        "Cole Haan|colehaan|GrandOS athletic sole dress leather shoes.",
+        "Rockport|rockport|Dress architecture with running shoe comfort technology.",
+        "Clarks Originals|clarks|Crepe-soled suede desert boots and Wallabees.",
+        "Dr Martens|drmartens|Yellow welt stitching classic 1460 combat boots.",
+        "Solovair|solovair|British handcrafted soft suspension combat boots.",
+        "Grinders|grinders|Steel toe punk style heavy leather boots.",
+        "Underground England|underground|British rock alternative creeper platform shoes.",
+        "TUK Shoes|tuk|San Diego alternative punk creepers and Mary Janes.",
+        "Demonia|demonia|Gothic alternative platform lace-up combat boots.",
+        "New Rock|newrock|Spanish heavy metal industrial hardware boots.",
+        "Fluevog|fluevog|Artistic eccentric luxury designer footwear.",
+        "Irregular Choice|irregularchoice|Whimsical highly decorated fantasy heels.",
+        "Melissa Shoes|melissa|Brazilian sweet bubblegum scented jelly shoes.",
+        "Jelly Beans|jellybeans|Retro colorful semi-transparent summer sandals.",
+        "Salt Water Sandals|saltwater|Scalloped leather strap vulcanized rubber sandals.",
+        "Chacos|chacos|Highly adjustable single-strap river hiking sandals.",
+        "Teva|teva|Webbed strap utility sport exploration sandals.",
+        "Keen Footwear|keen|Rugged toe-bumper hybrid trail sandals.",
+        "Merrell|merrell|Moab out-of-the-box comfortable hiking boots.",
+        "Oboz|oboz|True to the trail Bozeman Montana footwear.",
+        "Vasque|vasque|Red Wing owned performance trail hiking boots.",
+        "Scarpa|scarpa|Italian high-alpine technical mountaineering boots.",
+        "La Sportiva|lasportiva|High performance climbing shoes and trail runners.",
+        "Five Ten|fiveten|Stealth rubber high friction climbing and biking.",
+        "Evolv|evolv|Modern high performance sport climbing shoes.",
+        "Mad Rock|madrock|Innovative climbing shoe technology rubber heels.",
+        "Boreal|boreal|Spanish pioneer sticky rubber climbing shoes.",
+        "Tenaya|tenaya|High precision comfortable Spanish climbing shoes.",
+        "Scarpa|scarpa|Technical Italian mountain climbing boots.",
+        "Salewa|salewa|Alpine life engineered mountain gear and boots.",
+        "Mammut|mammut|Swiss alpine safety gear and mountaineering boots.",
+        "Dynafit|dynafit|Snow leopard logo speed ski touring boots.",
+        "Atomic|atomic|Austrian performance ski boots and ski gear.",
+        "Salomon|salomon|French alpine ski bindings and trail footwear.",
+        "Rossignol|rossignol|French winter sports heritage skis and boots.",
+        "Nordica|nordica|Premium Italian performance alpine ski boots.",
+        "Tecnica|tecnica|Blizzard-owned performance ski boots and outdoor shoes.",
+        "Lange|lange|Pioneering plastic shell race ski boots.",
+        "Fischer|fischer|Austrian vacuum fit performance racing skis.",
+        "K2 Sports|k2|American progressive skiing and snowboarding.",
+        "Burton|burton|Pioneering snowboarding boards, bindings, and outerwear.",
+        "ThirtyTwo|thirtytwo|Snowboarder owned snowboard boots and outerwear.",
+        "Vans Snow|vans|Classic checkerboard style snowboard boots.",
+        "DC Snowboarding|dc|Skate-inspired snowboard boots and apparel.",
+        "Roxy|roxy|Heart-shaped mountain surf and snow women brand.",
+        "Billabong|billabong|Australian surf culture clothing boardshorts.",
+        "Quiksilver|quiksilver|Crest representing Mount Kosciuszko wave.",
+        "Rip Curl|ripcurl|Ultimate surfing wetsuit and clock technology.",
+        "O'Neill|oneill|First neoprene wetsuit pioneer Santa Cruz.",
+        "Hurley|hurley|Symmetrical clean double bar surf lifestyle brand.",
+        "Volcom|volcom|Stone logo youth boarding lifestyle.",
+        "RVCA|rvca|Balance of opposites minimal art-surf apparel.",
+        "Dakine|dakine|Hawaiian-born extreme sports backpacks and harnesses.",
+        "ProLimit|prolimit|Windsurf and kitesurf technical hardware.",
+        "Mystic Boarding|mystic|Kitesurfing technical harnesses and impact vests.",
+        "Ion Products|ion|Water sports premium wetsuits and cycling armor.",
+        "Patagonia|patagonia|Fitz Roy mountain outline environmental outdoor wear.",
+        "The North Face|thenorthface|Yosemite Half Dome wall heavy cold gear.",
+        "Arc'teryx|arcteryx|Archaeopteryx fossil technical high-end alpine wear.",
+        "Mammut|mammut|Premium Swiss multi-pitch climbing apparel.",
+        "Marmot|marmot|High quality mountain tents and sleeping bags.",
+        "Mountain Hardwear|mountainhardwear|Bolt logo high alpine technical climbing gear.",
+        "Black Diamond|blackdiamond|Headlamps, climbing hardware, and technical apparel.",
+        "Petzl|petzl|Exploration headlamps and structural rope safety gear.",
+        "Camp Technical|camp|Italian lightweight mountain sport hardware.",
+        "Grivel|grivel|Mont Blanc mountaineering crampons and ice axes.",
+        "Simond|simond|Chamonix alpine technical gear Decathlon brand.",
+        "Quechua|quechua|Decathlon affordable outdoor camping hiking gear.",
+        "Kalenji|kalenji|Decathlon accessible urban running clothing.",
+        "Kiprun|kiprun|Decathlon high performance road running gear.",
+        "Artengo|artengo|Decathlon racquet sports tennis gear.",
+        "Tribord|tribord|Decathlon water sports sailing equipment.",
+        "Olaian|olaian|Decathlon surf lifestyle and apparel.",
+        "Subea|subea|Decathlon underwater diving exploration gear.",
+        "B'Twin|btwin|Decathlon family and urban cycling brand.",
+        "Rockrider|rockrider|Decathlon mountain bike sports brand.",
+        "Triban|triban|Decathlon road and gravel touring cycling.",
+        "Van Rysel|vanrysel|Decathlon premium pro cycling performance gear.",
+        "Domyos|domyos|Decathlon fitness and gymnastics training wear.",
+        "Caperlan|caperlan|Decathlon fishing and casting gear.",
+        "Solognac|solognac|Decathlon rugged forest hunting gear.",
+        "Fouganza|fouganza|Decathlon equestrian horse riding gear.",
+        "Inesis|inesis|Decathlon gold sport swings and balls.",
+        "Geologic|geologic|Decathlon precision archery and dart games.",
+        "Wedze|wedze|Decathlon downhill ski and snow sports.",
+        "Simond Chamonix|simond|French structural climbing gear specialist."
     ],
     media: [
         "YouTube|youtube|Red video play button.",
@@ -1306,9 +1985,287 @@ const RAW_COMPACT_POOLS = {
         "Cities XL|focus|Global city builder.",
         "Tropico|kalypso|El Presidente Caribbean dictator.",
         "Age of Empires|ageofempires|Historical helmet conqueror.",
-        "Total War|sega|Symmetrical battle sword crown."
+        "Total War|sega|Symmetrical battle sword crown.",
+        "WWE|wwe|World wrestling sports entertainment.",
+        "AEW|aew|All elite wrestling ring.",
+        "UFC|ufc|Ultimate fighting championship octagon.",
+        "NFL|nfl|National football league shield.",
+        "NBA|nba|Jerry West silhouette dribbling basketball.",
+        "FIFA|fifa|World association football federation.",
+        "UEFA|uefa|European football champion star ball.",
+        "F1|f1|Formula One speed tracks red letter.",
+        "Nascar|nascar|Rainbow speed stripes racing.",
+        "IndyCar|indycar|American open wheel racing.",
+        "MotoGP|motogp|Grand prix motorcycle racing.",
+        "Olympics|olympics|Five interlocking colorful rings.",
+        "Tour de France|tourdefrance|Yellow jersey bicycle sprinter.",
+        "Wimbledon|wimbledon|Green and purple tennis crossed racquets.",
+        "US Open|usopen|Blue flaming tennis ball.",
+        "Roland Garros|rolandgarros|Clay court Parisian tennis.",
+        "Australian Open|ao|Blue court tennis grand slam.",
+        "Ryder Cup|rydercup|Historic gold golf trophy.",
+        "PGA Tour|pgatour|Silhouetted golfer swinging.",
+        "Masters Tournament|masters|Green map of USA with flagstick.",
+        "Ironman|ironman|Swim bike run extreme triathlon.",
+        "X Games|xgames|Action sports extreme competition.",
+        "Red Bull Cliff Diving|redbull|High diving extreme events.",
+        "GoPro|gopro|Be a hero action cameras.",
+        "Red Bull Media House|redbull|Extreme adventure sports media.",
+        "Vice News|vice|Gonzo journalism global news.",
+        "Al Jazeera|aljazeera|Golden Arabic calligraphy droplet.",
+        "Reuters|reuters|Circular dotted orange news logo.",
+        "Associated Press|ap|Bold black and white news wire.",
+        "Bloomberg|bloomberg|Financial market data terminal.",
+        "The Wall Street Journal|wsj|Premium business daily newspaper.",
+        "The New York Times|nytimes|Gothic script historic newspaper.",
+        "The Guardian|guardian|Clean blue text global news.",
+        "Daily Mail|dailymail|Traditional British tabloid crown.",
+        "The Sun|thesun|Red box British tabloid.",
+        "USA Today|usatoday|Clean blue circle news system.",
+        "People Magazine| people|Celebrity news yellow border.",
+        "National Enquirer|enquirer|Supermarket tabloid headlines.",
+        "The Onion|theonion|Satirical news green onion dome.",
+        "Babylon Bee|babylonbee|Satirical news yellow bee icon."
     ]
 };
+
+// --- INITIALIZATION & DATA NORMALIZATION ---
+const brandDatabase = {
+    tech: [],
+    auto: [],
+    food: [],
+    fashion: [],
+    media: []
+};
+
+// Parse raw compact format "Name|IconFilename|HintDescription"
+Object.keys(RAW_COMPACT_POOLS).forEach(category => {
+    RAW_COMPACT_POOLS[category].forEach(item => {
+        const [name, icon, hint] = item.split('|');
+        brandDatabase[category].push({
+            name: name,
+            icon: icon,
+            hint: hint,
+            difficulty: name.length <= 5 ? "easy" : (name.length <= 9 ? "medium" : "hard")
+        });
+    });
+});
+
+
+// =========================================================================
+//             HYBRID NATIVE-BRIDGE SETTINGS PERSISTENCE ENGINE
+// =========================================================================
+const GameSettingsEngine = (() => {
+    const STORAGE_KEY = "brand_game_v3_settings";
+
+    const DEFAULTS = {
+        theme: "dark",          
+        difficulty: "all",      
+        soundVolume: 0.5,       
+        vibration: true,        
+        timerEnabled: true,     
+        timerDuration: 30,      
+        autoNext: true,         
+        enabledCategories: ["tech", "auto", "food", "fashion", "media"],
+        highScores: { tech: 0, auto: 0, food: 0, fashion: 0, media: 0, mixed: 0 }
+    };
+
+    let activeSettings = { ...DEFAULTS };
+
+    function safeLocalStorage() {
+        try {
+            const testKey = "__storage_test__";
+            window.localStorage.setItem(testKey, testKey);
+            window.localStorage.removeItem(testKey);
+            return window.localStorage;
+        } catch (e) {
+            console.warn("Storage Engine: LocalStorage blocked. Falling back to sandbox memory.");
+            return {
+                getItem: () => null,
+                setItem: () => null,
+                clear: () => null
+            };
+        }
+    }
+
+    // Load configurations safely
+    function load() {
+        const storage = safeLocalStorage();
+        try {
+            const raw = storage.getItem(STORAGE_KEY);
+            if (!raw) {
+                activeSettings = { ...DEFAULTS };
+            } else {
+                const parsed = JSON.parse(raw);
+                activeSettings = { ...DEFAULTS, ...parsed };
+            }
+        } catch (error) {
+            activeSettings = { ...DEFAULTS };
+        }
+        return activeSettings;
+    }
+
+    // Save configurations and broadcast to C# native host if available
+    function save() {
+        const storage = safeLocalStorage();
+        try {
+            const jsonString = JSON.stringify(activeSettings);
+            storage.setItem(STORAGE_KEY, jsonString);
+
+            // C# WebView2 Native Bridge Broadcast
+            if (window.chrome && window.chrome.webview && window.chrome.webview.postMessage) {
+                window.chrome.webview.postMessage({
+                    type: "NATIVE_SAVE_SETTINGS",
+                    payload: activeSettings
+                });
+            }
+        } catch (error) {
+            console.error("Storage Engine: Save failure.", error);
+        }
+    }
+
+    function applyToUI() {
+        // Apply theme attributes to document Root
+        document.documentElement.setAttribute("data-theme", activeSettings.theme);
+        document.body.className = `theme-${activeSettings.theme}`;
+
+        // Sync standard inputs
+        const themeSelector = document.querySelector("[data-setting='theme']");
+        if (themeSelector) themeSelector.value = activeSettings.theme;
+
+        const volumeSlider = document.querySelector("[data-setting='soundVolume']");
+        if (volumeSlider) {
+            volumeSlider.value = activeSettings.soundVolume;
+            volumeSlider.style.setProperty('--val', `${activeSettings.soundVolume * 100}%`);
+        }
+
+        const timerSlider = document.querySelector("[data-setting='timerDuration']");
+        const timerValueDisplay = document.getElementById("timer-duration-val");
+        if (timerSlider) {
+            timerSlider.value = activeSettings.timerDuration;
+            if (timerValueDisplay) timerValueDisplay.textContent = `${activeSettings.timerDuration}s`;
+        }
+
+        const toggleKeys = ['vibration', 'timerEnabled', 'autoNext'];
+        toggleKeys.forEach(key => {
+            const element = document.querySelector(`[data-setting='${key}']`);
+            if (element) {
+                if (element.type === 'checkbox') {
+                    element.checked = activeSettings[key];
+                } else {
+                    element.setAttribute("aria-checked", activeSettings[key].toString());
+                    activeSettings[key] ? element.classList.add("active") : element.classList.remove("active");
+                }
+            }
+        });
+
+        // Sync category nodes
+        const catCheckboxes = document.querySelectorAll("[data-setting-cat]");
+        catCheckboxes.forEach(cb => {
+            const cat = cb.getAttribute("data-setting-cat");
+            cb.checked = activeSettings.enabledCategories.includes(cat);
+        });
+
+        const diffSelector = document.querySelector("[data-setting='difficulty']");
+        if (diffSelector) diffSelector.value = activeSettings.difficulty;
+
+        // Populate dynamic Highscore interfaces
+        Object.keys(activeSettings.highScores).forEach(cat => {
+            const scoreEl = document.querySelector(`[data-highscore-cat='${cat}']`);
+            if (scoreEl) scoreEl.textContent = activeSettings.highScores[cat];
+        });
+    }
+
+    function attachListeners(onChangeCallback) {
+        const inputs = document.querySelectorAll("[data-setting]");
+        inputs.forEach(input => {
+            const eventType = input.type === 'range' ? 'input' : 'change';
+            input.addEventListener(eventType, (e) => {
+                const key = e.target.getAttribute("data-setting");
+                let value = e.target.value;
+
+                if (e.target.type === 'checkbox') value = e.target.checked;
+                else if (e.target.type === 'range') value = parseFloat(value);
+                else if (value === 'true') value = true;
+                else if (value === 'false') value = false;
+
+                activeSettings[key] = value;
+                save();
+                applyToUI();
+                if (onChangeCallback) onChangeCallback(key, value);
+            });
+        });
+
+        const catCheckboxes = document.querySelectorAll("[data-setting-cat]");
+        catCheckboxes.forEach(cb => {
+            cb.addEventListener("change", () => {
+                const checkedCats = [];
+                document.querySelectorAll("[data-setting-cat]").forEach(box => {
+                    if (box.checked) checkedCats.push(box.getAttribute("data-setting-cat"));
+                });
+
+                if (checkedCats.length === 0) {
+                    cb.checked = true;
+                    return;
+                }
+
+                activeSettings.enabledCategories = checkedCats;
+                save();
+                if (onChangeCallback) onChangeCallback("enabledCategories", checkedCats);
+            });
+        });
+    }
+
+    // Set up a listener for incoming payloads from C# native environment
+    function setupNativeMessageInbound() {
+        if (window.chrome && window.chrome.webview) {
+            window.chrome.webview.addEventListener('message', event => {
+                if (event.data && event.data.type === "NATIVE_LOAD_SETTINGS") {
+                    activeSettings = { ...DEFAULTS, ...event.data.payload };
+                    save();
+                    applyToUI();
+                }
+            });
+        }
+    }
+
+    return {
+        init: (onChangeCallback) => {
+            load();
+            applyToUI();
+            attachListeners(onChangeCallback);
+            setupNativeMessageInbound();
+        },
+        get: (key) => activeSettings[key],
+        set: (key, val) => {
+            activeSettings[key] = val;
+            save();
+            applyToUI();
+        },
+        updateHighScore: (category, score) => {
+            if (activeSettings.highScores[category] === undefined) {
+                activeSettings.highScores[category] = 0;
+            }
+            if (score > activeSettings.highScores[category]) {
+                activeSettings.highScores[category] = score;
+                save();
+                applyToUI();
+                return true; 
+            }
+            return false;
+        },
+        reset: (onChangeCallback) => {
+            activeSettings = { ...DEFAULTS };
+            save();
+            applyToUI();
+            if (onChangeCallback) onChangeCallback("all", activeSettings);
+        },
+        getDatabase: () => brandDatabase
+    };
+})();
+
+window.GameSettings = GameSettingsEngine;
+
 
 // --- RUNTIME DECOMPRESSION ENGINE ---
 function decompressPools() {

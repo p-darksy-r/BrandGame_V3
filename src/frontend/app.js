@@ -257,12 +257,14 @@ const GAME_STATE = {
 
 let gameLoopId = null;
 
+// --- MASTER BOOTSTRAP INITIALIZATION ---
 document.addEventListener("DOMContentLoaded", () => {
     const headerVer = document.getElementById("header-version-badge");
     if (headerVer) headerVer.textContent = `v${GAME_VERSION}`;
     const footerVer = document.getElementById("footer-version-text");
     if (footerVer) footerVer.textContent = GAME_VERSION;
 
+    // Load configurations from either C# Webview Host or Fallback Browser Sandbox
     sendNativeRequest({ Action: "load_save" });
     setupEventHandlers();
     populatePageSelectDropdown();
@@ -275,7 +277,13 @@ function sendNativeRequest(payload) {
     } else {
         if (payload.Action === "load_save") {
             const raw = localStorage.getItem("brandgame_v3_savedata");
-            if (raw) GAME_STATE.saveData = JSON.parse(raw);
+            if (raw) {
+                try {
+                    GAME_STATE.saveData = JSON.parse(raw);
+                } catch (e) {
+                    console.error("Failed to parse local save data:", e);
+                }
+            }
             if (GAME_STATE.saveData.gameVersion !== GAME_VERSION) {
                 GAME_STATE.saveData.gameVersion = GAME_VERSION;
                 sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
@@ -301,6 +309,9 @@ function onSaveLoaded(data) {
         GAME_STATE.saveData = { ...GAME_STATE.saveData, ...parsedData };
         if (!GAME_STATE.saveData.customLevels) GAME_STATE.saveData.customLevels = [];
     }
+    
+    // Sync UI elements after parameters have loaded!
+    sfx.volume = GAME_STATE.saveData.volume;
     updateGlobalStatsHUD();
     renderMainMenuProgress();
     syncSettingsPanel();
@@ -497,7 +508,7 @@ function setupEventHandlers() {
         }
     });
 
-    // Graphics scale Settings (Web compatibility safe)
+    // Window Resolution Setup
     ["sm", "md", "lg"].forEach(sz => {
         const mapping = { sm: { w: 800, h: 600 }, md: { w: 1024, h: 768 }, lg: { w: 1280, h: 960 } };
         safeAddEventListener(`btn-win-${sz}`, "click", () => {
@@ -509,6 +520,7 @@ function setupEventHandlers() {
         });
     });
 
+    // Rendering Quality Toggles
     safeAddEventListener("btn-qual-low", "click", () => {
         GAME_STATE.saveData.quality = "low";
         applyVisualSettings();
@@ -520,6 +532,7 @@ function setupEventHandlers() {
         sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
     });
 
+    // FPS Limiter Config
     ["30", "60", "uncapped"].forEach(fps => {
         safeAddEventListener(`btn-fps-${fps}`, "click", () => {
             GAME_STATE.saveData.fpsLimit = fps;
@@ -528,7 +541,7 @@ function setupEventHandlers() {
         });
     });
 
-    // Flexible inputs supporting both target patterns
+    // Integrated Brightness Slider
     const briInput = document.getElementById("settings-brightness") || document.getElementById("brightness-slider");
     if (briInput) {
         briInput.addEventListener("input", (e) => {
@@ -543,6 +556,7 @@ function setupEventHandlers() {
         });
     }
 
+    // V-Sync Interface Toggles
     safeAddEventListener("btn-vsync-off", "click", () => {
         GAME_STATE.saveData.vsync = false;
         applyVSyncStatus();
@@ -554,14 +568,16 @@ function setupEventHandlers() {
         sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
     });
 
-    // Flexible Vibration Button Lookup
-    const vibBtnId = document.getElementById("btn-vibrate-toggle") || document.getElementById("vibration-toggle") ? 
-                     (document.getElementById("btn-vibrate-toggle") ? "btn-vibrate-toggle" : "vibration-toggle") : "btn-vibrate-toggle";
-    safeAddEventListener(vibBtnId, "click", () => {
-        GAME_STATE.saveData.vibration = !GAME_STATE.saveData.vibration;
-        updateVibrationButton();
-        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
-    });
+    // Unified Vibration Trigger Hook
+    const getVibElement = () => document.getElementById("btn-vibrate-toggle") || document.getElementById("vibration-toggle");
+    const vibBtn = getVibElement();
+    if (vibBtn) {
+        vibBtn.addEventListener("click", () => {
+            GAME_STATE.saveData.vibration = !GAME_STATE.saveData.vibration;
+            updateVibrationButton();
+            sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
+        });
+    }
 
     safeAddEventListener("btn-settings-close", "click", () => {
         const volSlider = document.getElementById("settings-volume") || document.getElementById("volume-slider");
@@ -573,6 +589,7 @@ function setupEventHandlers() {
         showScreen("screen-main-menu");
     });
 
+    // Master Volume Control Integration
     const volSlider = document.getElementById("settings-volume") || document.getElementById("volume-slider");
     if (volSlider) {
         volSlider.addEventListener("input", (e) => {
@@ -587,6 +604,7 @@ function setupEventHandlers() {
         });
     }
 
+    // Difficulty Select Buttons
     ["easy", "medium", "hard"].forEach(df => {
         safeAddEventListener(`diff-${df}`, "click", () => {
             GAME_STATE.saveData.difficulty = df;
@@ -1316,6 +1334,7 @@ function applyVSyncStatus() {
 }
 
 function syncSettingsPanel() {
+    // 1. Sync Volume Control Elements
     const volSlider = document.getElementById("settings-volume") || document.getElementById("volume-slider");
     if (volSlider) volSlider.value = GAME_STATE.saveData.volume;
     sfx.volume = GAME_STATE.saveData.volume;
@@ -1323,6 +1342,7 @@ function syncSettingsPanel() {
     const volLabel = document.getElementById("volume-label") || document.getElementById("lbl-volume");
     if (volLabel) volLabel.textContent = `${Math.round(GAME_STATE.saveData.volume * 100)}%`;
     
+    // 2. Sync Brightness Control Elements
     const briSlider = document.getElementById("settings-brightness") || document.getElementById("brightness-slider");
     const bright = GAME_STATE.saveData.brightness || 100;
     if (briSlider) briSlider.value = bright;
@@ -1330,6 +1350,7 @@ function syncSettingsPanel() {
     const briLabel = document.getElementById("brightness-label") || document.getElementById("lbl-brightness");
     if (briLabel) briLabel.textContent = `${bright}%`;
 
+    // 3. Sync Remaining Engine Profiles
     updateDifficultyToggles();
     updateResolutionButtons();
     updateVibrationButton();
