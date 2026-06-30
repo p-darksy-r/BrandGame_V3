@@ -80,6 +80,26 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("header-version-badge").textContent = `v${GAME_VERSION}`;
     document.getElementById("footer-version-text").textContent = GAME_VERSION;
 
+    // Inject dynamic CSS to handle scrollbar stylings for the 5-column grids cleanly
+    const styleEl = document.createElement("style");
+    styleEl.textContent = `
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(59, 130, 246, 0.4);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(59, 130, 246, 0.7);
+        }
+    `;
+    document.head.appendChild(styleEl);
+
     sendNativeRequest({ Action: "load_save" });
     setupEventHandlers();
     populatePageSelectDropdown();
@@ -278,7 +298,9 @@ function setupEventHandlers() {
         }
     });
 
-    // Resolution Scale settings (resizes viewport wrapper cleanly)
+    // --- INSTANT SAVE & SETTINGS HANDLING ---
+    
+    // Resolution Scale settings
     ["sm", "md", "lg"].forEach(sz => {
         const mapping = { sm: { w: 800, h: 600 }, md: { w: 1024, h: 768 }, lg: { w: 1280, h: 960 } };
         document.getElementById(`btn-win-${sz}`).addEventListener("click", () => {
@@ -286,6 +308,7 @@ function setupEventHandlers() {
             updateResolutionButtons();
             applyWindowBounds();
             sendNativeRequest({ Action: "resize_window", Width: mapping[sz].w, Height: mapping[sz].h });
+            sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
         });
     });
 
@@ -293,10 +316,12 @@ function setupEventHandlers() {
     document.getElementById("btn-qual-low").addEventListener("click", () => {
         GAME_STATE.saveData.quality = "low";
         applyVisualSettings();
+        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
     });
     document.getElementById("btn-qual-high").addEventListener("click", () => {
         GAME_STATE.saveData.quality = "high";
         applyVisualSettings();
+        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
     });
 
     // FPS clamps
@@ -304,6 +329,7 @@ function setupEventHandlers() {
         document.getElementById(`btn-fps-${fps}`).addEventListener("click", () => {
             GAME_STATE.saveData.fpsLimit = fps;
             applyFrameBudgeting();
+            sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
         });
     });
 
@@ -313,22 +339,26 @@ function setupEventHandlers() {
         GAME_STATE.saveData.brightness = parseInt(val);
         document.getElementById("brightness-label").textContent = `${val}%`;
         applyVisualSettings();
+        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
     });
 
     // VSync toggle
     document.getElementById("btn-vsync-off").addEventListener("click", () => {
         GAME_STATE.saveData.vsync = false;
         applyVSyncStatus();
+        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
     });
     document.getElementById("btn-vsync-on").addEventListener("click", () => {
         GAME_STATE.saveData.vsync = true;
         applyVSyncStatus();
+        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
     });
 
     // Vibration toggler
     document.getElementById("btn-vibrate-toggle").addEventListener("click", () => {
         GAME_STATE.saveData.vibration = !GAME_STATE.saveData.vibration;
         updateVibrationButton();
+        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
     });
 
     document.getElementById("btn-settings-close").addEventListener("click", () => {
@@ -339,13 +369,18 @@ function setupEventHandlers() {
     });
 
     document.getElementById("settings-volume").addEventListener("input", (e) => {
-        document.getElementById("volume-label").textContent = `${Math.round(e.target.value * 100)}%`;
+        const val = parseFloat(e.target.value);
+        GAME_STATE.saveData.volume = val;
+        sfx.volume = val;
+        document.getElementById("volume-label").textContent = `${Math.round(val * 100)}%`;
+        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
     });
 
     ["easy", "medium", "hard"].forEach(df => {
         document.getElementById(`diff-${df}`).addEventListener("click", () => {
             GAME_STATE.saveData.difficulty = df;
             updateDifficultyToggles();
+            sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData }); // Instant Save
         });
     });
 
@@ -477,15 +512,17 @@ function selectCategory(catId, catLabel) {
     document.getElementById("level-category-title").textContent = catLabel;
     document.getElementById("level-category-badge").textContent = catLabel;
     
-    const maxUnlocked = GAME_STATE.saveData.levelsUnlocked[catId] || 1;
-    GAME_STATE.levelSelectPage = Math.min(Math.floor((maxUnlocked - 1) / 10), 9);
-    document.getElementById("select-level-page").value = GAME_STATE.levelSelectPage;
+    // Hide the legacy pagination select dropdown box, since users can now scroll cleanly
+    const parentSel = document.getElementById("select-level-page");
+    if (parentSel && parentSel.parentElement) {
+        parentSel.parentElement.classList.add("hidden");
+    }
 
-    document.getElementById("select-level-page").parentElement.classList.remove("hidden");
     renderLevelButtonsList();
     showScreen("screen-levels");
 }
 
+// --- RENDER SCROLLABLE 5-COLUMN LEVEL GRID ---
 function renderLevelButtonsList() {
     const grid = document.getElementById("level-buttons-grid");
     grid.innerHTML = "";
@@ -493,18 +530,24 @@ function renderLevelButtonsList() {
     const catId = GAME_STATE.currentCategory;
     const unlockedMax = GAME_STATE.saveData.levelsUnlocked[catId] || 1;
     
-    const startIdx = GAME_STATE.levelSelectPage * 10 + 1;
-    const endIdx = startIdx + 9;
+    // Force CSS styles for exactly 5 columns and dynamic scrollable layout
+    grid.className = "grid grid-cols-5 gap-3 max-h-[360px] overflow-y-auto pr-2 custom-scrollbar";
+    grid.style.maxHeight = "360px";
+    grid.style.overflowY = "auto";
+    grid.style.display = "grid";
+    grid.style.gridTemplateColumns = "repeat(5, minmax(0, 1fr))";
 
-    for (let i = startIdx; i <= endIdx; i++) {
+    // Progressive rendering of up to 100 level nodes per category
+    for (let i = 1; i <= 100; i++) {
         const isLocked = i > unlockedMax;
         const btn = document.createElement("button");
+        
         if (isLocked) {
-            btn.className = "flex flex-col items-center justify-center p-6 bg-gray-950 border border-gray-900 rounded-xl opacity-40 cursor-not-allowed";
-            btn.innerHTML = `<span class="text-gray-600 text-2xl">🔒</span><span class="gaming-font text-[10px] font-bold text-gray-600 mt-2">LVL ${i}</span>`;
+            btn.className = "flex flex-col items-center justify-center p-3 bg-gray-950/60 border border-gray-900 rounded-xl opacity-40 cursor-not-allowed aspect-square";
+            btn.innerHTML = `<span class="text-gray-600 text-lg">🔒</span><span class="gaming-font text-[9px] font-bold text-gray-600 mt-1">LVL ${i}</span>`;
         } else {
-            btn.className = "flex flex-col items-center justify-center p-6 bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-blue-500 rounded-xl transition group";
-            btn.innerHTML = `<span class="text-blue-400 text-lg group-hover:scale-110 transition">★</span><span class="gaming-font text-xs font-black text-white mt-2">LEVEL ${i}</span>`;
+            btn.className = "flex flex-col items-center justify-center p-3 bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-blue-500 rounded-xl transition group aspect-square";
+            btn.innerHTML = `<span class="text-blue-400 text-sm group-hover:scale-110 transition">★</span><span class="gaming-font text-[10px] font-black text-white mt-1">LEVEL ${i}</span>`;
             btn.addEventListener("click", () => launchLevel(i));
         }
         grid.appendChild(btn);
@@ -516,7 +559,10 @@ function selectCustomCategory() {
     document.getElementById("level-category-title").textContent = "Custom Arena Rooms";
     document.getElementById("level-category-badge").textContent = "CUSTOM";
 
-    document.getElementById("select-level-page").parentElement.classList.add("hidden");
+    const parentSel = document.getElementById("select-level-page");
+    if (parentSel && parentSel.parentElement) {
+        parentSel.parentElement.classList.add("hidden");
+    }
 
     const grid = document.getElementById("level-buttons-grid");
     grid.innerHTML = "";
@@ -533,14 +579,19 @@ function selectCustomCategory() {
         return;
     }
 
-    grid.className = "grid grid-cols-2 sm:grid-cols-5 gap-4";
+    // Adapt custom selection view to columns of 5, scrollable
+    grid.className = "grid grid-cols-5 gap-3 max-h-[360px] overflow-y-auto pr-2 custom-scrollbar";
+    grid.style.maxHeight = "360px";
+    grid.style.overflowY = "auto";
+    grid.style.display = "grid";
+    grid.style.gridTemplateColumns = "repeat(5, minmax(0, 1fr))";
 
     list.forEach((room, index) => {
         const btn = document.createElement("button");
-        btn.className = "flex flex-col items-center justify-center p-6 bg-gray-900 hover:bg-emerald-950/40 border border-gray-800 hover:border-emerald-500 rounded-xl transition group text-center";
+        btn.className = "flex flex-col items-center justify-center p-3 bg-gray-900 hover:bg-emerald-950/40 border border-gray-800 hover:border-emerald-500 rounded-xl transition group text-center aspect-square";
         btn.innerHTML = `
-            <span class="text-emerald-400 text-lg group-hover:scale-110 transition">☄</span>
-            <span class="gaming-font text-[10px] font-black text-white mt-2 line-clamp-2 uppercase">${room.name}</span>
+            <span class="text-emerald-400 text-base group-hover:scale-110 transition">☄</span>
+            <span class="gaming-font text-[9px] font-black text-white mt-1 line-clamp-2 uppercase">${room.name}</span>
         `;
         btn.addEventListener("click", () => launchCustomLevel(index));
         grid.appendChild(btn);
