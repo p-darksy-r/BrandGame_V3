@@ -42,34 +42,186 @@ class RetroAudioSynth {
 const sfx = new RetroAudioSynth();
 const GAME_VERSION = "3.0.0";
 
-// --- DEDICATED OFFLINE/WEB STANDALONE LEVEL BACKUPS ---
-const WEB_FALLBACK_DATABASE = {
+// --- MASTER DYNAMIC BRAND DATABASE (125 BRANDS) ---
+const BRAND_DATABASE = {
     tech: [
         { name: "Google", slug: "google", hint: "The world's largest search engine." },
         { name: "Apple", slug: "apple", hint: "Known for iPhones, iPads, and Mac computers." },
-        { name: "Microsoft", slug: "microsoft", hint: "Creator of the Windows Operating System." }
+        { name: "Microsoft", slug: "microsoft", hint: "Creator of the Windows Operating System." },
+        { name: "GitHub", slug: "github", hint: "The home for git repositories and open source." },
+        { name: "Amazon", slug: "amazon", hint: "E-commerce giant and cloud services pioneer." },
+        { name: "Meta", slug: "meta", hint: "Parent company of Facebook, Instagram, and WhatsApp." },
+        { name: "Intel", slug: "intel", hint: "Leading manufacturer of x86 microprocessors." },
+        { name: "AMD", slug: "amd", hint: "Makers of Ryzen processors and Radeon graphics cards." },
+        { name: "NVIDIA", slug: "nvidia", hint: "Famous for GeForce graphics cards and AI computing." },
+        { name: "Discord", slug: "discord", hint: "Voice, video, and text communication platform for gamers." },
+        { name: "Slack", slug: "slack", hint: "Channel-based business messaging platform." },
+        { name: "Spotify", slug: "spotify", hint: "Green circular icon music streaming giant." },
+        { name: "Steam", slug: "steam", hint: "Valve's massive PC gaming distribution platform." },
+        { name: "Nintendo", slug: "nintendo", hint: "Gaming giant behind Mario, Zelda, and the Switch." },
+        { name: "PlayStation", slug: "playstation", hint: "Sony's iconic home gaming console brand." },
+        { name: "Xbox", slug: "xbox", hint: "Microsoft's competitive home gaming console brand." },
+        { name: "Linux", slug: "linux", hint: "Iconic open-source kernel represented by Tux the penguin." },
+        { name: "Raspberry Pi", slug: "raspberrypi", hint: "Ultra-affordable single-board computers." },
+        { name: "Android", slug: "android", hint: "Google's open-source mobile operating system." },
+        { name: "Zoom", slug: "zoom", hint: "Video conferencing platform that surged in 2020." },
+        { name: "Samsung", slug: "samsung", hint: "Korean tech giant famous for Galaxy devices." },
+        { name: "Sony", slug: "sony", hint: "Japanese conglomerate behind Walkman and TVs." },
+        { name: "Adobe", slug: "adobe", hint: "Creative software suite featuring Photoshop." },
+        { name: "Figma", slug: "figma", hint: "Collaborative vector design and prototyping tool." },
+        { name: "Cloudflare", slug: "cloudflare", hint: "Web infrastructure and security provider with an orange cloud logo." }
     ],
     auto: [
         { name: "Tesla", slug: "tesla", hint: "Electric vehicle giant founded by Elon Musk." },
-        { name: "Ford", slug: "ford", hint: "Classic American auto-maker founded in Detroit." },
-        { name: "Ferrari", slug: "ferrari", hint: "Prestigious red Italian luxury sports cars." }
+        { name: "Ford", slug: "ford", hint: "Classic American automaker founded in Detroit." },
+        { name: "Ferrari", slug: "ferrari", hint: "Prestigious red Italian luxury sports cars." },
+        { name: "Porsche", slug: "porsche", hint: "German luxury sports car maker famous for the 911." },
+        { name: "BMW", slug: "bmw", hint: "Bavarian Motor Works, blue and white circular logo." },
+        { name: "Mercedes-Benz", slug: "mercedesbenz", hint: "German luxury manufacturer with a 3-pointed star." },
+        { name: "Audi", slug: "audi", hint: "German brand symbolized by four interlocking rings." },
+        { name: "Volkswagen", slug: "volkswagen", hint: "German automaker whose name translates to 'People's Car'." },
+        { name: "Toyota", slug: "toyota", hint: "Japanese giant known for reliability and the Prius hybrid." },
+        { name: "Honda", slug: "honda", hint: "Japanese brand famous for Civics and motorcycles." },
+        { name: "Nissan", slug: "nissan", hint: "Japanese brand behind the GT-R and Leaf EV." },
+        { name: "Hyundai", slug: "hyundai", hint: "South Korean manufacturer with a slanted 'H' logo." },
+        { name: "Chevrolet", slug: "chevrolet", hint: "American brand with the iconic gold bowtie logo." },
+        { name: "Jeep", slug: "jeep", hint: "Rugged American brand famous for off-road SUVs." },
+        { name: "Dodge", slug: "dodge", hint: "American muscle brand behind the Charger and Challenger." },
+        { name: "Lamborghini", slug: "lamborghini", hint: "Exotic Italian supercars with a charging bull logo." },
+        { name: "Aston Martin", slug: "astonmartin", hint: "British luxury brand famous as James Bond's ride." },
+        { name: "Bentley", slug: "bentley", hint: "Ultra-luxury British manufacturer with a winged 'B' logo." },
+        { name: "Jaguar", slug: "jaguar", hint: "British luxury brand with a leaping wildcat logo." },
+        { name: "Subaru", slug: "subaru", hint: "Japanese brand known for symmetrical AWD." },
+        { name: "Mazda", slug: "mazda", hint: "Japanese brand famous for the MX-5 Miata and rotary engines." },
+        { name: "Lexus", slug: "lexus", hint: "Toyota's luxury vehicle division." },
+        { name: "Volvo", slug: "volvo", hint: "Swedish manufacturer globally famous for passenger safety." },
+        { name: "McLaren", slug: "mclaren", hint: "British supercar manufacturer with deep F1 racing roots." },
+        { name: "Land Rover", slug: "landrover", hint: "British all-terrain luxury SUV brand." }
     ],
     food: [
         { name: "Coca-Cola", slug: "cocacola", hint: "Iconic carbonated cola soft drink." },
         { name: "McDonald's", slug: "mcdonalds", hint: "Fast food giant famous for Golden Arches." },
-        { name: "Pepsi", slug: "pepsi", hint: "Classic blue & red circular soda brand." }
+        { name: "Pepsi", slug: "pepsi", hint: "Classic blue & red circular soda brand." },
+        { name: "Starbucks", slug: "starbucks", hint: "Seattle-born coffee house with a green siren." },
+        { name: "Burger King", slug: "burgerking", hint: "Home of the flame-broiled Whopper." },
+        { name: "Subway", slug: "subway", hint: "Green and yellow sandwich chain famous for footlongs." },
+        { name: "Domino's", slug: "dominos", hint: "World's largest pizza delivery chain represented by a domino tile." },
+        { name: "KFC", slug: "kfc", hint: "Kentucky Fried Chicken, founded by Colonel Sanders." },
+        { name: "Nestle", slug: "nestle", hint: "Swiss food and beverage giant with a bird's nest logo." },
+        { name: "Heineken", slug: "heineken", hint: "Dutch pale lager in a green bottle with a red star." },
+        { name: "Red Bull", slug: "redbull", hint: "Energy drink that 'gives you wings'." },
+        { name: "Monster Energy", slug: "monsterenergy", hint: "Black energy drink can with a green claw-mark logo." },
+        { name: "Nutella", slug: "nutella", hint: "Famous cocoa-hazelnut spread." },
+        { name: "Oreo", slug: "oreo", hint: "World's best-selling cream-filled sandwich cookie." },
+        { name: "Kellogg's", slug: "kelloggs", hint: "American cereal multinational behind Frosted Flakes." },
+        { name: "Lay's", slug: "lays", hint: "Popular thin potato chip brand." },
+        { name: "Doritos", slug: "doritos", hint: "Flavored tortilla chips with a distinct triangular design." },
+        { name: "Taco Bell", slug: "tacobell", hint: "Mexican-inspired fast-food chain with a purple bell logo." },
+        { name: "Pizza Hut", slug: "pizzahut", hint: "Classic red-roofed pan pizza parlor chain." },
+        { name: "Pringles", slug: "pringles", hint: "Stackable potato crisps in a tube with a mustached mascot." },
+        { name: "Budweiser", slug: "budweiser", hint: "American lager styled as the 'King of Beers'." },
+        { name: "Sprite", slug: "sprite", hint: "Lemon-lime flavored caffeine-free soft drink." },
+        { name: "Fanta", slug: "fanta", hint: "Fruit-flavored carbonated soft drink line." },
+        { name: "Heinz", slug: "heinz", hint: "Famous for its '57 Varieties' of ketchup." },
+        { name: "Guinness", slug: "guinness", hint: "Dark Irish dry stout with an iconic gold harp logo." }
     ],
     fashion: [
         { name: "Nike", slug: "nike", hint: "Athletic apparel brand with a famous 'Swoosh' logo." },
         { name: "Adidas", slug: "adidas", hint: "Famous German three-stripes sports brand." },
-        { name: "Gucci", slug: "gucci", hint: "High-end luxury Italian fashion designer." }
+        { name: "Gucci", slug: "gucci", hint: "High-end luxury Italian fashion designer with double 'G's." },
+        { name: "Louis Vuitton", slug: "louisvuitton", hint: "French luxury house renowned for LV monogram trunks." },
+        { name: "Chanel", slug: "chanel", hint: "French fashion house behind interlocking 'C's." },
+        { name: "Dior", slug: "dior", hint: "Prestigious French luxury goods company founded by Christian." },
+        { name: "Hermes", slug: "hermes", hint: "Ultra-exclusive French luxury brand famous for Birkin bags." },
+        { name: "Prada", slug: "prada", hint: "Italian luxury fashion house founded by Mario Prada." },
+        { name: "Rolex", slug: "rolex", hint: "Premier Swiss watchmaker symbolized by a golden crown." },
+        { name: "Puma", slug: "puma", hint: "German sportswear brand with a leaping cat emblem." },
+        { name: "Under Armour", slug: "underarmour", hint: "American sports equipment brand with interlocking 'U' and 'A'." },
+        { name: "Supreme", slug: "supreme", hint: "Streetwear brand famous for its red box logo." },
+        { name: "Calvin Klein", slug: "calvinklein", hint: "American fashion house known for minimalist underwear." },
+        { name: "Tommy Hilfiger", slug: "tommyhilfiger", hint: "American brand with a blue, red, and white flag block logo." },
+        { name: "Levi's", slug: "levis", hint: "American clothing company pioneer of blue denim jeans." },
+        { name: "Zara", slug: "zara", hint: "Spanish fast-fashion powerhouse." },
+        { name: "H&M", slug: "hm", hint: "Swedish multinational fast-fashion retailer." },
+        { name: "Versace", slug: "versace", hint: "Italian luxury brand featuring a Medusa head logo." },
+        { name: "Armani", slug: "armani", hint: "Italian luxury fashion house founded by Giorgio." },
+        { name: "Burberry", slug: "burberry", hint: "British luxury brand famous for trench coats and tartan." },
+        { name: "Cartier", slug: "cartier", hint: "French luxury watch and jewelry conglomerate." },
+        { name: "Tiffany & Co.", slug: "tiffanyandco", hint: "American luxury jeweler famous for its robin's egg blue boxes." },
+        { name: "Oakley", slug: "oakley", hint: "American sports performance equipment and stylish eyewear." },
+        { name: "Ray-Ban", slug: "rayban", hint: "American-Italian brand behind Wayfarer and Aviator sunglasses." },
+        { name: "Vans", slug: "vans", hint: "American manufacturer of skateboarding shoes." }
     ],
     media: [
         { name: "YouTube", slug: "youtube", hint: "Red play-button video-sharing giant." },
         { name: "Netflix", slug: "netflix", hint: "Global movie streaming network with red branding." },
-        { name: "Spotify", slug: "spotify", hint: "Green music and podcast streaming service." }
+        { name: "Spotify", slug: "spotify", hint: "Green music and podcast streaming service." },
+        { name: "TikTok", slug: "tiktok", hint: "Short-form mobile video platform with a cyan/magenta note." },
+        { name: "Instagram", slug: "instagram", hint: "Meta-owned photo and video sharing network." },
+        { name: "Facebook", slug: "facebook", hint: "The social network founded by Mark Zuckerberg." },
+        { name: "X", slug: "twitter", hint: "The bird app microblogging platform rebranded as X." },
+        { name: "Reddit", slug: "reddit", hint: "The 'front page of the internet' with an orange alien mascot." },
+        { name: "Twitch", slug: "twitch", hint: "Amazon-owned live streaming service for gamers." },
+        { name: "Pinterest", slug: "pinterest", hint: "Image sharing and social media service for pinboard inspiration." },
+        { name: "Snapchat", slug: "snapchat", hint: "Multimedia messaging app represented by a yellow ghost logo." },
+        { name: "LinkedIn", slug: "linkedin", hint: "Professional networking and job recruitment platform." },
+        { name: "Disney", slug: "disney", hint: "Entertainment empire represented by Sleeping Beauty's castle." },
+        { name: "Warner Bros.", slug: "warnerbros", hint: "Major film studio with a classic golden shield logo." },
+        { name: "HBO", slug: "hbo", hint: "Home Box Office, premium television cable network." },
+        { name: "Wikipedia", slug: "wikipedia", hint: "Free, open-collaborative online encyclopedia." },
+        { name: "BBC", slug: "bbc", hint: "British public service broadcaster using three block letters." },
+        { name: "CNN", slug: "cnn", hint: "American basic cable news channel with a red stencil logo." },
+        { name: "The New York Times", slug: "nytimes", hint: "Historic American newspaper with blackletter typeface." },
+        { name: "Paramount", slug: "paramount", hint: "Classic Hollywood studio with a mountain surrounded by stars." },
+        { name: "Crunchyroll", slug: "crunchyroll", hint: "Global anime and manga distribution network." },
+        { name: "Sega", slug: "sega", hint: "Japanese video game developer behind Sonic the Hedgehog." },
+        { name: "Pixar", slug: "pixar", hint: "CGI animation studio represented by an active desk lamp." },
+        { name: "Twilio", slug: "twilio", hint: "Cloud communications platform as a service." },
+        { name: "Zoom", slug: "zoom", hint: "Cloud video conferencing software." }
     ]
 };
+
+// --- SEEDED DETERMINISTIC SELECTION ENGINE ---
+function seededShuffle(array, seed) {
+    let m = 0x80000000, a = 1103515245, c = 12345;
+    let state = seed ? seed : Math.floor(Math.random() * (m - 1));
+    function nextInt() {
+        state = (a * state + c) % m;
+        return state;
+    }
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = nextInt() % (i + 1);
+        const temp = shuffled[i];
+        shuffled[i] = shuffled[j];
+        shuffled[j] = temp;
+    }
+    return shuffled;
+}
+
+function getBrandsForLevel(category, level) {
+    const pool = BRAND_DATABASE[category] || BRAND_DATABASE.tech;
+    
+    // Dynamic difficulty equation:
+    // $$B = \lfloor \frac{L - 1}{10} \rfloor + 3$$
+    // Brands to guess scales by +1 every 10 levels, starting at 3.
+    const brandCount = Math.floor((level - 1) / 10) + 3;
+
+    let hash = 0;
+    for (let i = 0; i < category.length; i++) {
+        hash = category.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const seed = Math.abs(hash + level);
+
+    const shuffled = seededShuffle(pool, seed);
+    const selected = [];
+
+    for (let i = 0; i < brandCount; i++) {
+        selected.push(shuffled[i % shuffled.length]);
+    }
+
+    return selected;
+}
 
 // --- GAME STATE SYSTEM ---
 const GAME_STATE = {
@@ -121,7 +273,6 @@ function sendNativeRequest(payload) {
     if (window.chrome && window.chrome.webview && window.chrome.webview.postMessage) {
         window.chrome.webview.postMessage(payload);
     } else {
-        // Full stand-alone web storage fallback if running on standard browsers
         if (payload.Action === "load_save") {
             const raw = localStorage.getItem("brandgame_v3_savedata");
             if (raw) GAME_STATE.saveData = JSON.parse(raw);
@@ -274,7 +425,11 @@ function setupEventHandlers() {
         renderCategoryCards();
         showScreen("screen-categories");
     });
-    safeAddEventListener("btn-menu-settings", "click", () => showScreen("screen-settings"));
+    
+    safeAddEventListener("btn-menu-settings", "click", () => {
+        syncSettingsPanel();
+        showScreen("screen-settings");
+    });
     
     safeAddEventListener("btn-menu-exit", "click", () => {
         if (confirm("Are you sure you want to close the game?")) {
@@ -373,12 +528,13 @@ function setupEventHandlers() {
         });
     });
 
-    const briInput = document.getElementById("settings-brightness");
+    // Flexible inputs supporting both target patterns
+    const briInput = document.getElementById("settings-brightness") || document.getElementById("brightness-slider");
     if (briInput) {
         briInput.addEventListener("input", (e) => {
             const val = e.target.value;
             GAME_STATE.saveData.brightness = parseInt(val);
-            const lbl = document.getElementById("brightness-label");
+            const lbl = document.getElementById("brightness-label") || document.getElementById("lbl-brightness");
             if (lbl) lbl.textContent = `${val}%`;
             applyVisualSettings();
         });
@@ -398,14 +554,17 @@ function setupEventHandlers() {
         sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
     });
 
-    safeAddEventListener("btn-vibrate-toggle", "click", () => {
+    // Flexible Vibration Button Lookup
+    const vibBtnId = document.getElementById("btn-vibrate-toggle") || document.getElementById("vibration-toggle") ? 
+                     (document.getElementById("btn-vibrate-toggle") ? "btn-vibrate-toggle" : "vibration-toggle") : "btn-vibrate-toggle";
+    safeAddEventListener(vibBtnId, "click", () => {
         GAME_STATE.saveData.vibration = !GAME_STATE.saveData.vibration;
         updateVibrationButton();
         sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
     });
 
     safeAddEventListener("btn-settings-close", "click", () => {
-        const volSlider = document.getElementById("settings-volume");
+        const volSlider = document.getElementById("settings-volume") || document.getElementById("volume-slider");
         if (volSlider) {
             GAME_STATE.saveData.volume = parseFloat(volSlider.value);
             sfx.volume = GAME_STATE.saveData.volume;
@@ -414,13 +573,13 @@ function setupEventHandlers() {
         showScreen("screen-main-menu");
     });
 
-    const volSlider = document.getElementById("settings-volume");
+    const volSlider = document.getElementById("settings-volume") || document.getElementById("volume-slider");
     if (volSlider) {
         volSlider.addEventListener("input", (e) => {
             const val = parseFloat(e.target.value);
             GAME_STATE.saveData.volume = val;
             sfx.volume = val;
-            const lbl = document.getElementById("volume-label");
+            const lbl = document.getElementById("volume-label") || document.getElementById("lbl-volume");
             if (lbl) lbl.textContent = `${Math.round(val * 100)}%`;
         });
         volSlider.addEventListener("change", () => {
@@ -573,7 +732,7 @@ function renderCategoryCards() {
 
 function selectCategory(catId, catLabel) {
     GAME_STATE.currentCategory = catId;
-    GAME_STATE.levelSelectPage = 0; // Reset to page 1 on category change
+    GAME_STATE.levelSelectPage = 0;
     
     const catTitle = document.getElementById("level-category-title");
     if (catTitle) catTitle.textContent = catLabel;
@@ -584,7 +743,7 @@ function selectCategory(catId, catLabel) {
     if (pageSelect) {
         pageSelect.value = "0";
         if (pageSelect.parentElement) {
-            pageSelect.parentElement.classList.remove("hidden"); // Ensure levels page-select is visible
+            pageSelect.parentElement.classList.remove("hidden");
         }
     }
 
@@ -606,7 +765,6 @@ function renderLevelButtonsList() {
     grid.style.display = "grid";
     grid.style.gridTemplateColumns = "repeat(5, minmax(0, 1fr))";
 
-    // Dynamic Pagination Solver: Show 10 levels based on dropdown page
     const startLevel = (GAME_STATE.levelSelectPage * 10) + 1;
     const endLevel = Math.min(startLevel + 9, 100);
 
@@ -636,7 +794,7 @@ function selectCustomCategory() {
 
     const parentSel = document.getElementById("select-level-page");
     if (parentSel && parentSel.parentElement) {
-        parentSel.parentElement.classList.add("hidden"); // Hide standard page dropdown on custom category
+        parentSel.parentElement.classList.add("hidden");
     }
 
     const grid = document.getElementById("level-buttons-grid");
@@ -754,17 +912,8 @@ function launchLevel(levelNum) {
     GAME_STATE.currentLevelScore = 0;
     GAME_STATE.lives = 3;
 
-    // Safety fallback database generator if brands.js file is missing or offline
-    if (typeof getBrandsForLevel === "function") {
-        GAME_STATE.activeBrands = getBrandsForLevel(GAME_STATE.currentCategory, levelNum);
-    } else {
-        const fallbackSet = WEB_FALLBACK_DATABASE[GAME_STATE.currentCategory] || WEB_FALLBACK_DATABASE.tech;
-        GAME_STATE.activeBrands = fallbackSet.map(item => ({
-            name: item.name,
-            slug: item.slug,
-            hint: `${item.hint} (Level ${levelNum})`
-        }));
-    }
+    // Seeds our brand compiler dynamically
+    GAME_STATE.activeBrands = getBrandsForLevel(GAME_STATE.currentCategory, levelNum);
 
     showScreen("screen-gameplay");
     loadNextBrand();
@@ -880,7 +1029,6 @@ function calculateMatchPercentage(str1, str2) {
         return (Math.min(s1.length, s2.length) / Math.max(s1.length, s2.length)) * 100;
     }
 
-    // Classic Levenshtein Matrix
     const matrix = Array(s2.length + 1).fill(null).map(() => Array(s1.length + 1).fill(null));
     for (let i = 0; i <= s1.length; i++) matrix[0][i] = i;
     for (let j = 0; j <= s2.length; j++) matrix[j][0] = j;
@@ -907,7 +1055,6 @@ function submitUserGuess() {
     if (!guess) return;
     clearInterval(GAME_STATE.timerInterval);
 
-    // Calculate match percentage dynamically (80% similarity required for a correct answer)
     const matchPct = calculateMatchPercentage(guess, GAME_STATE.currentBrand.name);
     const isCorrect = matchPct >= 80;
 
@@ -1110,7 +1257,14 @@ function applyVisualSettings() {
     }
 
     const rawBrightness = GAME_STATE.saveData.brightness || 100;
-    document.body.style.filter = `brightness(${rawBrightness}%)`;
+    
+    // Applying CSS Filter directly to `<main>` wrapper so UI dropdowns stay visible
+    const mainContainer = document.querySelector("main");
+    if (mainContainer) {
+        mainContainer.style.filter = `brightness(${rawBrightness}%)`;
+    } else {
+        document.body.style.filter = `brightness(${rawBrightness}%)`;
+    }
 }
 
 function applyFrameBudgeting() {
@@ -1162,18 +1316,18 @@ function applyVSyncStatus() {
 }
 
 function syncSettingsPanel() {
-    const volSlider = document.getElementById("settings-volume");
+    const volSlider = document.getElementById("settings-volume") || document.getElementById("volume-slider");
     if (volSlider) volSlider.value = GAME_STATE.saveData.volume;
     sfx.volume = GAME_STATE.saveData.volume;
     
-    const volLabel = document.getElementById("volume-label");
+    const volLabel = document.getElementById("volume-label") || document.getElementById("lbl-volume");
     if (volLabel) volLabel.textContent = `${Math.round(GAME_STATE.saveData.volume * 100)}%`;
     
-    const briSlider = document.getElementById("settings-brightness");
+    const briSlider = document.getElementById("settings-brightness") || document.getElementById("brightness-slider");
     const bright = GAME_STATE.saveData.brightness || 100;
     if (briSlider) briSlider.value = bright;
     
-    const briLabel = document.getElementById("brightness-label");
+    const briLabel = document.getElementById("brightness-label") || document.getElementById("lbl-brightness");
     if (briLabel) briLabel.textContent = `${bright}%`;
 
     updateDifficultyToggles();
@@ -1201,7 +1355,7 @@ function updateResolutionButtons() {
 
 function updateVibrationButton() {
     const active = GAME_STATE.saveData.vibration;
-    const btn = document.getElementById("btn-vibrate-toggle");
+    const btn = document.getElementById("btn-vibrate-toggle") || document.getElementById("vibration-toggle");
     if (btn) {
         if (active) {
             btn.textContent = "Enabled";
