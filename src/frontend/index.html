@@ -1,9 +1,10 @@
+<!-- BrandGame_V3 - https://github.com/darksy2027-ctrl/BrandGame_V3 - Copyright (c) darksy -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brand Revealer V4</title>
+    <title>BrandGame_V3</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap');
@@ -18,7 +19,7 @@
             font-family: 'Orbitron', sans-serif;
         }
         
-        /* High-Quality Glow Effects (Bypassed in Low-Quality mode) */
+        /* High-Quality Glow Effects */
         body:not(.low-quality) .cyber-border {
             box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
             border: 1px solid rgba(59, 130, 246, 0.3);
@@ -27,7 +28,7 @@
             box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
         }
 
-        /* CUSTOM PLAYROOM VISUAL SUB-THEMES */
+        /* CUSTOM THEMES */
         body.theme-cyber-neon {
             background: radial-gradient(circle at center, #2e0854 0%, #0a0118 100%) !important;
             color: #f472b6 !important;
@@ -45,7 +46,7 @@
             color: #60a5fa !important;
         }
 
-        /* LOW-QUALITY OPTIMIZATION FALLBACKS */
+        /* LOW QUALITY FALLBACKS */
         body.low-quality * {
             box-shadow: none !important;
             text-shadow: none !important;
@@ -53,7 +54,16 @@
             transition: none !important;
         }
 
-        /* PHYSICAL VIBRATION (SCREEN SHAKE) ANIMATION */
+        /* ASPECT RATIO PRESERVATION */
+        .logo-image-fixed {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 140px !important;
+            max-height: 140px !important;
+            object-fit: contain !important;
+            aspect-ratio: 1/1 !important;
+        }
+
         @keyframes shake {
             0%, 100% { transform: translate(0, 0); }
             10%, 30%, 50%, 70%, 90% { transform: translate(-8px, -2px); }
@@ -69,7 +79,7 @@
     <!-- Header -->
     <header class="border-b border-gray-800 bg-gray-900 bg-opacity-70 backdrop-blur-md py-4 px-6 flex justify-between items-center z-10">
         <h1 class="gaming-font text-2xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500">
-            BRAND REVEALER <span id="header-version-badge" class="text-xs align-super bg-indigo-600 text-white py-0.5 px-1.5 rounded">v4.0.0</span>
+            BRAND REVEALER <span id="header-version-badge" class="text-xs align-super bg-indigo-600 text-white py-0.5 px-1.5 rounded">v3.0.0</span>
         </h1>
         <div id="header-stats" class="hidden flex items-center gap-6">
             <div class="flex items-center gap-1.5 bg-gray-800 px-3 py-1 rounded-full border border-gray-700">
@@ -133,7 +143,7 @@
                     </button>
                     <h2 class="gaming-font text-3xl font-bold">SELECT CATEGORY</h2>
                 </div>
-                <!-- Custom Level Creator trigger -->
+                <!-- Custom Creator trigger button -->
                 <button id="btn-trigger-creator" class="gaming-font bg-indigo-900/60 hover:bg-indigo-800 border border-indigo-700 text-indigo-200 px-4 py-2.5 rounded-xl text-xs font-bold tracking-widest transition flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
                     BUILD CUSTOM LEVEL
@@ -155,7 +165,7 @@
                         <h2 class="gaming-font text-3xl font-bold" id="level-category-title">Levels</h2>
                     </div>
                 </div>
-                <!-- Dynamic Jump Box for 100 levels navigation -->
+                <!-- Paging dropdown -->
                 <div class="flex items-center gap-2 bg-gray-950 p-1.5 rounded-lg border border-gray-800">
                     <span class="text-[10px] text-gray-500 font-bold uppercase px-2">Jump to Page</span>
                     <select id="select-level-page" class="bg-gray-900 border border-gray-800 rounded px-2.5 py-1 text-xs font-bold text-white focus:outline-none"></select>
@@ -178,14 +188,15 @@
             </div>
 
             <div class="flex flex-col items-center justify-center py-4 relative">
-                <div id="logo-container" class="w-44 h-44 flex items-center justify-center bg-gray-950 rounded-2xl p-6 border border-gray-800 relative transition-all duration-300">
-                    <img id="logo-image" src="" alt="Brand Logo" class="max-w-full max-h-full object-contain filter grayscale select-none pointer-events-none">
+                <!-- Adjusted size-constrained box container to stop stretching -->
+                <div id="logo-container" class="w-44 h-44 flex items-center justify-center bg-gray-950 rounded-2xl p-4 border border-gray-800 relative transition-all duration-300">
+                    <img id="logo-image" src="" alt="Brand Logo" class="logo-image-fixed filter grayscale select-none pointer-events-none">
                     <div id="logo-placeholder" class="hidden flex flex-col items-center justify-center text-center">
                         <span class="gaming-font font-black text-6xl text-gray-700 tracking-widest">?</span>
                     </div>
                 </div>
                 
-                <!-- Dynamic Word Letter Reveal Clue HUD -->
+                <!-- Clue Reveal HUD -->
                 <div id="revealed-letters-hud" class="mt-4 text-xl tracking-[0.4em] font-mono font-bold text-blue-400 text-center select-none">
                     _ _ _ _ _
                 </div>
@@ -256,17 +267,17 @@
             </button>
         </div>
 
-        <!-- SCREEN 6: ADVANCED SYSTEM SETTINGS -->
+        <!-- SCREEN 6: ADVANCED SETTINGS -->
         <div id="screen-settings" class="hidden w-full max-w-2xl bg-gray-900 bg-opacity-60 p-6 md:p-8 rounded-2xl border border-gray-800 cyber-border flex flex-col gap-6 max-h-[85vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                <h2 class="gaming-font text-2xl font-bold">ADVANCED SYSTEM SETTINGS</h2>
+                <h2 class="gaming-font text-2xl font-bold">SYSTEM CONFIGURATION</h2>
                 <button id="btn-settings-back" class="text-gray-400 hover:text-white text-xs uppercase font-bold tracking-widest flex items-center gap-1">
                     ← Return
                 </button>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Column 1: Display & Dimensions -->
+                <!-- Column 1: Display -->
                 <div class="space-y-4">
                     <!-- Window Resolution -->
                     <div class="space-y-2">
@@ -307,7 +318,7 @@
                     </div>
                 </div>
 
-                <!-- Column 2: System Toggles & Audio -->
+                <!-- Column 2: System Toggles -->
                 <div class="space-y-4">
                     <!-- VSync Toggles -->
                     <div class="space-y-2">
@@ -367,22 +378,32 @@
                 <span class="text-[10px] uppercase font-bold text-gray-500 bg-gray-950 border border-gray-800 px-3 py-1.5 rounded-lg">Custom Engine Arena</span>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Enhanced inputs: Category, Difficulty, Theme & Time -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div class="space-y-1.5">
                     <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Level Name</label>
                     <input type="text" id="creator-level-name" placeholder="e.g., Retro Tech Room" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-blue-500 transition">
                 </div>
                 <div class="space-y-1.5">
-                    <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Visual Theme</label>
-                    <select id="creator-level-theme" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-blue-500 transition">
-                        <option value="cyber-neon">Cyberpunk Pink Neon</option>
-                        <option value="retro-amber">Retro Terminal Amber</option>
-                        <option value="matrix-green">Hacker Digital Green</option>
-                        <option value="midnight-blue">Clean Deep Slate Blue</option>
+                    <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Game Category</label>
+                    <select id="creator-level-category" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-blue-500 transition">
+                        <option value="tech">Technology</option>
+                        <option value="auto">Automotive</option>
+                        <option value="food">Food & Beverage</option>
+                        <option value="fashion">Fashion & Luxury</option>
+                        <option value="media">Media & Fun</option>
                     </select>
                 </div>
                 <div class="space-y-1.5">
-                    <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Match Time Limits</label>
+                    <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Fixed Difficulty</label>
+                    <select id="creator-level-difficulty" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-blue-500 transition">
+                        <option value="easy">Easy (Double Letters Allowed)</option>
+                        <option value="medium" selected>Medium (Standard Timing)</option>
+                        <option value="hard">Hard (Ultra Fast Rush)</option>
+                    </select>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Active Timer Limits</label>
                     <select id="creator-level-timer" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-blue-500 transition">
                         <option value="5">Insane (5 Seconds)</option>
                         <option value="10">Aggressive (10 Seconds)</option>
@@ -393,14 +414,26 @@
                 </div>
             </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-1.5 col-span-2">
+                    <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Visual Aesthetic Theme</label>
+                    <select id="creator-level-theme" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-blue-500 transition">
+                        <option value="cyber-neon">Cyberpunk Pink Neon</option>
+                        <option value="retro-amber">Retro Terminal Amber</option>
+                        <option value="matrix-green">Hacker Digital Green</option>
+                        <option value="midnight-blue">Clean Deep Slate Blue</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Target customized brands configuration -->
             <div class="space-y-4">
-                <!-- Brands Grid Inputs -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Brand 1 -->
                     <div class="bg-gray-950 p-4 rounded-xl border border-gray-800/80 space-y-3">
                         <h4 class="text-xs font-black text-blue-400 uppercase tracking-widest">Brand 1</h4>
                         <input type="text" id="c-brand-1-name" placeholder="Brand Name (e.g., Tesla)" class="w-full bg-gray-900 border border-gray-800 rounded-lg px-3 py-2 text-xs font-semibold focus:outline-none focus:border-blue-500 text-white">
-                        <input type="text" id="c-brand-1-slug" placeholder="Icon Slug (simple-icons name e.g., tesla)" class="w-full bg-gray-900 border border-gray-800 rounded-lg px-3 py-2 text-xs font-semibold focus:outline-none focus:border-blue-500 text-gray-300">
+                        <input type="text" id="c-brand-1-slug" placeholder="Icon Slug (e.g., tesla)" class="w-full bg-gray-900 border border-gray-800 rounded-lg px-3 py-2 text-xs font-semibold focus:outline-none focus:border-blue-500 text-gray-300">
                         <input type="text" id="c-brand-1-hint" placeholder="Visual clue hints" class="w-full bg-gray-900 border border-gray-800 rounded-lg px-3 py-2 text-xs font-semibold focus:outline-none focus:border-blue-500 text-gray-400">
                     </div>
                     <!-- Brand 2 -->
@@ -437,10 +470,11 @@
 
     <footer class="py-3 px-6 text-center text-[10px] text-gray-700 border-t border-gray-950 flex justify-between items-center bg-gray-950/80">
         <span>BrandGame Engine Framework. Powered by darksy-ctrl native bindings.</span>
-        <span class="font-bold tracking-widest gaming-font text-indigo-500">VERSION <span id="footer-version-text">4.0.0</span></span>
+        <span class="font-bold tracking-widest gaming-font text-indigo-500">VERSION <span id="footer-version-text">3.0.0</span></span>
     </footer>
 
     <script src="brands.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
+<!-- BrandGame_V3 - https://github.com/darksy2027-ctrl/BrandGame_V3 - Copyright (c) darksy -->

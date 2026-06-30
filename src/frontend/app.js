@@ -1,4 +1,6 @@
-// --- AUDIO SYSTEM ---
+/* BrandGame_V3 - https://github.com/darksy2027-ctrl/BrandGame_V3 - Copyright (c) darksy */
+
+// --- AUDIO SYNTH ENGINE ---
 class RetroAudioSynth {
     constructor() {
         this.ctx = null;
@@ -38,10 +40,9 @@ class RetroAudioSynth {
 }
 
 const sfx = new RetroAudioSynth();
+const GAME_VERSION = "3.0.0";
 
-const GAME_VERSION = "4.0.0";
-
-// --- STATE MANAGEMENT ---
+// --- GAME STATE SYSTEM ---
 const GAME_STATE = {
     saveData: {
         gameVersion: GAME_VERSION,
@@ -49,14 +50,14 @@ const GAME_STATE = {
         customScore: 0,
         categoryScores: { tech: 0, auto: 0, food: 0, fashion: 0, media: 0 },
         levelsUnlocked: { tech: 1, auto: 1, food: 1, fashion: 1, media: 1 },
-        customLevels: [], // Array of { id, name, theme, timer, brands: [ { name, hint, slug } ] }
+        customLevels: [], // Array of { id, name, category, difficulty, theme, timer, brands }
         difficulty: "medium",
         volume: 0.5,
         resolution: "1024x768",
         quality: "high",
         vibration: true,
-        brightness: 100, // percentage 50 - 150
-        fpsLimit: "uncapped", // "30", "60", "uncapped"
+        brightness: 100,
+        fpsLimit: "uncapped",
         vsync: true
     },
     currentCategory: null,
@@ -70,14 +71,12 @@ const GAME_STATE = {
     currentBrand: null,
     lives: 3,
     revealedIndices: [],
-    levelSelectPage: 0 // Track level list paging (0-9 blocks of 10 levels)
+    levelSelectPage: 0
 };
 
-// Target frame lock simulation variable
 let gameLoopId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Write static game version identifiers to indicators
     document.getElementById("header-version-badge").textContent = `v${GAME_VERSION}`;
     document.getElementById("footer-version-text").textContent = GAME_VERSION;
 
@@ -92,27 +91,23 @@ function sendNativeRequest(payload) {
         window.chrome.webview.postMessage(payload);
     } else {
         if (payload.Action === "load_save") {
-            const raw = localStorage.getItem("brandgame_v4_savedata_custom");
+            const raw = localStorage.getItem("brandgame_v3_savedata");
             if (raw) GAME_STATE.saveData = JSON.parse(raw);
-            
-            // Check version upgrade block
             if (GAME_STATE.saveData.gameVersion !== GAME_VERSION) {
                 GAME_STATE.saveData.gameVersion = GAME_VERSION;
                 sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
             }
             onSaveLoaded(GAME_STATE.saveData);
         } else if (payload.Action === "write_save") {
-            localStorage.setItem("brandgame_v4_savedata_custom", JSON.stringify(payload.Data));
+            localStorage.setItem("brandgame_v3_savedata", JSON.stringify(payload.Data));
         }
     }
 }
 
 function onSaveLoaded(data) {
     if (data) {
-        // Enforce fallback structure integrity
         GAME_STATE.saveData = { ...GAME_STATE.saveData, ...data };
         if (!GAME_STATE.saveData.customLevels) GAME_STATE.saveData.customLevels = [];
-        if (typeof GAME_STATE.saveData.customScore === 'undefined') GAME_STATE.saveData.customScore = 0;
     }
     updateGlobalStatsHUD();
     renderMainMenuProgress();
@@ -129,7 +124,6 @@ function showScreen(screenId) {
         else el.classList.add("hidden");
     });
     
-    // Clear theme parameters if moving back to normal interface
     if (screenId !== "screen-gameplay") {
         clearCustomThemeClasses();
     }
@@ -147,7 +141,6 @@ function updateGlobalStatsHUD() {
     let globalStars = 0;
     ["tech", "auto", "food", "fashion", "media"].forEach(cat => {
         const unlocked = GAME_STATE.saveData.levelsUnlocked[cat] || 1;
-        // 2 Stars earned per unlocked level progression step
         globalStars += (unlocked - 1) * 2;
     });
     const customCount = GAME_STATE.saveData.customLevels.length;
@@ -190,7 +183,6 @@ function renderMainMenuProgress() {
         catList.appendChild(item);
     });
 
-    // Custom Category Summary Entry
     const customScore = GAME_STATE.saveData.customScore || 0;
     const customCount = GAME_STATE.saveData.customLevels.length;
     const customItem = document.createElement("div");
@@ -269,10 +261,9 @@ function setupEventHandlers() {
         if (e.key === "Enter") submitUserGuess();
     });
 
-    // Hints
     document.getElementById("btn-gameplay-hint").addEventListener("click", () => {
         const clueEl = document.getElementById("clue-text");
-        clueEl.textContent = GAME_STATE.currentBrand.hint || "No clues available for this brand.";
+        clueEl.textContent = GAME_STATE.currentBrand.hint || "No clues available.";
         clueEl.classList.remove("hidden");
         GAME_STATE.currentLevelScore = Math.max(GAME_STATE.currentLevelScore - 5, 0);
     });
@@ -287,17 +278,18 @@ function setupEventHandlers() {
         }
     });
 
-    // Window Resolution commands
+    // Resolution Scale settings (resizes viewport wrapper cleanly)
     ["sm", "md", "lg"].forEach(sz => {
         const mapping = { sm: { w: 800, h: 600 }, md: { w: 1024, h: 768 }, lg: { w: 1280, h: 960 } };
         document.getElementById(`btn-win-${sz}`).addEventListener("click", () => {
             GAME_STATE.saveData.resolution = `${mapping[sz].w}x${mapping[sz].h}`;
             updateResolutionButtons();
+            applyWindowBounds();
             sendNativeRequest({ Action: "resize_window", Width: mapping[sz].w, Height: mapping[sz].h });
         });
     });
 
-    // Graphics Quality
+    // Graphics toggles
     document.getElementById("btn-qual-low").addEventListener("click", () => {
         GAME_STATE.saveData.quality = "low";
         applyVisualSettings();
@@ -307,7 +299,7 @@ function setupEventHandlers() {
         applyVisualSettings();
     });
 
-    // Framerate Limits
+    // FPS clamps
     ["30", "60", "uncapped"].forEach(fps => {
         document.getElementById(`btn-fps-${fps}`).addEventListener("click", () => {
             GAME_STATE.saveData.fpsLimit = fps;
@@ -315,7 +307,7 @@ function setupEventHandlers() {
         });
     });
 
-    // Brightness Slider
+    // Brightness input
     document.getElementById("settings-brightness").addEventListener("input", (e) => {
         const val = e.target.value;
         GAME_STATE.saveData.brightness = parseInt(val);
@@ -323,7 +315,7 @@ function setupEventHandlers() {
         applyVisualSettings();
     });
 
-    // VSync Toggle
+    // VSync toggle
     document.getElementById("btn-vsync-off").addEventListener("click", () => {
         GAME_STATE.saveData.vsync = false;
         applyVSyncStatus();
@@ -333,13 +325,12 @@ function setupEventHandlers() {
         applyVSyncStatus();
     });
 
-    // Vibration Toggle
+    // Vibration toggler
     document.getElementById("btn-vibrate-toggle").addEventListener("click", () => {
         GAME_STATE.saveData.vibration = !GAME_STATE.saveData.vibration;
         updateVibrationButton();
     });
 
-    // Settings Close
     document.getElementById("btn-settings-close").addEventListener("click", () => {
         GAME_STATE.saveData.volume = parseFloat(document.getElementById("settings-volume").value);
         sfx.volume = GAME_STATE.saveData.volume;
@@ -358,9 +349,11 @@ function setupEventHandlers() {
         });
     });
 
-    // Trigger custom creator screen
+    // Dynamic triggers
     document.getElementById("btn-trigger-creator").addEventListener("click", () => {
         document.getElementById("creator-level-name").value = "";
+        document.getElementById("creator-level-category").value = "tech";
+        document.getElementById("creator-level-difficulty").value = "medium";
         document.getElementById("creator-level-theme").value = "cyber-neon";
         document.getElementById("creator-level-timer").value = "15";
 
@@ -372,11 +365,9 @@ function setupEventHandlers() {
         showScreen("screen-creator");
     });
 
-    // Save Custom Level publish process
     document.getElementById("btn-save-custom-level").addEventListener("click", publishCustomLevelRoom);
 }
 
-// --- CLUE LETTER SYSTEM ---
 function buyLetterClue() {
     const name = GAME_STATE.currentBrand.name.replace(/[^a-zA-Z0-9]/g, "");
     if (GAME_STATE.revealedIndices.length >= name.length) return;
@@ -424,7 +415,7 @@ function triggerVibration() {
     setTimeout(() => el.classList.remove("shake-active"), 400);
 }
 
-// --- CATEGORIES & ROOM RENDERERS ---
+// --- RENDERERS ---
 function renderCategoryCards() {
     const grid = document.getElementById("category-cards-grid");
     grid.innerHTML = "";
@@ -458,7 +449,6 @@ function renderCategoryCards() {
         grid.appendChild(card);
     });
 
-    // Custom Category Arena Dynamic Card
     const customCount = GAME_STATE.saveData.customLevels ? GAME_STATE.saveData.customLevels.length : 0;
     const customScore = GAME_STATE.saveData.customScore || 0;
     const customCard = document.createElement("button");
@@ -487,14 +477,11 @@ function selectCategory(catId, catLabel) {
     document.getElementById("level-category-title").textContent = catLabel;
     document.getElementById("level-category-badge").textContent = catLabel;
     
-    // Default to the page of the player's current progression level
     const maxUnlocked = GAME_STATE.saveData.levelsUnlocked[catId] || 1;
     GAME_STATE.levelSelectPage = Math.min(Math.floor((maxUnlocked - 1) / 10), 9);
     document.getElementById("select-level-page").value = GAME_STATE.levelSelectPage;
 
-    // Show jump page selector for official runs
     document.getElementById("select-level-page").parentElement.classList.remove("hidden");
-
     renderLevelButtonsList();
     showScreen("screen-levels");
 }
@@ -506,7 +493,6 @@ function renderLevelButtonsList() {
     const catId = GAME_STATE.currentCategory;
     const unlockedMax = GAME_STATE.saveData.levelsUnlocked[catId] || 1;
     
-    // Page offsets
     const startIdx = GAME_STATE.levelSelectPage * 10 + 1;
     const endIdx = startIdx + 9;
 
@@ -530,7 +516,6 @@ function selectCustomCategory() {
     document.getElementById("level-category-title").textContent = "Custom Arena Rooms";
     document.getElementById("level-category-badge").textContent = "CUSTOM";
 
-    // Hide jump page selector for custom lists
     document.getElementById("select-level-page").parentElement.classList.add("hidden");
 
     const grid = document.getElementById("level-buttons-grid");
@@ -548,7 +533,6 @@ function selectCustomCategory() {
         return;
     }
 
-    // Restore standard responsive grid class structure
     grid.className = "grid grid-cols-2 sm:grid-cols-5 gap-4";
 
     list.forEach((room, index) => {
@@ -564,9 +548,10 @@ function selectCustomCategory() {
     showScreen("screen-levels");
 }
 
-// --- CREATOR PUBLISH FLOW ---
 function publishCustomLevelRoom() {
     const levelName = document.getElementById("creator-level-name").value.trim();
+    const category = document.getElementById("creator-level-category").value;
+    const difficulty = document.getElementById("creator-level-difficulty").value;
     const theme = document.getElementById("creator-level-theme").value;
     const timer = parseInt(document.getElementById("creator-level-timer").value);
 
@@ -582,7 +567,7 @@ function publishCustomLevelRoom() {
         const bHint = document.getElementById(`c-brand-${i}-hint`).value.trim();
 
         if (!bName || !bSlug) {
-            alert(`Brand #${i} requires at least a Name and an SVG Slug identifier (e.g. google, microsoft, apple)!`);
+            alert(`Brand #${i} requires both a Name and an SVG Slug.`);
             return;
         }
 
@@ -596,6 +581,8 @@ function publishCustomLevelRoom() {
     const newRoom = {
         id: "custom_" + Date.now(),
         name: levelName,
+        category: category,
+        difficulty: difficulty,
         theme: theme,
         timer: timer,
         brands: customBrands
@@ -606,7 +593,7 @@ function publishCustomLevelRoom() {
 
     sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
     updateGlobalStatsHUD();
-    alert("Level Room Successfully Published to Custom Arena!");
+    alert("Level Room Successfully Published!");
     
     renderCategoryCards();
     showScreen("screen-categories");
@@ -619,7 +606,6 @@ function launchLevel(levelNum) {
     GAME_STATE.currentLevelScore = 0;
     GAME_STATE.lives = 3;
 
-    // Use deterministic dynamic brand pool generator
     GAME_STATE.activeBrands = getBrandsForLevel(GAME_STATE.currentCategory, levelNum);
 
     showScreen("screen-gameplay");
@@ -634,10 +620,8 @@ function launchCustomLevel(customIndex) {
     GAME_STATE.currentLevelScore = 0;
     GAME_STATE.lives = 3;
 
-    // Apply custom settings and properties
     GAME_STATE.activeBrands = targetRoom.brands;
 
-    // Inject custom sub-theme directly into body element
     clearCustomThemeClasses();
     if (targetRoom.theme) {
         document.body.classList.add(`theme-${targetRoom.theme}`);
@@ -670,13 +654,18 @@ function loadNextBrand() {
     img.onerror = () => { img.classList.add("hidden"); placeholder.classList.remove("hidden"); };
     img.onload = () => { img.classList.remove("hidden"); placeholder.classList.add("hidden"); };
 
-    // Determine custom timer limit
     let timeLimit = 15;
     if (GAME_STATE.currentCategory === "custom") {
-        // Recover custom timer settings
         const currentCustomRoom = GAME_STATE.saveData.customLevels[GAME_STATE.currentLevel];
-        if (currentCustomRoom && currentCustomRoom.timer) {
-            timeLimit = currentCustomRoom.timer;
+        if (currentCustomRoom) {
+            // Apply custom timers, fallback to difficulty setting or standard default
+            if (currentCustomRoom.timer) {
+                timeLimit = currentCustomRoom.timer;
+            } else {
+                const diff = currentCustomRoom.difficulty || "medium";
+                if (diff === "easy") timeLimit = 30;
+                else if (diff === "hard") timeLimit = 8;
+            }
         }
     } else {
         if (GAME_STATE.saveData.difficulty === "easy") timeLimit = 30;
@@ -804,8 +793,6 @@ function triggerLevelEnd(completed) {
     scoreEl.textContent = GAME_STATE.currentLevelScore;
 
     const isCustom = GAME_STATE.currentCategory === "custom";
-
-    // Player must guess at least 75% correct to pass the level
     const passingThreshold = Math.ceil(totalBrands * 0.75);
 
     if (completed && GAME_STATE.currentLevelCorrectCount >= passingThreshold) {
@@ -849,7 +836,22 @@ function triggerLevelEnd(completed) {
     showScreen("screen-report");
 }
 
-// --- OPTIMIZATION & SYSTEM CODES ---
+// --- HARDWARE BINDINGS & OPTIMIZATIONS ---
+function applyWindowBounds() {
+    const res = GAME_STATE.saveData.resolution || "1024x768";
+    const parts = res.split("x");
+    const width = parseInt(parts[0]);
+    const height = parseInt(parts[1]);
+
+    const mainContainer = document.querySelector("main");
+    if (mainContainer) {
+        mainContainer.style.maxWidth = `${width}px`;
+        mainContainer.style.maxHeight = `${height}px`;
+        mainContainer.style.width = "100%";
+        mainContainer.style.height = "100%";
+    }
+}
+
 function applyVisualSettings() {
     const isLow = GAME_STATE.saveData.quality === "low";
     if (isLow) {
@@ -862,7 +864,6 @@ function applyVisualSettings() {
         document.getElementById("btn-qual-high").className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
     }
 
-    // Brightness filter adjustment
     const rawBrightness = GAME_STATE.saveData.brightness || 100;
     document.body.style.filter = `brightness(${rawBrightness}%)`;
 }
@@ -918,7 +919,6 @@ function syncSettingsPanel() {
     sfx.volume = GAME_STATE.saveData.volume;
     document.getElementById("volume-label").textContent = `${Math.round(GAME_STATE.saveData.volume * 100)}%`;
     
-    // Brightness input element sync
     const bright = GAME_STATE.saveData.brightness || 100;
     document.getElementById("settings-brightness").value = bright;
     document.getElementById("brightness-label").textContent = `${bright}%`;
@@ -928,6 +928,7 @@ function syncSettingsPanel() {
     updateVibrationButton();
     applyFrameBudgeting();
     applyVSyncStatus();
+    applyWindowBounds();
 }
 
 function updateResolutionButtons() {
@@ -965,3 +966,5 @@ function updateDifficultyToggles() {
         }
     });
 }
+
+/* BrandGame_V3 - https://github.com/darksy2027-ctrl/BrandGame_V3 - Copyright (c) darksy */
