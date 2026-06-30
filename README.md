@@ -1,4 +1,20 @@
+<!-- BrandGame_V3 - https://github.com/darksy2027-ctrl/BrandGame_V3 - Copyright (c) darksy -->
+
 # BrandGame_V3 🎮
+
+[![GitHub License](https://img.shields.io/github/license/darksy2027-ctrl/BrandGame_V3?style=flat-square)](LICENSE)
+[![GitHub Release](https://img.shields.io/github/v/release/darksy2027-ctrl/BrandGame_V3?style=flat-square&color=blue)](https://github.com/darksy2027-ctrl/BrandGame_V3)
+[![Platform support](https://img.shields.io/badge/platform-Windows%20%7C%20Web-blueviolet?style=flat-square)](#)
+
+A modular, high-performance brand recognition puzzle game built with a hybrid C# WinForms application architecture. The game uses native Microsoft WebView2 bindings for rendering web interfaces and includes procedural level generation and real-time GPU configuration tools.
+
+---
+
+## Key Features
+
+- **Procedural Level Generator**: Play through $$100$$ levels across $$5$$ distinct categories: Technology, Automotive, Food & Beverage, Fashion & Luxury, and Media & Entertainment.
+- **Adaptive Level Design**: The game starts at Level $$1$$ with $$4$$ logos to guess, and the target logo count dynamically increases by $$1$$ for every $$10$$ levels you complete.
+- **Custom Level Designer**: Create, save, and play custom levels with selectable categories, tailored timers ($$5$$s
 
 An interactive, high-performance brand-guessing desktop game designed specifically for the Windows environment. This project showcases dynamic interoperability by combining **C++**, **C# (.NET 8.0)**, and **Modern JavaScript (HTML5/CSS3)** using WebView2 mappings.
 
