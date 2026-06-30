@@ -1,195 +1,223 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap');
+/* BrandGame_V3 - https://github.com/darksy2027-ctrl/BrandGame_V3 - Copyright (c) darksy */
 
-:root {
-    --bg-color: #0b0c10;
-    --container-bg: #1f2833;
-    --primary-glow: #66fcf1;
-    --secondary-glow: #45f3ff;
-    --text-main: #c5c6c7;
-    --text-highlight: #ffffff;
-    --wrong-color: #ff4d4d;
-    --correct-color: #2ecc71;
+/* --- DYNAMIC PERFORMANCE & ACCESSIBILITY --- */
+/* Disables expensive rendering calculations when "Low Quality" mode is activated in settings */
+.low-quality * {
+    animation: none !important;
+    transition: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    backdrop-filter: none !important;
+    filter: none !important;
 }
 
-body {
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    font-family: 'Rajdhani', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
+/* --- HARDWARE VIBRATION EMULATION --- */
+@keyframes screen-shake {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    15% { transform: translate(-4px, 3px) rotate(-1deg); }
+    30% { transform: translate(4px, -2px) rotate(1deg); }
+    45% { transform: translate(-3px, -3px) rotate(-0.5deg); }
+    60% { transform: translate(3px, 2px) rotate(1deg); }
+    75% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+    90% { transform: translate(2px, -1px) rotate(0deg); }
 }
 
-#game-container {
-    width: 85%;
-    max-width: 800px;
-    background: linear-gradient(145deg, #112233, #0f1626);
-    border: 2px solid var(--primary-glow);
-    box-shadow: 0 0 25px rgba(102, 252, 241, 0.2);
-    border-radius: 12px;
-    padding: 25px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.shake-active {
+    animation: screen-shake 0.35s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    backface-visibility: hidden;
+    perspective: 1000px;
 }
 
-header {
+/* --- DYNAMIC CUSTOM THEMES FOR CREATOR ARENAS --- */
+.theme-cyber-neon {
+    background-color: #030712 !important;
+    background-image: radial-gradient(circle at top, rgba(0, 229, 255, 0.08) 0%, transparent 65%) !important;
+    --accent-glow: rgba(0, 229, 255, 0.3);
+}
+.theme-retro-amber {
+    background-color: #0c0700 !important;
+    background-image: radial-gradient(circle at top, rgba(245, 158, 11, 0.08) 0%, transparent 65%) !important;
+    --accent-glow: rgba(245, 158, 11, 0.3);
+}
+.theme-matrix-green {
+    background-color: #010704 !important;
+    background-image: radial-gradient(circle at top, rgba(16, 185, 129, 0.08) 0%, transparent 65%) !important;
+    --accent-glow: rgba(16, 185, 129, 0.3);
+}
+.theme-midnight-blue {
+    background-color: #020617 !important;
+    background-image: radial-gradient(circle at top, rgba(59, 130, 246, 0.08) 0%, transparent 65%) !important;
+    --accent-glow: rgba(59, 130, 246, 0.3);
+}
+
+/* --- LEVEL CONTAINER & 5-COLUMN GRID --- */
+.category-section {
+    margin-bottom: 30px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+}
+
+.category-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(102, 252, 241, 0.3);
-    padding-bottom: 15px;
+    margin-bottom: 15px;
 }
 
-.logo-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2rem;
-    color: var(--primary-glow);
-    text-shadow: 0 0 10px rgba(102, 252, 241, 0.5);
-    font-weight: 700;
+.category-header h3 {
+    font-size: 1.25rem;
+    color: #00e5ff;
+    text-transform: capitalize;
+    margin: 0;
+    font-weight: 600;
 }
 
-.stats {
-    display: flex;
-    gap: 15px;
+/* 5-Column Grid with Scrollable Container */
+.levels-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr)); /* Enforces exactly 5 columns perfectly */
+    gap: 12px;
+    max-height: 360px; /* Limits size to force vertical scrollability */
+    overflow-y: auto; 
+    padding-right: 8px; /* Spacing for custom scrollbar */
+    scroll-behavior: smooth;
 }
 
-.stat-box {
-    background-color: var(--container-bg);
-    border: 1px solid var(--primary-glow);
-    border-radius: 6px;
-    padding: 8px 15px;
-    font-weight: bold;
-    font-size: 1.2rem;
-    color: var(--text-highlight);
+/* Universal Clean Custom Scrollbar styling */
+.levels-grid::-webkit-scrollbar,
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.levels-grid::-webkit-scrollbar-track,
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+.levels-grid::-webkit-scrollbar-thumb,
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(59, 130, 246, 0.3);
+    border-radius: 10px;
+}
+.levels-grid::-webkit-scrollbar-thumb:hover,
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 130, 246, 0.6);
 }
 
-.brand-display-card {
-    height: 250px;
+/* Level Cards styling */
+.level-bubble {
+    aspect-ratio: 1; /* Perfectly square shape */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: 8px;
-    border: 1px dashed rgba(102, 252, 241, 0.4);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    margin-bottom: 15px;
+    user-select: none;
 }
 
-#logo-container {
-    width: 100%;
-    height: 180px;
+.level-bubble:hover:not(.locked) {
+    background: rgba(59, 130, 246, 0.15);
+    border-color: #3b82f6;
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25);
+}
+
+.level-bubble:active:not(.locked) {
+    transform: translateY(0px) scale(0.98);
+}
+
+.level-bubble.completed {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: #10b981;
+    color: #10b981;
+}
+
+.level-bubble.locked {
+    background: rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.02);
+    color: rgba(255, 255, 255, 0.15);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* --- SETTINGS MODAL & PANELS --- */
+.settings-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
 }
 
-#logo-container svg {
-    max-width: 60%;
-    max-height: 80%;
-    filter: drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.8));
-    transition: all 0.3s ease;
+.settings-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
 }
 
-.pixelated {
-    filter: blur(14px) grayscale(100%) !important;
+.settings-card {
+    background: #111827; /* Matches Tailwinds gray-900 cleanly */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 450px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
-.hint-container {
-    margin-top: 5px;
-    font-size: 1.1rem;
-    color: var(--primary-glow);
-}
-
-#controls {
+.settings-row {
     display: flex;
-    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-#guess-input {
-    flex-grow: 1;
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--text-main);
-    border-radius: 6px;
-    padding: 12px 20px;
+.settings-row label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #f3f4f6;
+}
+
+.settings-input {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
     color: #fff;
-    font-size: 1.2rem;
+    padding: 8px 12px;
+    font-size: 0.95rem;
     outline: none;
-    transition: border-color 0.3s;
+    transition: all 0.2s;
 }
 
-#guess-input:focus {
-    border-color: var(--primary-glow);
-    box-shadow: 0 0 10px rgba(102, 252, 241, 0.3);
+.settings-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
-#submit-btn {
-    background-color: var(--primary-glow);
-    border: none;
-    color: var(--bg-color);
-    padding: 12px 25px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
+/* Custom Level Settings adjustments */
+.custom-builder-container {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-#submit-btn:hover {
-    background-color: var(--secondary-glow);
-    box-shadow: 0 0 15px rgba(69, 243, 255, 0.6);
-}
-
-#submit-btn:active {
-    transform: scale(0.97);
-}
-
-#feedback-message {
-    height: 30px;
-    text-align: center;
-    font-size: 1.3rem;
-    font-weight: bold;
-}
-
-.correct {
-    color: var(--correct-color);
-    text-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
-    animation: pulse 0.5s ease;
-}
-
-.wrong {
-    color: var(--wrong-color);
-    text-shadow: 0 0 8px rgba(255, 77, 77, 0.5);
-    animation: shake 0.4s ease;
-}
-
-footer {
-    text-align: center;
-    font-size: 0.9rem;
-    color: rgba(197, 198, 199, 0.5);
-    border-top: 1px solid rgba(102, 252, 241, 0.1);
-    padding-top: 10px;
-}
-
-.author {
-    color: var(--primary-glow);
-    font-weight: bold;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-8px); }
-    75% { transform: translateX(8px); }
-}
+/* BrandGame_V3 - https://github.com/darksy2027-ctrl/BrandGame_V3 - Copyright (c) darksy */
