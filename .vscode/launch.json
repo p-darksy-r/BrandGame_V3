@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch BrandGame (C#)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "Build BrandGame (Debug)",
+      "program": "${workspaceFolder}/src/csharp/bin/Debug/net8.0-windows/win-x64/BrandGame.exe",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/csharp/bin/Debug/net8.0-windows/win-x64",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    }
+  ]
+}

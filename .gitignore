@@ -7,7 +7,7 @@ obj/
 *.sln.docstates
 
 # VS Code directory
-.vscode/
+.vscode/*
 !.vscode/launch.json
 !.vscode/tasks.json
 
@@ -22,3 +22,9 @@ EBWebView/
 *.lib
 *.obj
 *.exp
+
+# Published app and local build/update workspaces (recreated by scripts/build.ps1)
+/app/
+/artifacts/
+/.vs/
+*.log

@@ -8,6 +8,7 @@
     <Platforms>x64</Platforms>
     <PlatformTarget>x64</PlatformTarget>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <Product>BrandGame V3</Product>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,15 +16,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- FIX: Don't crash if the C++ DLL is missing during boot strap phase -->
+    <!-- Optional engine: the managed implementation uses the same game rules. -->
     <None Include="BrandEngine.dll" Condition="Exists('BrandEngine.dll')">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </None>
     
-    <!-- Locate frontend folder one level up and copy to output -->
-    <None Include="..\frontend\**\*">
-      <Link>src\frontend\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    <!-- Each build/publish includes a runnable web folder. -->
+    <None Include="..\web\**\*">
+      <Link>web\%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </None>
   </ItemGroup>
 </Project>

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <UseAppHost>false</UseAppHost>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../src/csharp/Services/GameEngine.cs" Link="GameEngine.cs" />
+    <Compile Include="../../src/csharp/Services/SaveStore.cs" Link="SaveStore.cs" />
+    <Compile Include="../../src/csharp/Services/AppPaths.cs" Link="AppPaths.cs" />
+    <None Include="../matching-cases.json" Link="matching-cases.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

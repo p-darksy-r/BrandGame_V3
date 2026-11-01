@@ -1,0 +1,67 @@
+/* BrandGame_V3 - https://github.com/p-darksy-r/BrandGame_V3 - Copyright (c) darksy */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap');
+
+body {
+    font-family: 'Rajdhani', sans-serif;
+    background: radial-gradient(circle at center, #111827 0%, #030712 100%);
+    overflow: hidden;
+    user-select: none;
+}
+.gaming-font {
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* High-Quality Glow Effects */
+body:not(.low-quality) .cyber-border {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+body:not(.low-quality) .neon-glow-green {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+}
+
+/* CUSTOM THEMES */
+body.theme-cyber-neon {
+    background: radial-gradient(circle at center, #2e0854 0%, #0a0118 100%) !important;
+    color: #f472b6 !important;
+}
+body.theme-retro-amber {
+    background: radial-gradient(circle at center, #2b1d04 0%, #070401 100%) !important;
+    color: #fbbf24 !important;
+}
+body.theme-matrix-green {
+    background: radial-gradient(circle at center, #022c22 0%, #020617 100%) !important;
+    color: #34d399 !important;
+}
+body.theme-midnight-blue {
+    background: radial-gradient(circle at center, #1e3a8a 0%, #030712 100%) !important;
+    color: #60a5fa !important;
+}
+
+/* LOW QUALITY FALLBACKS */
+body.low-quality * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    backdrop-filter: none !important;
+    transition: none !important;
+}
+
+/* ASPECT RATIO PRESERVATION */
+.logo-image-fixed {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 140px !important;
+    max-height: 140px !important;
+    object-fit: contain !important;
+    aspect-ratio: 1/1 !important;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translate(0, 0); }
+    10%, 30%, 50%, 70%, 90% { transform: translate(-8px, -2px); }
+    20%, 40%, 60%, 80% { transform: translate(8px, 2px); }
+}
+.shake-active {
+    animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}

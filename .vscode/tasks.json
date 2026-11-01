@@ -1,0 +1,28 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build BrandGame (Debug)",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["build", "src/csharp/BrandGame.csproj", "-c", "Debug", "-r", "win-x64"],
+      "problemMatcher": "$msCompile",
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "Publish app and updater",
+      "type": "process",
+      "command": "powershell",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/build.ps1"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Test BrandGame",
+      "type": "process",
+      "command": "powershell",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/test.ps1"],
+      "problemMatcher": [],
+      "group": "test"
+    }
+  ]
+}

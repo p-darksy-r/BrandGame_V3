@@ -7,6 +7,7 @@
 #endif
 
 extern "C" {
+    BRANDENGINE_API int GetEngineVersion();
     BRANDENGINE_API double CalculateMatch(const char* s1, const char* s2);
     BRANDENGINE_API int CalculateScore(int t, int L);
 }

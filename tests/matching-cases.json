@@ -1,0 +1,10 @@
+[
+  { "guess": "Coca Cola", "answer": "Coca-Cola", "elapsed": 2, "match": 100, "correct": true, "score": 44 },
+  { "guess": "adibs", "answer": "adibs", "elapsed": 0, "match": 100, "correct": true, "score": 50 },
+  { "guess": "appla", "answer": "apple", "elapsed": 3, "match": 80, "correct": true, "score": 41 },
+  { "guess": "xyz", "answer": "apple", "elapsed": 0, "match": 0, "correct": false, "score": 0 },
+  { "guess": "", "answer": "Apple", "elapsed": 0, "match": 0, "correct": false, "score": 0 },
+  { "guess": "APPLE", "answer": "Apple", "elapsed": -50, "match": 100, "correct": true, "score": 50 },
+  { "guess": "Nike", "answer": "Nike", "elapsed": 999999, "match": 100, "correct": true, "score": 10 },
+  { "guess": "NVIDIA!", "answer": "Nvidia", "elapsed": 10, "match": 100, "correct": true, "score": 20 }
+]

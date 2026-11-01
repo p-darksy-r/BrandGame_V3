@@ -1,4 +1,4 @@
-/* BrandGame_V3 - https://github.com/darksy2027-ctrl/BrandGame_V3 - Copyright (c) darksy */
+/* BrandGame_V3 - https://github.com/p-darksy-r/BrandGame_V3 - Copyright (c) darksy */
 
 /* --- DYNAMIC PERFORMANCE & ACCESSIBILITY --- */
 /* Disables expensive rendering calculations when "Low Quality" mode is activated in settings */
@@ -8,7 +8,6 @@
     box-shadow: none !important;
     text-shadow: none !important;
     backdrop-filter: none !important;
-    filter: none !important;
 }
 
 /* --- HARDWARE VIBRATION EMULATION --- */
@@ -220,4 +219,4 @@
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* BrandGame_V3 - https://github.com/darksy2027-ctrl/BrandGame_V3 - Copyright (c) darksy */
+/* BrandGame_V3 - https://github.com/p-darksy-r/BrandGame_V3 - Copyright (c) darksy */
