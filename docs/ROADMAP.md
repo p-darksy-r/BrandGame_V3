@@ -13,7 +13,7 @@
 ## Próximas prioridades
 
 1. **Recursos locais e catálogo verificado.** Compilar o CSS Tailwind e incluir fontes e logótipos permitidos na distribuição. Auditar slugs inexistentes, marcas repetidas e pistas que revelam respostas. O catálogo preservado contém entradas que ainda precisam desta revisão.
-2. **Distribuição assinada e atualização online.** Assinar os executáveis, definir um canal de releases e validar a origem/integridade de pacotes antes de instalar. O atualizador atual compila o código local; não é ainda um cliente de releases do GitHub.
+2. **Assinatura pública e atualização online.** A versão 3.1.1 já assina e verifica os executáveis com uma identidade de desenvolvimento. Falta obter uma identidade publicamente confiável ou preparar distribuição MSIX pela Microsoft Store, e implementar a validação de atualizações remotas. O atualizador atual compila o código local; não é ainda um cliente de releases do GitHub.
 3. **Definições com efeito verificável.** Rever FPS e VSync: o código anterior apresentava controlos sem limitar a renderização do WebView2. Priorizar opções cujo efeito possa ser medido e explicado ao jogador.
 4. **Acessibilidade e ecrãs pequenos.** Melhorar navegação por teclado, foco, contraste, opções para movimento reduzido e adaptação a diferentes escalas do Windows.
 5. **Cobertura de fluxos completos.** Automatizar sessões reais no WebView2, migrações de saves, erros de rede e retomada de partidas. Os testes atuais não substituem uma validação visual completa.

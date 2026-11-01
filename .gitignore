@@ -28,3 +28,9 @@ EBWebView/
 /artifacts/
 /.vs/
 *.log
+
+# Signing keys must never be committed or distributed
+*.pfx
+*.p12
+*.pvk
+*.key

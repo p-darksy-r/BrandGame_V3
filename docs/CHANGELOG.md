@@ -1,5 +1,16 @@
 # Histórico de versões
 
+## 3.1.1 — 2026-11-01
+
+- Assinatura Authenticode SHA-256 nos dois executáveis com identidade própria do BrandGame e timestamp RFC 3161.
+- Chave privada não exportável no Windows; preparação explícita de confiança apenas no perfil do programador.
+- Compilação e empacotamento exigem assinaturas válidas; CI sem chave fica explicitamente identificado como não assinado.
+- Verificação de assinatura, certificado esperado e integridade; teste de rejeição de um executável adulterado.
+- Testes de arranque reais do atualizador e do jogo com perfil isolado passaram neste PC, incluindo WebView2 e comunicação nativa de saves.
+- Pacote web para jogar no navegador; documentação das limitações da assinatura de desenvolvimento e da futura assinatura pública.
+
+Esta é uma release de desenvolvimento assinada. Não garante aceitação automática por Windows noutros computadores.
+
 ## 3.1.0 — 2026-11-01
 
 - Reorganização em fontes, distribuição, scripts, documentação e testes.

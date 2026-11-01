@@ -9,9 +9,12 @@ public sealed class MainWindow : Form
     private readonly WebView2 webView = new() { Dock = DockStyle.Fill };
     private readonly GameEngine engine = new();
     private NativeBridge? bridge;
+    private readonly bool smokeTest;
+    private readonly System.Windows.Forms.Timer startupTimeout = new() { Interval = 45000 };
 
-    public MainWindow()
+    public MainWindow(bool smokeTest = false)
     {
+        this.smokeTest = smokeTest;
         Text = "BrandGame V3";
         Width = 1024;
         Height = 768;
@@ -20,6 +23,14 @@ public sealed class MainWindow : Form
         MaximizeBox = false;
         Controls.Add(webView);
         Shown += InitializeAsync;
+        if (smokeTest)
+        {
+            Opacity = 0;
+            ShowInTaskbar = false;
+            Environment.ExitCode = 1;
+            startupTimeout.Tick += (_, _) => Close();
+            startupTimeout.Start();
+        }
     }
 
     private async void InitializeAsync(object? sender, EventArgs e)
@@ -40,10 +51,27 @@ public sealed class MainWindow : Form
                 args.Cancel = !AppPaths.IsTrustedPage(args.Uri);
             webView.CoreWebView2.NewWindowRequested += (_, args) => args.Handled = true;
             webView.CoreWebView2.WindowCloseRequested += (_, _) => Close();
+            if (smokeTest)
+                webView.CoreWebView2.NavigationCompleted += async (_, args) =>
+                {
+                    if (!args.IsSuccess) { Close(); return; }
+                    try
+                    {
+                        for (int attempt = 0; attempt < 100 && !IsDisposed; attempt++)
+                        {
+                            string ready = await webView.ExecuteScriptAsync("Boolean(window.__brandGameReady && document.getElementById('btn-menu-start') && typeof getBrandsForLevel === 'function' && getBrandsForLevel('tech', 1).length === 3)");
+                            if (ready == "true") { Environment.ExitCode = 0; Close(); return; }
+                            await Task.Delay(200);
+                        }
+                    }
+                    catch { Environment.ExitCode = 1; }
+                    if (!IsDisposed) Close();
+                };
             webView.CoreWebView2.Navigate(AppPaths.StartPage);
         }
         catch (Exception ex)
         {
+            if (smokeTest) { Environment.ExitCode = 1; Close(); return; }
             MessageBox.Show(this,
                 $"Não foi possível iniciar o BrandGame. Confirma que a pasta web está junto do executável " +
                 $"e que o Microsoft Edge WebView2 Runtime está instalado.\n\n{ex.Message}",
@@ -64,6 +92,7 @@ public sealed class MainWindow : Form
     {
         if (disposing)
         {
+            startupTimeout.Dispose();
             if (bridge != null && webView.CoreWebView2 != null)
                 webView.CoreWebView2.WebMessageReceived -= bridge.OnMessageReceived;
             webView.Dispose();

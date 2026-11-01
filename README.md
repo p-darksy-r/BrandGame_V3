@@ -1,6 +1,6 @@
 # BrandGame V3
 
-Jogo de adivinhar marcas, com 100 níveis por categoria, salas personalizadas e uma aplicação Windows em C# / WinForms / WebView2. **Versão atual: 3.1.0.**
+Jogo de adivinhar marcas, com 100 níveis por categoria, salas personalizadas e uma aplicação Windows em C# / WinForms / WebView2. **Versão atual: 3.1.1 — assinatura de desenvolvimento.**
 
 Repositório oficial: [p-darksy-r/BrandGame_V3](https://github.com/p-darksy-r/BrandGame_V3).
 
@@ -8,15 +8,21 @@ Repositório oficial: [p-darksy-r/BrandGame_V3](https://github.com/p-darksy-r/Br
 
 Depois da compilação, abre **`app/BrandGame.exe`**. Os ficheiros HTML, CSS e JavaScript publicados estão em **`app/web/`**. A distribuição inclui o runtime .NET; o computador precisa do [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/microsoft-edge/webview2/).
 
-Os executáveis gerados não têm assinatura digital. Uma política de Controlo de Aplicações do Windows pode impedir o seu arranque. A assinatura de versões distribuídas é uma melhoria pendente; não é necessário nem recomendado alterar a segurança do sistema para compilar o projeto.
+`BrandGame.exe` e `update.exe` têm assinatura Authenticode SHA-256 e timestamp RFC 3161. A identidade é **BrandGame Development, O=p-darksy-r**, criada para testes e confiada apenas no perfil Windows do autor. Os dois executáveis passaram testes de arranque reais neste PC. **Isto não garante aceitação noutros PCs**: SmartScreen, Smart App Control e políticas empresariais podem bloquear certificados de desenvolvimento. Não desatives as proteções nem instales certificados de desenvolvimento para contornar um bloqueio.
+
+Obtém a [versão 3.1.1](https://github.com/p-darksy-r/BrandGame_V3/releases/tag/v3.1.1), ou usa o pacote web no navegador quando o Windows não permitir o executável. Consulta [como jogar](docs/PLAYTEST.md) e [assinatura Windows](docs/CODE_SIGNING.md).
 
 ## Compilar e atualizar
 
-Para desenvolver: Windows x64, PowerShell 5.1 ou superior e **.NET SDK 8 ou superior**. Node.js 22 ou superior é usado nos testes web. O primeiro restauro de dependências requer Internet.
+Para desenvolver: Windows x64, PowerShell 5.1 ou superior, **.NET SDK 8 ou superior** e o SignTool do Windows SDK. Node.js 22 ou superior é usado nos testes web. O restauro de dependências e o timestamp das assinaturas requerem Internet.
 
 Na raiz do projeto:
 
 ```powershell
+# Preparação única no PC do programador: cria a identidade local e confia
+# apenas no certificado público deste projeto no perfil Windows atual.
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup-signing.ps1
+
 # Primeira compilação: cria update.exe e publica a aplicação completa
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1
 
@@ -41,6 +47,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/update.ps1
 ```
 
 O `update.exe` precisa das pastas `scripts` e `src` ao seu lado; não é um instalador independente. Para recompilar o próprio atualizador, executa `scripts/build.ps1`.
+
+As compilações locais exigem assinatura e verificam o certificado esperado antes de substituir os executáveis. Se a assinatura ou o timestamp falharem, a nova publicação é rejeitada. O GitHub Actions usa explicitamente `-SigningMode None` e gera artefactos identificados como `Unsigned-CI`; não recebe a chave privada nem publica esses ficheiros como releases assinadas.
 
 ## Organização
 
@@ -69,9 +77,11 @@ Edita **`src/web`**, e publica com o atualizador. `app/web` é uma cópia de dis
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-signatures.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smoke-windows.ps1
 ```
 
-Os testes verificam seleção determinística de marcas, regras de pontuação, persistência, comunicação com o anfitrião e atualização com recuperação. O workflow de GitHub Actions executa a validação e gera a distribuição Windows.
+Os testes verificam seleção determinística de marcas, regras de pontuação, persistência, comunicação com o anfitrião e atualização com recuperação. O teste de arranque usa um perfil temporário sem abrir os saves do jogador. A assinatura e os testes de arranque são verificações separadas. O workflow de GitHub Actions executa os testes de lógica e gera uma build Windows de CI sem assinatura.
 
 ## Dados e funcionamento web
 

@@ -1,13 +1,19 @@
 [CmdletBinding()]
-param([switch]$SkipApp)
+param([switch]$SkipApp, [ValidateSet('Required', 'None')][string]$SigningMode = 'Required',
+    [string]$CertificateThumbprint = $env:BRANDGAME_SIGNING_THUMBPRINT,
+    [string]$TimestampServer = 'http://timestamp.digicert.com')
 
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'lib/Deployment.ps1')
+. (Join-Path $PSScriptRoot 'lib/Signing.ps1')
+$identity = if ($SigningMode -eq 'Required') { Get-BrandGameSigningIdentity -Thumbprint $CertificateThumbprint } else { $null }
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $output = Get-WorkspacePath -Root $projectRoot -RelativePath ('artifacts/staging/updater-' + [Guid]::NewGuid().ToString('N'))
 try {
     & dotnet publish (Join-Path $projectRoot 'src/updater/BrandGame.Updater.csproj') -c Release -r win-x64 --self-contained true -o $output --nologo
     if ($LASTEXITCODE -ne 0) { throw 'Falhou a compilacao do update.exe.' }
+    if ($identity) { $null = Invoke-BinarySigning -Path (Join-Path $output 'update.exe') -Identity $identity -TimestampServer $TimestampServer }
+    else { Write-Warning 'Build explicitamente sem assinatura (CI). Nao usar como release assinada.' }
     $updater = Get-WorkspacePath -Root $projectRoot -RelativePath 'update.exe'
     $updaterTemp = Get-WorkspacePath -Root $projectRoot -RelativePath 'update.new.exe'
     Copy-Item -LiteralPath (Join-Path $output 'update.exe') -Destination $updaterTemp -Force
@@ -19,6 +25,6 @@ try {
     if (Test-Path -LiteralPath $output) { Remove-Item -LiteralPath $output -Recurse -Force }
 }
 if (-not $SkipApp) {
-    & (Join-Path $PSScriptRoot 'update.ps1')
+    & (Join-Path $PSScriptRoot 'update.ps1') -SigningMode $SigningMode -CertificateThumbprint $CertificateThumbprint -TimestampServer $TimestampServer
     exit $LASTEXITCODE
 }

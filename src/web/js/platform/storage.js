@@ -29,6 +29,7 @@ function onSaveLoaded(data) {
     applyVisualSettings();
     const [width, height] = GAME_STATE.saveData.resolution.split('x').map(Number);
     sendNativeRequest({ Action: 'resize_window', Width: width, Height: height });
+    window.__brandGameReady = true;
 }
 
 window.onSaveLoaded = onSaveLoaded;

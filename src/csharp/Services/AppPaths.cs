@@ -6,7 +6,10 @@ internal static class AppPaths
     internal const string StartPage = "https://" + WebHost + "/index.html";
 
     // Preserve the original save location across application updates.
-    internal static string SaveFile => Path.Combine(
+    private static string? TestProfile => Environment.GetEnvironmentVariable("BRANDGAME_PROFILE_ROOT") is { Length: > 0 } value
+        ? Path.GetFullPath(value) : null;
+
+    internal static string SaveFile => TestProfile is { } testProfile ? Path.Combine(testProfile, "save.json") : Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "BrandGame_V3", "save_data_v3_custom.json");
 
@@ -26,6 +29,12 @@ internal static class AppPaths
 
     internal static string PrepareBrowserProfile()
     {
+        if (TestProfile is { } testProfile)
+        {
+            string isolated = Path.Combine(testProfile, "WebView2");
+            Directory.CreateDirectory(isolated);
+            return isolated;
+        }
         string path = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "BrandGame_V3", "WebView2");

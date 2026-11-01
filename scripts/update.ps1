@@ -1,12 +1,16 @@
 [CmdletBinding()]
-param([switch]$Watch, [switch]$Launch)
+param([switch]$Watch, [switch]$Launch, [ValidateSet('Required', 'None')][string]$SigningMode = 'Required',
+    [string]$CertificateThumbprint = $env:BRANDGAME_SIGNING_THUMBPRINT,
+    [string]$TimestampServer = 'http://timestamp.digicert.com')
 
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'lib/Deployment.ps1')
+. (Join-Path $PSScriptRoot 'lib/Signing.ps1')
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $lock = $null
 $exitCode = 0
 try {
+    $identity = if ($SigningMode -eq 'Required') { Get-BrandGameSigningIdentity -Thumbprint $CertificateThumbprint } else { $null }
     $artifacts = Get-WorkspacePath -Root $projectRoot -RelativePath 'artifacts'
     [IO.Directory]::CreateDirectory($artifacts) | Out-Null
     try {
@@ -28,7 +32,11 @@ try {
             }
             $validInstall = $false
             if ($installedHash -eq $fingerprint) {
-                try { Assert-AppPayload -Path (Join-Path $projectRoot 'app'); $validInstall = $true } catch { }
+                try {
+                    Assert-AppPayload -Path (Join-Path $projectRoot 'app')
+                    if ($identity) { $null = Assert-SignedBinary -Path (Join-Path $projectRoot 'app/BrandGame.exe') -ExpectedThumbprint $identity.Certificate.Thumbprint }
+                    $validInstall = $true
+                } catch { }
             }
             if ($validInstall) {
                 if ($lastNotice -ne $fingerprint) { Write-Host 'A app ja corresponde ao codigo local atual.'; $lastNotice = $fingerprint }
@@ -39,6 +47,9 @@ try {
                 Write-Host 'A compilar a versao Windows e a preparar os recursos web...'
                 & dotnet publish (Join-Path $projectRoot 'src/csharp/BrandGame.csproj') -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=None -o $stage --nologo
                 if ($LASTEXITCODE -ne 0) { throw "A compilacao falhou (codigo $LASTEXITCODE). A app anterior foi preservada." }
+                $signing = $null
+                if ($identity) { $signing = Invoke-BinarySigning -Path (Join-Path $stage 'BrandGame.exe') -Identity $identity -TimestampServer $TimestampServer }
+                else { Write-Warning 'Publicacao de CI sem assinatura, explicitamente pedida.' }
                 if ((Get-SourceFingerprint -Root $projectRoot) -ne $fingerprint) { throw 'O codigo mudou durante a compilacao. Execute novamente, ou aguarde pelo modo --watch.' }
                 $revision = $null
                 if ((Test-Path -LiteralPath (Join-Path $projectRoot '.git')) -and (Get-Command git -ErrorAction SilentlyContinue)) {
@@ -52,6 +63,7 @@ try {
                     builtAtUtc = [DateTime]::UtcNow.ToString('o')
                     runtime = 'win-x64'
                     source = 'local-working-tree'
+                    signing = $signing
                 }
                 $info | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $stage 'build-info.json') -Encoding UTF8
                 Install-StagedApp -Root $projectRoot -Stage $stage

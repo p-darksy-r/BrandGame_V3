@@ -2,7 +2,7 @@
 
 ## Trabalhar no projeto
 
-1. Altera as fontes em `src`.
+1. Prepara a assinatura uma vez com `scripts/setup-signing.ps1`, ou configura uma identidade pública; altera as fontes em `src`.
 2. Usa `scripts/test.ps1` para verificar o comportamento.
 3. Executa `scripts/build.ps1` para criar o atualizador e a distribuição, ou `update.exe --watch` durante o desenvolvimento.
 4. Abre `app/BrandGame.exe` e verifica os fluxos alterados.
@@ -23,10 +23,10 @@ O proprietário pediu que as versões concluídas sejam enviadas para **https://
 
 1. Atualiza `VERSION`, a identificação do frontend e `docs/CHANGELOG.md`.
 2. Atualiza `README.md`; este mesmo ficheiro é o README mostrado pelo GitHub.
-3. Executa testes e publicação. Regista limitações de validação, como um bloqueio de execução pelo Windows.
+3. Executa testes, publicação, `scripts/verify-signatures.ps1` e `scripts/smoke-windows.ps1`. Regista limitações de validação, como um bloqueio de execução pelo Windows.
 4. Revê `git diff` e preserva alterações locais existentes.
 5. Faz commit e push para o repositório indicado, sem force-push. Se a branch estiver protegida, usa uma branch `codex/` e um pull request.
-6. Para distribuir binários, executa `scripts/package.ps1` e anexa o ZIP à release correspondente. Não adiciona binários pesados ao histórico Git.
+6. Executa `scripts/package.ps1` depois da assinatura e anexa os ZIPs Windows/web, checksums, atualizador e relatório de assinaturas à release. Identifica releases com certificado autoassinado como versões de desenvolvimento. Não adiciona binários pesados nem chaves privadas ao histórico Git.
 
 ## Recuperação
 

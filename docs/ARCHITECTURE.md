@@ -31,7 +31,7 @@ Os saves mantêm o caminho antigo em AppData. O perfil WebView2 fica em LocalApp
 
 `update.exe` é um lançador .NET que chama `scripts/update.ps1` com argumentos estruturados. O script adquire um bloqueio exclusivo, recupera uma publicação interrompida, calcula o hash das fontes e publica para `artifacts/staging`.
 
-Uma compilação bem-sucedida só é instalada se as fontes não tiverem mudado entretanto e o conjunto de ficheiros estiver completo. A troca guarda a instalação anterior em `artifacts/backups`. Um registo em `artifacts/pending-update.json` permite recuperar uma interrupção entre as duas operações de mover pastas. As operações recusam caminhos fora do projeto e ligações de diretório nos destinos.
+Uma compilação bem-sucedida só é instalada se as fontes não tiverem mudado entretanto, o conjunto de ficheiros estiver completo e a assinatura esperada com timestamp for válida. O processo de assinatura usa uma identidade previamente preparada; não cria confiança durante o build. A troca guarda a instalação anterior em `artifacts/backups`. Um registo em `artifacts/pending-update.json` permite recuperar uma interrupção entre as duas operações de mover pastas. As operações recusam caminhos fora do projeto e ligações de diretório nos destinos.
 
 O modo `--watch` verifica as fontes de três em três segundos. Enquanto a aplicação estiver aberta, mantém a versão em execução e espera que seja fechada. A atualização não descarrega código, não força o encerramento da aplicação, nem altera ficheiros de progresso.
 

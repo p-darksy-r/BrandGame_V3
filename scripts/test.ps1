@@ -10,5 +10,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Falharam os testes nativos.' }
     & powershell -NoProfile -ExecutionPolicy Bypass -File tests/updater.Tests.ps1
     if ($LASTEXITCODE -ne 0) { throw 'Falharam os testes do atualizador.' }
+    & powershell -NoProfile -ExecutionPolicy Bypass -File tests/signing.Tests.ps1
+    if ($LASTEXITCODE -ne 0) { throw 'Falharam os testes de assinatura.' }
     Write-Host 'Todos os testes passaram.'
 } finally { Pop-Location }

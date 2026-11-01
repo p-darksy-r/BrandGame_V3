@@ -1,6 +1,6 @@
 /* BrandGame_V3 - https://github.com/p-darksy-r/BrandGame_V3 - Copyright (c) darksy */
 
-const GAME_VERSION = "3.1.0";
+const GAME_VERSION = "3.1.1";
 
 // --- GAME STATE SYSTEM ---
 function createDefaultSaveData() {
