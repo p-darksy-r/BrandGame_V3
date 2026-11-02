@@ -38,6 +38,7 @@ function setupEventHandlers() {
     safeAddEventListener("btn-gameplay-quit", "click", () => {
         clearInterval(GAME_STATE.timerInterval);
         GAME_STATE.roundStatus = "idle";
+        GAME_STATE.roundToken++;
         if (GAME_STATE.currentCategory === "custom") {
             renderCategoryCards();
             showScreen("screen-categories");
@@ -101,13 +102,19 @@ function setupEventHandlers() {
         sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
     });
 
-    // FPS Limiter Config
-    ["30", "60", "uncapped"].forEach(fps => {
-        safeAddEventListener(`btn-fps-${fps}`, "click", () => {
-            GAME_STATE.saveData.fpsLimit = fps;
-            applyFrameBudgeting();
-            sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
-        });
+    safeAddEventListener("settings-reduced-motion", "change", event => {
+        GAME_STATE.saveData.reducedMotion = event.target.checked;
+        applyMotionSettings();
+        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
+    });
+    safeAddEventListener("btn-pause-round", "click", pauseRound);
+    safeAddEventListener("btn-resume-round", "click", resumeRound);
+    safeAddEventListener("btn-retry-logo", "click", loadNextBrand);
+    document.addEventListener("visibilitychange", () => { if (document.hidden) pauseRound(); });
+    document.addEventListener("keydown", event => {
+        if (event.key !== "Escape") return;
+        if (GAME_STATE.roundStatus === "playing") pauseRound();
+        else if (GAME_STATE.roundStatus === "paused") resumeRound();
     });
 
     // Integrated Brightness Slider
@@ -124,18 +131,6 @@ function setupEventHandlers() {
             sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
         });
     }
-
-    // V-Sync Interface Toggles
-    safeAddEventListener("btn-vsync-off", "click", () => {
-        GAME_STATE.saveData.vsync = false;
-        applyVSyncStatus();
-        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
-    });
-    safeAddEventListener("btn-vsync-on", "click", () => {
-        GAME_STATE.saveData.vsync = true;
-        applyVSyncStatus();
-        sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
-    });
 
     // Unified Vibration Trigger Hook
     const getVibElement = () => document.getElementById("btn-vibrate-toggle") || document.getElementById("vibration-toggle");

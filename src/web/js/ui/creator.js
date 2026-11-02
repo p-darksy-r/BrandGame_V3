@@ -89,6 +89,11 @@ function publishCustomLevelRoom() {
             return;
         }
 
+        if (!getLocalLogoPath(bSlug)) {
+            alert(`Brand #${i}: choose one of the suggested offline logo identifiers.`);
+            return;
+        }
+
         customBrands.push({
             name: bName,
             slug: bSlug,
@@ -120,4 +125,16 @@ function publishCustomLevelRoom() {
 
     renderCategoryCards();
     showScreen("screen-categories");
+}
+
+function populateLocalLogoOptions() {
+    const list = document.createElement('datalist');
+    list.id = 'local-logo-options';
+    for (const slug of [...LOCAL_LOGO_SLUGS].sort()) {
+        const option = document.createElement('option');
+        option.value = slug;
+        list.appendChild(option);
+    }
+    document.body.appendChild(list);
+    document.querySelectorAll('input[id$="-slug"]').forEach(input => input.setAttribute('list', list.id));
 }

@@ -10,12 +10,19 @@
 - Gravações mais robustas e regras coerentes entre plataformas.
 - Documentação de desenvolvimento e testes automatizados.
 
+## Implementadas na versão 3.2.0
+
+- CSS, fontes e logótipos locais; partida completa em `file://` com a rede desligada.
+- Catálogo auditado: 496 entradas ativas, identificadores corrigidos e 1438 entradas preservadas fora das rondas para revisão.
+- Remoção dos controlos de FPS/VSync sem efeito; movimento reduzido com preferência do sistema.
+- Carregamento de logótipos antes do cronómetro, erros recuperáveis, pausa e tempo monotónico.
+- Testes de partida completa, derrota, persistência, cancelamento e falhas de imagem.
+
 ## Próximas prioridades
 
-1. **Recursos locais e catálogo verificado.** Compilar o CSS Tailwind e incluir fontes e logótipos permitidos na distribuição. Auditar slugs inexistentes, marcas repetidas e pistas que revelam respostas. O catálogo preservado contém entradas que ainda precisam desta revisão.
-2. **Assinatura pública e atualização online.** A versão 3.1.1 já assina e verifica os executáveis com uma identidade de desenvolvimento. Falta obter uma identidade publicamente confiável ou preparar distribuição MSIX pela Microsoft Store, e implementar a validação de atualizações remotas. O atualizador atual compila o código local; não é ainda um cliente de releases do GitHub.
-3. **Definições com efeito verificável.** Rever FPS e VSync: o código anterior apresentava controlos sem limitar a renderização do WebView2. Priorizar opções cujo efeito possa ser medido e explicado ao jogador.
-4. **Acessibilidade e ecrãs pequenos.** Melhorar navegação por teclado, foco, contraste, opções para movimento reduzido e adaptação a diferentes escalas do Windows.
-5. **Cobertura de fluxos completos.** Automatizar sessões reais no WebView2, migrações de saves, erros de rede e retomada de partidas. Os testes atuais não substituem uma validação visual completa.
-
-O trabalho deve continuar por funcionalidades pequenas e verificáveis. Uma reescrita completa não é necessária para estas melhorias.
+1. **Atualização online para jogadores.** Descarregar releases estáveis verificadas, preservar saves e recuperar de falhas. O atualizador atual continua a compilar fontes locais.
+2. **Distribuição pública.** Preparar certificado publicamente confiável ou distribuição pela Microsoft Store. A identidade atual continua a ser de desenvolvimento.
+3. **Mais marcas verificadas e dificuldade por marca.** Ampliar sobretudo moda e alimentação com recursos adequados e rever repetições entre níveis próximos. O catálogo original permanece disponível para esta revisão.
+4. **Acessibilidade e localização.** Português de Portugal, textos maiores, foco de teclado completo e testes de escalas 125%/150% do Windows. A janela continua WinForms/WebView2.
+5. **Gestão de progresso.** Exportar/importar saves, permitir corrigir salas antigas e indicar falhas de gravação no navegador.
+6. **Evolução dos módulos.** Dependências explícitas, mantendo o arranque offline e o modo de abertura direta no navegador.

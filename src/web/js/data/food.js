@@ -2,6 +2,17 @@
 
     /* ========== | Start of Food Brands | ========== */
 const RAW_BRANDS_FOOD = [
+        // Verified food delivery services with locally bundled logos.
+        "Deliveroo|deliveroo|Food delivery with a kangaroo-shaped symbol.",
+        "DoorDash|doordash|Restaurant delivery with a red wing-shaped mark.",
+        "Grubhub|grubhub|An online restaurant ordering marketplace.",
+        "Just Eat|justeat|Food ordering with an orange house and cutlery.",
+        "Uber Eats|ubereats|Meal delivery from the ride-hailing company.",
+        "Zomato|zomato|Restaurant discovery and delivery platform from India.",
+        "Swiggy|swiggy|Orange location pin for food delivery in India.",
+        "foodpanda|foodpanda|Pink panda restaurant delivery service.",
+        "iFood|ifood|Brazilian meal delivery app with a red smile.",
+        "Instacart|instacart|Grocery delivery with a carrot symbol.",
         // --- ORIGINAL BRANDS ---
         "Coca-Cola|cocacola|Classic script red soda.",
         "Pepsi|pepsi|Red-white-blue circle globe.",

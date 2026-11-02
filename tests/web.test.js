@@ -7,21 +7,27 @@ const root = path.resolve(__dirname, '../src/web');
 
 function context(files, additions = {}) {
     const sandbox = vm.createContext({ window: {}, console, ...additions });
-    for (const file of files) vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), sandbox, { filename: file });
+    for (const file of [...new Set(["js/core/version.js", ...files])]) vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), sandbox, { filename: file });
     return sandbox;
 }
-const dataFiles = ['tech', 'auto', 'food', 'fashion', 'media', 'brands'].map(name => `js/data/${name}.js`);
+const dataFiles = ['js/data/offline-catalog.js', 'js/data/brands.js'];
 
-test('all five original catalogs remain available without duplicate names in a category', () => {
+test('all five catalogs contain distinct identities with local logos', () => {
     const ctx = context(dataFiles);
     const database = ctx.window.BRAND_DATABASE;
     assert.equal(Object.keys(database).length, 5);
-    assert.ok(Object.values(database).reduce((total, brands) => total + brands.length, 0) > 1800);
     for (const brands of Object.values(database)) {
-        assert.ok(brands.length > 200);
+        assert.ok(brands.length >= 12);
         assert.equal(new Set(brands.map(brand => brand.name.toLowerCase())).size, brands.length);
-        for (const brand of brands) assert.ok(brand.name && brand.slug && brand.hint);
+        assert.equal(new Set(brands.map(brand => brand.slug)).size, brands.length);
+        for (const brand of brands) {
+            assert.ok(brand.name && brand.hint);
+            assert.ok(fs.existsSync(path.join(root, ctx.getLocalLogoPath(brand.slug))));
+        }
     }
+    assert.ok(!database.auto.some(brand => ['Norton', 'Proton'].includes(brand.name)));
+    assert.ok(!database.fashion.some(brand => ['Pandora', 'Element'].includes(brand.name)));
+    assert.equal(ctx.getLocalLogoPath('../private'), null);
 });
 
 test('500 category levels are deterministic, unique and follow the 3 to 12 brand progression', () => {
@@ -67,7 +73,7 @@ test('each round accepts one submission and deducts each letter clue once', () =
     const input = { value: 'Apple' };
     const ctx = context(['js/core/state.js', 'js/core/matching.js', 'js/gameplay/clues.js', 'js/gameplay/feedback.js'], {
         document: { getElementById: id => id === 'input-guess' ? input : null },
-        clearInterval() {}, sfx: { playCoin() {}, playWrong() {} }
+        updateRoundClock() {}, clearInterval() {}, sfx: { playCoin() {}, playWrong() {} }
     });
     vm.runInContext('GAME_STATE.currentBrand = {name:"Apple"}; GAME_STATE.roundStatus = "playing"; buyLetterClue(); submitUserGuess(); submitUserGuess(); onMatchResult({correct:true,match:100,score:50});', ctx);
     assert.equal(vm.runInContext('GAME_STATE.currentLevelScore', ctx), 40);

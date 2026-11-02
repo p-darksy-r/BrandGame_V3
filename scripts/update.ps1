@@ -42,6 +42,9 @@ try {
                 if ($lastNotice -ne $fingerprint) { Write-Host 'A app ja corresponde ao codigo local atual.'; $lastNotice = $fingerprint }
             } else {
                 if (Test-AppRunning -Root $projectRoot) { throw 'Feche app/BrandGame.exe para atualizar. O modo --watch tenta novamente automaticamente.' }
+                & node (Join-Path $projectRoot 'scripts/build-web.cjs')
+                if ($LASTEXITCODE -ne 0) { throw 'Falhou a preparacao web. Execute npm ci e corrija o catalogo antes de publicar.' }
+                $fingerprint = Get-SourceFingerprint -Root $projectRoot
                 $stage = Get-WorkspacePath -Root $projectRoot -RelativePath ('artifacts/staging/app-' + [Guid]::NewGuid().ToString('N'))
                 [IO.Directory]::CreateDirectory($stage) | Out-Null
                 Write-Host 'A compilar a versao Windows e a preparar os recursos web...'

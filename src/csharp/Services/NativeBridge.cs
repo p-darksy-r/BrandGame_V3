@@ -25,9 +25,6 @@ internal sealed class NativeBridge(MainWindow window, WebView2 webView, GameEngi
                 case "resize_window" when request.Width.HasValue && request.Height.HasValue:
                     window.ResizeGameWindow(request.Width.Value, request.Height.Value);
                     return;
-                case "configure_vsync":
-                    // WebView2 presentation follows the operating system's compositor.
-                    return;
                 case "load_save":
                     await ReplyAsync("onSaveLoaded", await saves.LoadAsync());
                     return;

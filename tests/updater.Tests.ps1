@@ -109,6 +109,27 @@ try {
         Assert-Throws { Assert-AppPayload -Path $stage } 'A missing executable was accepted.'
     }
 
+    Test-Case 'Offline manifest rejects missing, modified or out-of-root assets' {
+        $root = New-TestWorkspace
+        $stage = New-TestPayload -Path (New-TestStagePath -Root $root)
+        $infoPath = Join-Path $stage 'build-info.json'
+        $info = Get-Content -LiteralPath $infoPath -Raw | ConvertFrom-Json
+        $info.version = '3.2.0'
+        $info | ConvertTo-Json | Set-Content -LiteralPath $infoPath -Encoding UTF8
+        Assert-Throws { Assert-AppPayload -Path $stage } 'Missing offline manifest was accepted.'
+        [IO.Directory]::CreateDirectory((Join-Path $stage 'web/assets')) | Out-Null
+        $manifest = Join-Path $stage 'web/assets/manifest.json'
+        $asset = Join-Path $stage 'web/js/main.js'
+        @{ version = '3.2.0'; sha256 = @{ 'js/main.js' = (Get-FileHash -LiteralPath $asset).Hash.ToLowerInvariant() } } |
+            ConvertTo-Json | Set-Content -LiteralPath $manifest -Encoding UTF8
+        Assert-AppPayload -Path $stage
+        Add-Content -LiteralPath $asset -Value '// changed'
+        Assert-Throws { Assert-AppPayload -Path $stage } 'Modified offline resource was accepted.'
+        @{ version = '3.2.0'; sha256 = @{ '../BrandGame.exe' = ('a' * 64) } } |
+            ConvertTo-Json | Set-Content -LiteralPath $manifest -Encoding UTF8
+        Assert-Throws { Assert-AppPayload -Path $stage } 'Asset outside web was accepted.'
+    }
+
     Test-Case 'Payload validation checks query strings, fragments and HTML attribute spacing' {
         $root = New-TestWorkspace
         $stage = New-TestPayload -Path (New-TestStagePath -Root $root)

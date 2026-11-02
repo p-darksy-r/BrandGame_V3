@@ -1,5 +1,19 @@
 # Histórico de versões
 
+## 3.2.0 — 2026-11-02
+
+- Jogo offline com CSS compilado, fontes e logótipos locais; licenças e origens incluídas.
+- Catálogo ativo de 496 entradas, correções de identificadores e pistas, exclusão de logótipos errados e preservação das fontes originais.
+- Manifesto SHA-256 dos recursos, validado antes de substituir a app, e geração reproduzível verificada no CI.
+- Cronómetro monotónico iniciado após a imagem, pausa explícita/automática e falhas de carregamento sem perda de vidas.
+- Movimento reduzido; removidos os controlos de FPS/VSync sem efeito e corrigidos os nomes das definições.
+- Criação de salas limitada aos logótipos locais disponíveis; salas antigas preservadas.
+- Testes completos no navegador offline, falhas de imagem, derrota, persistência e migração de definições.
+- Smoke test Windows ampliado para uma partida completa e confirmação do save no disco.
+- Versão frontend gerada a partir de VERSION e documentação atualizada.
+
+Mantém assinatura autoassinada de desenvolvimento; a atualização online fica para a próxima etapa.
+
 ## 3.1.1 — 2026-11-01
 
 - Assinatura Authenticode SHA-256 nos dois executáveis com identidade própria do BrandGame e timestamp RFC 3161.

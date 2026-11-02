@@ -18,6 +18,10 @@ function launchLevel(levelNum) {
 function launchCustomLevel(customIndex) {
     const targetRoom = GAME_STATE.saveData.customLevels[customIndex];
     if (!targetRoom || !targetRoom.brands.length) return;
+    if (targetRoom.brands.some(brand => !getLocalLogoPath(brand.slug))) {
+        alert("This saved room contains logos unavailable in the offline catalog. Its data is preserved. Create a room using the suggested local logos.");
+        return;
+    }
     GAME_STATE.currentLevel = customIndex;
     GAME_STATE.currentBrandIndex = 0;
     GAME_STATE.currentLevelCorrectCount = 0;
@@ -46,7 +50,9 @@ function loadNextBrand() {
     GAME_STATE.revealedIndices = [];
     GAME_STATE.clueCost = 0;
     GAME_STATE.hintUsed = false;
-    GAME_STATE.roundStatus = "playing";
+    GAME_STATE.roundStatus = "loading";
+    const token = ++GAME_STATE.roundToken;
+    document.getElementById("pause-overlay")?.classList.add("hidden");
     document.getElementById("feedback-overlay")?.classList.add("hidden");
 
     GAME_STATE.currentBrand = GAME_STATE.activeBrands[GAME_STATE.currentBrandIndex];
@@ -59,23 +65,6 @@ function loadNextBrand() {
     if (livesEl) livesEl.textContent = hearts;
 
     renderRevealedLetters();
-
-    const img = document.getElementById("logo-image");
-    const placeholder = document.getElementById("logo-placeholder");
-    if (img) {
-        img.src = `https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/${GAME_STATE.currentBrand.slug}.svg`;
-        // Simple Icons uses black SVG paths; invert them against the dark board.
-        img.style.filter = "grayscale(1) invert(1) brightness(0.8)";
-
-        img.onerror = () => {
-            img.classList.add("hidden");
-            if (placeholder) placeholder.classList.remove("hidden");
-        };
-        img.onload = () => {
-            img.classList.remove("hidden");
-            if (placeholder) placeholder.classList.add("hidden");
-        };
-    }
 
     let timeLimit = 15;
     if (GAME_STATE.currentCategory === "custom") {
@@ -94,27 +83,13 @@ function loadNextBrand() {
         if (GAME_STATE.saveData.difficulty === "hard") timeLimit = 8;
     }
 
+    GAME_STATE.timeLimit = Math.max(5, Math.min(120, Number(timeLimit) || 15));
     GAME_STATE.elapsedTime = 0;
+    GAME_STATE.elapsedBeforePause = 0;
     const bar = document.getElementById("timer-bar");
-    if (bar) {
-        bar.style.width = "100%";
-        bar.style.backgroundColor = "#3b82f6";
-    }
+    if (bar) bar.style.width = "100%";
+    loadRoundLogo(token);
 
-    GAME_STATE.timerInterval = setInterval(() => {
-        GAME_STATE.elapsedTime += 0.1;
-        const rem = Math.max(((timeLimit - GAME_STATE.elapsedTime) / timeLimit) * 100, 0);
-        if (bar) {
-            bar.style.width = `${rem}%`;
-            if (rem < 30) bar.style.backgroundColor = "#ef4444";
-            else if (rem < 60) bar.style.backgroundColor = "#f59e0b";
-        }
-
-        if (GAME_STATE.elapsedTime >= timeLimit) {
-            clearInterval(GAME_STATE.timerInterval);
-            processLossOfLife();
-        }
-    }, 100);
 }
 
 function advanceTurn() {

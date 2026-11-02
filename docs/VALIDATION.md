@@ -1,5 +1,16 @@
 # Validação
 
+## Versão 3.2.0
+
+- 10 testes web, 22 verificações C#, 19 testes do atualizador e 3 testes de assinatura passaram.
+- Os 510 ficheiros gerados foram verificados contra as dependências fixadas: catálogo, SVGs, fontes, CSS, licenças e manifesto.
+- Seis testes Playwright: partida completa em `file://` com a rede desligada, todos os logótipos carregados, fontes locais e progresso preservado ao reabrir; recuperação de uma imagem em falta, saída durante carregamento, derrota, definições persistentes e compatibilidade das salas personalizadas.
+- Verificações do relógio monotónico, tempo de pausa, migração das definições antigas e rejeição de recursos offline alterados ou fora da pasta web.
+- `update.exe --help` e `update.exe --no-pause` passaram. `BrandGame.exe --smoke-test` completou um nível no WebView2, confirmou respostas pela ponte nativa e verificou o progresso gravado no disco, num perfil isolado.
+- Menu e definições revistos em capturas de ecrã. As assinaturas finais mantêm Authenticode SHA-256 e timestamp RFC 3161.
+
+O teste nativo correu neste PC; não foi feita uma campanha completa em todos os níveis, nem validação noutras máquinas ou escalas de DPI. A assinatura continua a ser de desenvolvimento. O jogo é offline; a compilação inicial, o timestamp e a publicação de releases requerem rede.
+
 ## Versão 3.1.1
 
 - 8 testes web, 22 verificações C#, 18 testes do atualizador e 3 testes de validação de assinatura passaram.

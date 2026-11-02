@@ -43,7 +43,7 @@ function renderRevealedLetters() {
 }
 
 function triggerVibration() {
-    if (!GAME_STATE.saveData.vibration) return;
+    if (!GAME_STATE.saveData.vibration || GAME_STATE.saveData.reducedMotion || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
     const el = document.getElementById("screen-gameplay");
     if (el) {
         el.classList.add("shake-active");

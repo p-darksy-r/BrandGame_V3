@@ -41,52 +41,10 @@ function applyVisualSettings() {
     }
 }
 
-function applyFrameBudgeting() {
-    const val = GAME_STATE.saveData.fpsLimit || "uncapped";
-    ["30", "60", "uncapped"].forEach(fps => {
-        const btn = document.getElementById(`btn-fps-${fps}`);
-        if (btn) {
-            if (val === fps) btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
-            else btn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
-        }
-    });
-
-    if (gameLoopId) cancelAnimationFrame(gameLoopId);
-
-    if (val === "30") {
-        lockAnimationFramerate(30);
-    } else if (val === "60") {
-        lockAnimationFramerate(60);
-    }
-}
-
-function lockAnimationFramerate(fps) {
-    let lastTime = performance.now();
-    const interval = 1000 / fps;
-
-    function loop(time) {
-        gameLoopId = requestAnimationFrame(loop);
-        const delta = time - lastTime;
-        if (delta >= interval) {
-            lastTime = time - (delta % interval);
-        }
-    }
-    gameLoopId = requestAnimationFrame(loop);
-}
-
-function applyVSyncStatus() {
-    const val = GAME_STATE.saveData.vsync;
-    const btnOn = document.getElementById("btn-vsync-on");
-    const btnOff = document.getElementById("btn-vsync-off");
-
-    if (val) {
-        if (btnOn) btnOn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
-        if (btnOff) btnOff.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
-    } else {
-        if (btnOn) btnOn.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-gray-900 text-gray-400 transition";
-        if (btnOff) btnOff.className = "px-3 py-2 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition";
-    }
-    sendNativeRequest({ Action: "configure_vsync", Value: val });
+function applyMotionSettings() {
+    document.body.classList.toggle("reduced-motion", GAME_STATE.saveData.reducedMotion);
+    const checkbox = document.getElementById("settings-reduced-motion");
+    if (checkbox) checkbox.checked = GAME_STATE.saveData.reducedMotion;
 }
 
 function syncSettingsPanel() {
@@ -110,8 +68,7 @@ function syncSettingsPanel() {
     updateDifficultyToggles();
     updateResolutionButtons();
     updateVibrationButton();
-    applyFrameBudgeting();
-    applyVSyncStatus();
+    applyMotionSettings();
     applyWindowBounds();
 }
 

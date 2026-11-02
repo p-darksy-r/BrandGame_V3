@@ -1,6 +1,6 @@
 # BrandGame V3
 
-Jogo de adivinhar marcas, com 100 níveis por categoria, salas personalizadas e uma aplicação Windows em C# / WinForms / WebView2. **Versão atual: 3.1.1 — assinatura de desenvolvimento.**
+Jogo de adivinhar marcas, com 100 níveis por categoria, salas personalizadas e uma aplicação Windows em C# / WinForms / WebView2. **Versão atual: 3.2.0 — assinatura de desenvolvimento.**
 
 Repositório oficial: [p-darksy-r/BrandGame_V3](https://github.com/p-darksy-r/BrandGame_V3).
 
@@ -10,15 +10,27 @@ Depois da compilação, abre **`app/BrandGame.exe`**. Os ficheiros HTML, CSS e J
 
 `BrandGame.exe` e `update.exe` têm assinatura Authenticode SHA-256 e timestamp RFC 3161. A identidade é **BrandGame Development, O=p-darksy-r**, criada para testes e confiada apenas no perfil Windows do autor. Os dois executáveis passaram testes de arranque reais neste PC. **Isto não garante aceitação noutros PCs**: SmartScreen, Smart App Control e políticas empresariais podem bloquear certificados de desenvolvimento. Não desatives as proteções nem instales certificados de desenvolvimento para contornar um bloqueio.
 
-Obtém a [versão 3.1.1](https://github.com/p-darksy-r/BrandGame_V3/releases/tag/v3.1.1), ou usa o pacote web no navegador quando o Windows não permitir o executável. Consulta [como jogar](docs/PLAYTEST.md) e [assinatura Windows](docs/CODE_SIGNING.md).
+Obtém a [versão 3.2.0](https://github.com/p-darksy-r/BrandGame_V3/releases/tag/v3.2.0), ou usa o pacote web no navegador quando o Windows não permitir o executável. Consulta [como jogar](docs/PLAYTEST.md) e [assinatura Windows](docs/CODE_SIGNING.md).
+
+## Novidades da versão 3.2.0
+
+- Recursos locais e manifesto SHA-256 para validar a distribuição.
+- Cronómetro baseado em tempo real, iniciado após carregar o logótipo. Falhas de imagem não gastam vidas.
+- Pausa pelo botão ou `Esc`; mudar de separador pausa a ronda e exige retoma explícita.
+- Movimento reduzido, respeitando também a preferência do sistema; removidos os controlos sem efeito de FPS e VSync.
+- Fontes, licenças e origens dos logótipos incluídas em `app/web/licenses`.
 
 ## Compilar e atualizar
 
-Para desenvolver: Windows x64, PowerShell 5.1 ou superior, **.NET SDK 8 ou superior** e o SignTool do Windows SDK. Node.js 22 ou superior é usado nos testes web. O restauro de dependências e o timestamp das assinaturas requerem Internet.
+Para desenvolver: Windows x64, PowerShell 5.1 ou superior, **.NET SDK 8 ou superior** e o SignTool do Windows SDK. Node.js 22 ou superior e `npm ci` são necessários para preparar o catálogo, CSS e testes web. O restauro de dependências e o timestamp das assinaturas requerem Internet.
 
 Na raiz do projeto:
 
 ```powershell
+# Dependências e recursos web locais
+npm ci --ignore-scripts
+npm run build:web
+
 # Preparação única no PC do programador: cria a identidade local e confia
 # apenas no certificado público deste projeto no perfil Windows atual.
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup-signing.ps1
@@ -77,11 +89,13 @@ Edita **`src/web`**, e publica com o atualizador. `app/web` é uma cópia de dis
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test.ps1
+npx playwright install chromium
+npm run test:e2e
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-signatures.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smoke-windows.ps1
 ```
 
-Os testes verificam seleção determinística de marcas, regras de pontuação, persistência, comunicação com o anfitrião e atualização com recuperação. O teste de arranque usa um perfil temporário sem abrir os saves do jogador. A assinatura e os testes de arranque são verificações separadas. O workflow de GitHub Actions executa os testes de lógica e gera uma build Windows de CI sem assinatura.
+Os testes verificam seleção determinística de marcas, regras de pontuação, persistência, comunicação com o anfitrião e atualização com recuperação. O teste Windows joga um nível completo, avalia respostas pela ponte nativa e verifica o save no disco, usando um perfil temporário sem abrir os saves do jogador. Os testes no navegador cobrem jogo offline, imagens em falta, cancelamento durante o carregamento, derrota e definições persistentes. A assinatura e os testes de arranque são verificações separadas. O workflow de GitHub Actions executa os testes de lógica e gera uma build Windows de CI sem assinatura.
 
 ## Dados e funcionamento web
 
@@ -89,7 +103,9 @@ Os testes verificam seleção determinística de marcas, regras de pontuação, 
 - Perfil WebView2: `%LOCALAPPDATA%/BrandGame_V3/WebView2`.
 - Modo web: abre `src/web/index.html` no navegador; o progresso usa armazenamento local do navegador.
 - Servidor local opcional: `node scripts/serve-web.mjs`, disponível em `http://127.0.0.1:8765`.
-- Tailwind, fontes e logótipos ainda dependem de serviços externos. A aplicação **ainda não funciona totalmente offline**, e algumas marcas não têm um logótipo disponível.
+- **O jogo funciona offline**, com CSS compilado, fontes e logótipos incluídos. A instalação inicial de dependências de desenvolvimento e o timestamp das assinaturas continuam a precisar de Internet.
+- O catálogo ativo tem **496 entradas**: tecnologia 317, automóveis 57, alimentação 20, moda 13 e media 89. As 1438 entradas sem correspondência verificada ficam preservadas nas fontes e fora das rondas; consulta a [auditoria](docs/CATALOG_AUDIT.md). Existem 100 níveis por categoria, com reutilização de marcas.
+- As salas antigas são preservadas. Se usarem um logótipo que não está no catálogo offline, o jogo avisa antes de começar; o criador sugere identificadores disponíveis.
 - O motor C++ é opcional. Sem `BrandEngine.dll`, a aplicação usa as mesmas regras em C#.
 
 Consulta a [arquitetura](docs/ARCHITECTURE.md), o [guia de desenvolvimento](docs/DEVELOPMENT.md), as [melhorias propostas](docs/ROADMAP.md) e o [histórico de versões](docs/CHANGELOG.md).

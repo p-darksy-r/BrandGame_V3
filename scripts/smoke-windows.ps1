@@ -10,7 +10,7 @@ $results = @()
 foreach ($test in @(
     @{ File = 'update.exe'; Arguments = '--help'; Name = 'updater-help' },
     @{ File = 'update.exe'; Arguments = '--no-pause'; Name = 'updater-current-source' },
-    @{ File = 'app/BrandGame.exe'; Arguments = '--smoke-test'; Name = 'game-webview-and-native-save-bridge' }
+    @{ File = 'app/BrandGame.exe'; Arguments = '--smoke-test'; Name = 'game-complete-level-and-persist-native-save' }
 )) {
     $start = New-Object Diagnostics.ProcessStartInfo
     $start.FileName = Join-Path $projectRoot $test.File

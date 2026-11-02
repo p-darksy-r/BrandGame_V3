@@ -1,11 +1,11 @@
 /* BrandGame_V3 - https://github.com/p-darksy-r/BrandGame_V3 - Copyright (c) darksy */
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap');
 
 body {
     font-family: 'Rajdhani', sans-serif;
     background: radial-gradient(circle at center, #111827 0%, #030712 100%);
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     user-select: none;
 }
 .gaming-font {
@@ -65,3 +65,21 @@ body.low-quality * {
 .shake-active {
     animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
 }
+
+/* The setting and the operating system preference both reduce motion. */
+body.reduced-motion *, body.reduced-motion *::before, body.reduced-motion *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+:focus-visible { outline: 2px solid #93c5fd; outline-offset: 3px; }
+input:disabled { opacity: 0.6; }
+#round-load-status:empty { display: none; }
+main { margin-inline: auto; min-width: 0; }

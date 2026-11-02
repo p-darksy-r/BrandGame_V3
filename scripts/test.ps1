@@ -2,6 +2,8 @@ $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 Push-Location $projectRoot
 try {
+    & node scripts/build-web.cjs --check
+    if ($LASTEXITCODE -ne 0) { throw 'Os recursos web precisam de npm run build:web.' }
     $webTests = @(Get-ChildItem -LiteralPath (Join-Path $projectRoot 'tests') -Filter 'web*.test.js' -File | ForEach-Object { $_.FullName })
     if ($webTests.Count -eq 0) { throw 'Nao foram encontrados os testes web.' }
     & node --test @webTests

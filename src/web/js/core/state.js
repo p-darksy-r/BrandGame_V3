@@ -1,7 +1,5 @@
 /* BrandGame_V3 - https://github.com/p-darksy-r/BrandGame_V3 - Copyright (c) darksy */
 
-const GAME_VERSION = "3.1.1";
-
 // --- GAME STATE SYSTEM ---
 function createDefaultSaveData() {
     return {
@@ -17,8 +15,7 @@ function createDefaultSaveData() {
         quality: "high",
         vibration: true,
         brightness: 100,
-        fpsLimit: "uncapped",
-        vsync: true
+        reducedMotion: false
     };
 }
 
@@ -45,10 +42,12 @@ function normalizeSaveData(value) {
     ) : [];
     result.volume = finite(data.volume, defaults.volume, 0, 1);
     result.brightness = finite(data.brightness, defaults.brightness, 10, 150);
-    for (const [key, choices] of Object.entries({ difficulty: ['easy', 'medium', 'hard'], resolution: ['800x600', '1024x768', '1280x960'], quality: ['low', 'high'], fpsLimit: ['30', '60', 'uncapped'] })) {
+    for (const [key, choices] of Object.entries({ difficulty: ['easy', 'medium', 'hard'], resolution: ['800x600', '1024x768', '1280x960'], quality: ['low', 'high'] })) {
         result[key] = choices.includes(data[key]) ? data[key] : defaults[key];
     }
-    for (const key of ['vibration', 'vsync']) result[key] = typeof data[key] === 'boolean' ? data[key] : defaults[key];
+    for (const key of ['vibration', 'reducedMotion']) result[key] = typeof data[key] === 'boolean' ? data[key] : defaults[key];
+    delete result.fpsLimit;
+    delete result.vsync;
     return result;
 }
 
@@ -68,7 +67,9 @@ const GAME_STATE = {
     levelSelectPage: 0,
     roundStatus: 'idle',
     clueCost: 0,
-    hintUsed: false
+    hintUsed: false,
+    roundToken: 0,
+    timeLimit: 15,
+    roundStartedAt: 0,
+    elapsedBeforePause: 0
 };
-
-let gameLoopId = null;

@@ -29,7 +29,7 @@ function Get-SourceFingerprint {
             Get-ChildItem -LiteralPath (Join-Path $Root $path) -Recurse -File |
                 Where-Object { $_.FullName -notmatch '[\\/](bin|obj)[\\/]' -and $_.Extension -notin @('.dll', '.pdb', '.exe', '.obj', '.lib', '.exp') }
         }
-        foreach ($path in @('VERSION', 'Directory.Build.props', 'global.json', 'NuGet.Config')) {
+        foreach ($path in @('VERSION', 'Directory.Build.props', 'global.json', 'NuGet.Config', 'package.json', 'package-lock.json', 'tailwind.config.cjs')) {
             if (Test-Path -LiteralPath (Join-Path $Root $path)) { Get-Item -LiteralPath (Join-Path $Root $path) }
         }
         if (Test-Path -LiteralPath (Join-Path $Root 'src/csharp/BrandEngine.dll')) {
@@ -59,6 +59,19 @@ function Assert-AppPayload {
         throw 'Manifesto de publicacao invalido.'
     }
     $html = Get-Content -LiteralPath (Join-Path $Path 'web/index.html') -Raw
+    $assetManifest = Join-Path $Path 'web/assets/manifest.json'
+    if ([version]($info.version -split '[-+]')[0] -ge [version]'3.2.0') {
+        if (-not (Test-Path -LiteralPath $assetManifest -PathType Leaf)) { throw 'Falta o manifesto de recursos offline.' }
+        $assets = Get-Content -LiteralPath $assetManifest -Raw | ConvertFrom-Json
+        if ($assets.version -ne $info.version) { throw 'A versao dos recursos web diverge da app.' }
+        foreach ($asset in $assets.sha256.PSObject.Properties) {
+            $assetPath = Get-WorkspacePath -Root (Join-Path $Path 'web') -RelativePath $asset.Name
+            if (-not (Test-Path -LiteralPath $assetPath -PathType Leaf) -or
+                (Get-FileHash -LiteralPath $assetPath -Algorithm SHA256).Hash.ToLowerInvariant() -cne $asset.Value) {
+                throw "Recurso offline ausente ou alterado: $($asset.Name)"
+            }
+        }
+    }
     foreach ($match in [regex]::Matches($html, '(?i)(?:src|href)\s*=\s*["'']([^"'']+)["'']')) {
         $asset = $match.Groups[1].Value
         if ($asset -match '^(https?:|data:|#|//)') { continue }

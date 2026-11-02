@@ -3,7 +3,7 @@
 ## Trabalhar no projeto
 
 1. Prepara a assinatura uma vez com `scripts/setup-signing.ps1`, ou configura uma identidade pública; altera as fontes em `src`.
-2. Usa `scripts/test.ps1` para verificar o comportamento.
+2. Instala as dependências com `npm ci --ignore-scripts`; executa `npm run build:web` depois de editar o frontend ou o catálogo. Usa `scripts/test.ps1` e `npm run test:e2e` para verificar o comportamento (prepara o Chromium uma vez com `npx playwright install chromium`).
 3. Executa `scripts/build.ps1` para criar o atualizador e a distribuição, ou `update.exe --watch` durante o desenvolvimento.
 4. Abre `app/BrandGame.exe` e verifica os fluxos alterados.
 
@@ -21,7 +21,7 @@ O VS Code tem tarefas separadas para compilar em Debug, publicar e testar. O mot
 
 O proprietário pediu que as versões concluídas sejam enviadas para **https://github.com/p-darksy-r/BrandGame_V3**.
 
-1. Atualiza `VERSION`, a identificação do frontend e `docs/CHANGELOG.md`.
+1. Atualiza `VERSION`, `package.json`, o badge estático de `index.html` e `docs/CHANGELOG.md`. Executa `npm run build:web`: `js/core/version.js` é gerado a partir de `VERSION`.
 2. Atualiza `README.md`; este mesmo ficheiro é o README mostrado pelo GitHub.
 3. Executa testes, publicação, `scripts/verify-signatures.ps1` e `scripts/smoke-windows.ps1`. Regista limitações de validação, como um bloqueio de execução pelo Windows.
 4. Revê `git diff` e preserva alterações locais existentes.
@@ -33,3 +33,11 @@ O proprietário pediu que as versões concluídas sejam enviadas para **https://
 Em caso de falha de compilação, a instalação existente permanece. Se uma troca foi interrompida, executa novamente o atualizador para recuperar. Para regressar manualmente a uma versão anterior, fecha a app e copia uma pasta de `artifacts/backups` para `app`, preservando antes qualquer conteúdo de que precises.
 
 `docs/legacy/make_game.py.txt` conserva o antigo gerador de projeto como referência histórica. Era um ficheiro incompleto que continha cópias antigas das fontes; não faz parte da compilação e não deve ser usado para regenerar o projeto.
+
+## Recursos offline e catálogo
+
+`scripts/build-web.cjs` gera CSS Tailwind 3, fontes, SVGs, manifesto de hashes e o catálogo ativo, usando versões exatas de dependências no `package-lock.json`. Estes recursos gerados são versionados para permitir abrir o jogo sem Node.js. `npm run check:web` falha se estiverem desatualizados. As quebras de linha são fixadas em LF para manter os hashes iguais no Windows e no CI.
+
+Os ficheiros por categoria em `src/web/js/data` preservam o catálogo original. `scripts/lib/catalog.cjs` resolve nomes, aplica aliases explícitos e exclui identidades sem correspondência ou ambíguas. Para incluir uma marca nova, confirma a origem do ícone e a pista, adiciona-a à categoria e regenera. A auditoria completa fica em `docs/CATALOG_AUDIT.md`. O jogo carrega apenas `offline-catalog.js` e não solicita recursos externos.
+
+O atualizador prepara os recursos antes de publicar uma mudança; se essa preparação falhar, conserva a app instalada. A publicação verifica cada hash do manifesto offline. Os backups anteriores continuam a usar o formato da respetiva versão.

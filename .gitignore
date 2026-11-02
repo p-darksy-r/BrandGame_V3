@@ -34,3 +34,8 @@ EBWebView/
 *.p12
 *.pvk
 *.key
+
+# Web build dependencies and browser test reports
+/node_modules/
+/test-results/
+/playwright-report/

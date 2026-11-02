@@ -60,11 +60,20 @@ public sealed class MainWindow : Form
                         for (int attempt = 0; attempt < 100 && !IsDisposed; attempt++)
                         {
                             string ready = await webView.ExecuteScriptAsync("Boolean(window.__brandGameReady && document.getElementById('btn-menu-start') && typeof getBrandsForLevel === 'function' && getBrandsForLevel('tech', 1).length === 3)");
-                            if (ready == "true") { Environment.ExitCode = 0; Close(); return; }
+                            if (ready == "true")
+                            {
+                                Environment.ExitCode = await SmokeScenario.RunAsync(webView.CoreWebView2) ? 0 : 1;
+                                Close();
+                                return;
+                            }
                             await Task.Delay(200);
                         }
                     }
-                    catch { Environment.ExitCode = 1; }
+                    catch (Exception ex)
+                    {
+                        Environment.ExitCode = 1;
+                        File.WriteAllText(Path.Combine(Environment.GetEnvironmentVariable("BRANDGAME_PROFILE_ROOT")!, "native-smoke-error.txt"), ex.ToString());
+                    }
                     if (!IsDisposed) Close();
                 };
             webView.CoreWebView2.Navigate(AppPaths.StartPage);

@@ -22,7 +22,16 @@ jobs:
           node-version: '22'
       - name: Test
         shell: powershell
-        run: ./scripts/test.ps1
+        run: |
+          npm ci --ignore-scripts --no-fund
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ./scripts/test.ps1
+      - name: Offline browser playthrough
+        shell: powershell
+        run: |
+          npx playwright install chromium
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm run test:e2e
       - name: Publish
         shell: powershell
         run: ./scripts/build.ps1 -SigningMode None

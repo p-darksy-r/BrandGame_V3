@@ -1,0 +1,1491 @@
+# Auditoria do catálogo offline
+
+Gerado por `npm run build:web`. Pacote fixado: Simple Icons 9.21.0. As fontes originais permanecem em `src/web/js/data`; apenas as identidades verificadas entram nas rondas. Nomes ambíguos e ícones de empresas-mãe não substituem logótipos em falta.
+
+| Categoria | Marcas disponíveis |
+|---|---:|
+| tech | 317 |
+| auto | 57 |
+| food | 20 |
+| fashion | 13 |
+| media | 89 |
+
+Total: 496 entradas, 493 ficheiros SVG únicos. Mantêm-se os 100 níveis por categoria, com reutilização de marcas. A validação cobre correspondência e disponibilidade dos ficheiros; não constitui uma nova autorização das marcas.
+
+## Correções de identificadores e pistas
+
+- tech: NodeJS — `nodejs` → `nodedotjs`; Hexagonal green JS engine.
+- tech: Vue — `vue` → `vuedotjs`; Green and blue layered V.
+- tech: Elastic — `elastic` → `elastic`; Search and observability platform with a multicoloured symbol.
+- tech: Nuxt — `nuxt` → `nuxtdotjs`; Double green mountain caps.
+- tech: Rollup — `rollup` → `rollupdotjs`; Orange juice squeezing machine.
+- tech: Turbo — `turbo` → `turbo`; Build system with a circular red and blue symbol.
+- tech: Mongoose — `mongoose` → `mongoosedotws`; Red wild animal line.
+- tech: Marketo — `market` → `marketo`; Purple analytics chart bars.
+- tech: 1Password — `onepassword` → `1password`; Blue digital lock circle.
+- tech: Vault — `hashicorp` → `vault`; Black security chamber.
+- tech: Trivy — `aquasecurity` → `trivy`; Teal container scanning.
+- tech: Roam Research — `roam` → `roamresearch`; Bi-directional linking notebook.
+- tech: Affinity Designer — `affinity` → `affinitydesigner`; Vector graphic design powerhouse.
+- tech: OBS Studio — `obs` → `obsstudio`; Open Broadcaster Software streaming.
+- tech: Zsh — `zsh` → `zsh`; Interactive command interpreter with powerful completion.
+- tech: Rocky Linux — `rocky` → `rockylinux`; Enterprise community red hat fork.
+- tech: Kali Linux — `kali` → `kalilinux`; Dragon-themed penetration testing OS.
+- tech: Qubes OS — `qubes` → `qubesos`; Security-by-isolation partitioned OS.
+- tech: Alpine Linux — `alpine` → `alpinelinux`; Lightweight container-focused OS.
+- tech: Void Linux — `void` → `voidlinux`; Independent zero-telemetry Linux.
+- tech: Travis CI — `travis` → `travisci`; Green construction worker tracking.
+- auto: Bugatti — `bugatti` → `bugatti`; French hypercars with a red oval badge.
+- auto: DS Automobiles — `ds` → `dsautomobiles`; Symmetrical luxury monogram.
+- auto: AMG — `mercedesbenz` → `amg`; Mercedes top performance engine tuning.
+- auto: Rimac Automobili — `rimac` → `rimacautomobili`; Croatian electric hypercars.
+- fashion: H&M — `hm` → `handm`; Red brush script apparel.
+- media: Archive of Our Own — `ao3` → `archiveofourown`; Red fannish AO3 symbol.
+- media: Last.fm — `lastfm` → `lastdotfm`; Red audio scrobbler network.
+- media: VLC Media Player — `vlc` → `vlcmediaplayer`; Orange traffic cone player.
+- media: Chromecast — `google` → `chromecast`; Television cast screen receiver.
+- media: F1 — `formula1` → `f1`; International single-seater motor racing championship.
+- media: Counter-Strike — `csgo` → `counterstrike`; Armed operator silhouette shooter.
+
+## Entradas fora das rondas (1438)
+
+Preservadas nas fontes para revisão futura; não são apagadas dos saves personalizados.
+
+- tech: **Java** (`java`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **QNAP** (`qnap`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Cisco Meraki** (`meraki`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Sapper** (`sapper`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Scoop** (`scoop`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **SaltStack** (`saltstack`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Eks** (`eks`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Fly.io** (`flydotio`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Bunny CDN** (`bunny`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Lambda** (`amazonaws`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Drizzle** (`drizzle`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **TypeORM** (`typeorm`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Memcached** (`memcached`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Cassandra** (`cassandra`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **CockroachDB** (`cockroachdb`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **YugabyteDB** (`yugabytedb`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **TiDB** (`tidb`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Solr** (`solr`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Typesense** (`typesense`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **ActiveMQ** (`activemq`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Redis Queue** (`redis`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **BullMQ** (`bull`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **gRPC** (`grpc`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Protocol Buffers** (`protobuf`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **SendGrid** (`sendgrid`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Postmark** (`postmark`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Constant Contact** (`constantcontact`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Freshdesk** (`freshdesk`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Amplitude** (`amplitude`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Rollbar** (`rollbar`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Airbrake** (`airbrake`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **LogRocket** (`logrocket`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **AppDynamics** (`appdynamics`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Zabbix** (`zabbix`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Nagios** (`nagios`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **LibreNMS** (`librenms`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Cacti** (`cacti`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Munin** (`munin`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Graphite** (`graphite`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **StatsD** (`statsd`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Telegraf** (`telegraf`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Vector** (`vector`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Loki** (`loki`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Tempo** (`tempo`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Mimir** (`mimir`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Cortex** (`cortex`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Thanos** (`thanos`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **VictoriaMetrics** (`victoriametrics`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Zipkin** (`zipkin`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **CoreDNS** (`coredns`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **PowerDNS** (`powerdns`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **DD-WRT** (`ddwrt`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **VyOS** (`vyos`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Traefik** (`traefik`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **HAProxy** (`haproxy`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Envoy** (`envoy`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Apache HTTP** (`apache`) — Identidade já representada nesta categoria.
+- tech: **Lighttpd** (`lighttpd`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **IIS** (`microsoft`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **BoringSSL** (`google`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **LibreSSL** (`openbsd`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Certbot** (`eff`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Keycloak** (`keycloak`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **OneLogin** (`onelogin`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Ping Identity** (`pingidentity`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **ForgeRock** (`forgerock`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Shibboleth** (`shibboleth`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Duo Security** (`duosecurity`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **KeePass** (`keepass`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Passbolt** (`passbolt`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Teleport** (`teleport`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Boundary** (`hashicorp`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Console** (`consul`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Eureka** (`netflix`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **ZooKeeper** (`apache`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Chubby** (`google`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Doppler** (`doppler`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **SOPS** (`mozilla`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Age** (`age`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **GnuPG** (`gnupg`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **OpenSSH** (`openssh`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Tailscale** (`tailscale`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **ZeroTier** (`zerotier`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Twingate** (`twingate`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Cloudflare One** (`cloudflare`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Prisma Access** (`paloaltonetworks`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Zscaler** (`zscaler`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Check Point** (`checkpoint`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Cisco ASA** (`cisco`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Sophos** (`sophos`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **CrowdStrike** (`crowdstrike`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **SentinelOne** (`sentinelone`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Carbon Black** (`vmware`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Microsoft Defender** (`microsoft`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **ClamAV** (`clamav`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Snort** (`snort`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Suricata** (`suricata`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Zeek** (`zeek`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Nmap** (`nmap`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Metasploit** (`rapid7`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Burp Suite** (`portswigger`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Veracode** (`veracode`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Fortify** (`microfocus`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **GitHub Advanced Security** (`github`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **GitLab Ultimate** (`gitlab`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Clair** (`quay`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Anchore** (`anchore`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Grip** (`grip`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Anthropic** (`anthropic`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Midjourney** (`midjourney`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Hugging Face** (`huggingface`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Mistral AI** (`mistral`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Perplexity** (`perplexity`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **ElevenLabs** (`elevenlabs`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **RunwayML** (`runway`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Cohere** (`cohere`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **LangChain** (`langchain`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **LlamaIndex** (`llamaindex`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Pinecone** (`pinecone`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **ChromaDB** (`chroma`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Qdrant** (`qdrant`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Weaviate** (`weaviate`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **100ms** (`hundredms`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Ably** (`ably`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Superside** (`superside`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Balsamiq** (`balsamiq`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Zeplin** (`zeplin`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Principle** (`principle`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Axure** (`axure`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Darktable** (`darktable`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Handbrake** (`handbrake`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **DaVinci Resolve** (`davinci`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Lightworks** (`lightworks`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Avisynth** (`avisynth`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Streamlabs** (`streamlabs`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Camtasia** (`camtasia`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Snagit** (`snagit`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Greenshot** (`greenshot`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **FastStone** (`faststone`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **IrfanView** (`irfanview`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **XnView** (`xnview`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Honeyview** (`honeyview`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Total Commander** (`totalcommander`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Directory Opus** (`directoryopus`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **WinRAR** (`winrar`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **7-Zip** (`7zip`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **WinZip** (`winzip`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Cyberduck** (`cyberduck`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **WinSCP** (`winscp`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Putty** (`putty`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **MobaXterm** (`mobaxterm`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Kitty terminal** (`kitty`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **WezTerm** (`wezterm`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Fish shell** (`fish`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Bash** (`bash`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Cmder** (`cmder`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Winget** (`winget`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **MacPorts** (`macports`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **AppImage** (`appimage`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Yum** (`yum`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Apt-get** (`apt`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Pacman** (`pacman`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Zypper** (`zypper`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **AlmaLinux** (`alma`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Parrot OS** (`parrot`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **DragonFly BSD** (`dragonfly`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Solaris** (`solaris`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Illumos** (`illumos`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **OpenIndiana** (`openindiana`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Haiku OS** (`haiku`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **FreeDOS** (`freedos`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **UNIX** (`unix`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Minix** (`minix`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Plan 9** (`plan9`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **TempleOS** (`templeos`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **TrueOS** (`trueos`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **SmartOS** (`smartos`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Xen** (`xen`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **KVM** (`kvm`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Proxmox VE** (`proxmox`) — Identidade já representada nesta categoria.
+- tech: **ESXi** (`vmware`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **LXC** (`lxc`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **OpenVZ** (`openvz`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **TrueNAS Core** (`truenas`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **OpenMediaVault** (`openmediavault`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Rockstor** (`rockstor`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **GlusterFS** (`gluster`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **OpenIO** (`openio`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **SeaweedFS** (`seaweed`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Samba** (`samba`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **NFS** (`nfs`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Glances** (`glances`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Btop** (`btop`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Conky** (`conky`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Runit** (`runit`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Systemd** (`systemd`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Upstart** (`upstart`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **SysVinit** (`sysv`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **OpenRC** (`openrc`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **MicroK8s** (`microk8s`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Minikube** (`minikube`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Kind** (`kind`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **ArgoCD** (`argocd`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **GitLab CI** (`gitlab`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Woodpecker CI** (`woodpecker`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Sonatype Nexus** (`nexus`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Artifactory** (`jfrog`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **LocalStack** (`localstack`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Yugabyte** (`yugabyte`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **EdgeDB** (`edgedb`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **RethinkDB** (`rethinkdb`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **RavenDB** (`ravendb`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **MarkLogic** (`marklogic`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **OrientDB** (`orientdb`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Virtuoso** (`virtuoso`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **GraphDB** (`graphdb`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Blazegraph** (`blazegraph`) — Sem ícone correspondente verificado no pacote fixado.
+- tech: **Nebula Graph** (`nebula`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Mercedes-Benz** (`mercedesbenz`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Lexus** (`lexus`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Dodge** (`dodge`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Chevrolet Corvette** (`corvette`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Buick** (`buick`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **GMC** (`gmc`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Yamaha Motor** (`yamaha`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Kawasaki** (`kawasaki`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Harley-Davidson** (`harleydavidson`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Volvo Trucks** (`volvotrucks`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Polestar** (`polestar`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Rivian** (`rivian`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Lucid Motors** (`lucid`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **GMC Hummer** (`hummer`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Peterbilt** (`peterbilt`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Kenworth** (`kenworth`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Mack Trucks** (`macktrucks`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Freightliner** (`daimler`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Isuzu** (`isuzu`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Hino** (`hino`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Fuso** (`mitsubishi`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Tata Motors** (`tata`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Mahindra** (`mahindra`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Maruti Suzuki** (`suzuki`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Geely** (`geely`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **BYD** (`byd`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Nio** (`nio`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Xpeng** (`xpeng`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Li Auto** (`liauto`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Wuling** (`wuling`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Great Wall Motor** (`greatwallmotor`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Haval** (`haval`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Changan** (`changan`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Chery** (`chery`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Dongfeng** (`dongfeng`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **FAW Group** (`faw`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **SAIC Motor** (`saicmotor`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **GAC Group** (`gac`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **BAIC Motor** (`baic`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **JAC Motors** (`jac`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Genesis** (`genesis`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Lancia** (`lancia`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Abarth** (`abarth`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Alpine** (`alpine`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Cupra** (`cupra`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Pagani** (`pagani`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Koenigsegg** (`koenigsegg`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Hennessey** (`hennessey`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Shelby** (`shelby`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Saleen** (`saleen`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Callaway** (`callaway`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Roush** (`roush`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **TRD** (`toyota`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Nismo** (`nissan`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Mugen** (`honda`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Spoon Sports** (`spoon`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Alpina** (`alpina`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Brabus** (`brabus`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Ruf Automobile** (`ruf`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Singer Vehicle Design** (`singer`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **TechArt** (`techart`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Mansory** (`mansory`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Novitec** (`novitec`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **HRE Wheels** (`hre`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **BBS Wheels** (`bbs`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Enkei** (`enkei`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Rays Wheels** (`rays`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Yokohama** (`yokohama`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Michelin** (`michelin`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Bridgestone** (`bridgestone`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Goodyear** (`goodyear`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Pirelli** (`pirelli`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Continental** (`continental`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Dunlop** (`dunlop`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Hankook** (`hankook`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Toyo Tires** (`toyotires`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Kumho Tires** (`kumho`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Falken Tires** (`falken`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Nokian Tyres** (`nokian`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Cooper Tires** (`cooper`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **BFGoodrich** (`bfgoodrich`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Castrol** (`castrol`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Mobil 1** (`mobil`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Shell Helix** (`shell`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Valvoline** (`valvoline`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Pennzoil** (`pennzoil`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Motul** (`motul`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Liqui Moly** (`liquimoly`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Royal Purple** (`royalpurple`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Eneos** (`eneos`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Elf Aquitaine** (`elf`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Repsoil** (`repsol`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Petronas** (`petronas`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Gulf Oil** (`gulf`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Texaco** (`texaco`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Chevron** (`chevron`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Exxon** (`exxon`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Esso** (`esso`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **BP** (`bp`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **TotalEnergies** (`total`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Eni** (`eni`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Lukoil** (`lukoil`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Rosneft** (`rosneft`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Sinopec** (`sinopec`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **PetroChina** (`petrochina`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Aramco** (`aramco`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Spark Plug NGK** (`ngk`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Denso** (`denso`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Brembo** (`brembo`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Akebono** (`akebono`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Wilwood** (`wilwood`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **EBC Brakes** (`ebc`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Bilstein** (`bilstein`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Koni** (`koni`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Ohlins** (`ohlins`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Tein** (`tein`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **KW Suspensions** (`kw`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **H&R Springs** (`hr`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Eibach** (`eibach`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Borla** (`borla`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Akrapovic** (`akrapovic`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Magnaflow** (`magnaflow`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Flowmaster** (`flowmaster`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Eisenmann** (`eisenmann`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Remus** (`remus`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Milltek Sport** (`milltek`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **K&N Filters** (`kn`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **AEM** (`aem`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Injen** (`injen`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Garrett** (`garrett`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **BorgWarner** (`borgwarner`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **HKS** (`hks`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Greddy** (`greddy`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Apexi** (`apexi`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Gemballa** (`gemballa`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **9ff** (`9ff`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Rauh-Welt Begriff** (`rwb`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Liberty Walk** (`libertywalk`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Pandem** (`pandem`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Prior Design** (`priordesign`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Overfinch** (`overfinch`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Kahn Design** (`kahn`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **West Coast Customs** (`wcc`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Gas Monkey Garage** (`gasmonkey`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Foose Design** (`foose`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Ringbrothers** (`ringbrothers`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Icon 4x4** (`icon`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Singer** (`singer`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Gunther Werks** (`guntherwerks`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Eagle E-Types** (`eagle`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Alfadhila** (`alfah`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Bowler** (`bowler`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Local Motors** (`local`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Pininfarina** (`pininfarina`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Italdesign** (`italdesign`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Bertone** (`bertone`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Zagato** (`zagato`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Ghia** (`ghia`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Scaglietti** (`scaglietti`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Karmann** (`karmann`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Touring Superleggera** (`touring`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Mulliner** (`bentley`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Ad Personam** (`lamborghini`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Tailor Made** (`ferrari`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Q by Aston Martin** (`astonmartin`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Rolls-Royce Coachbuild** (`rollsroyce`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Brough Superior** (`brough`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Confederate** (`confederate`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Arch Motorcycle** (`arch`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **MV Agusta** (`mvagusta`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Aprilia** (`aprilia`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Moto Guzzi** (`motoguzzi`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Lambretta** (`lambretta`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Piaggio** (`piaggio`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Triumph Motorcycles** (`triumph`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Norton** (`norton`) — O ícone corresponde ao antivírus, não à marca de motociclos.
+- auto: **BSA** (`bsa`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Royal Enfield** (`royalenfield`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Benelli** (`benelli`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **GasGas** (`gasgas`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Sherco** (`sherco`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Beta Motorcycles** (`beta`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Indian Motorcycle** (`indian`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Victory Motorcycles** (`victory`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Can-Am** (`canam`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Polaris** (`polaris`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Arctic Cat** (`arcticcat`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Ski-Doo** (`skidoo`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Sea-Doo** (`seadoo`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Yamaha WaveRunner** (`yamaha`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Kawasaki Jet Ski** (`kawasaki`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Hot Wheels** (`hotwheels`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Matchbox** (`matchbox`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Maisto** (`maisto`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Bburago** (`bburago`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Autoart** (`autoart`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Kyosho** (`kyosho`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Traxxas** (`traxxas`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Arrma** (`arrma`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Axial** (`axial`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Losi** (`losi`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **HPI Racing** (`hpi`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Nikko** (`nikko`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Mazzanti** (`mazzanti`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **W Motors** (`wmotors`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Zenvo** (`zenvo`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **SSC North America** (`ssc`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Apollo Automobil** (`apollo`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **De Tomaso** (`detomaso`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Praga** (`praga`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Donkervoort** (`donkervoort`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Radical Motorsport** (`radical`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Caterham** (`caterham`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Westfield Sportscars** (`westfield`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Ariel Motor** (`ariel`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **BAC** (`bac`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **KTM X-Bow** (`ktm`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Tramontana** (`tramontana`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Spyker** (`spyker`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Weismann** (`weismann`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Morgan Motor** (`morgan`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **TVR** (`tvr`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Noble Automotive** (`noble`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Ginetta** (`ginetta`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Lister** (`lister`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Bristol Cars** (`bristol`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **AC Cars** (`accars`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Dax** (`dax`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Ultima Sports** (`ultima`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Mosler** (`mosler`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Vector Motors** (`vector`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Panoz** (`panoz`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Fisker** (`fisker`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Karma Automotive** (`karma`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Faraday Future** (`faraday`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Canoo** (`canoo`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Bollinger Motors** (`bollinger`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Lordstown Motors** (`lordstown`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Nikola Motor** (`nikola`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Workhorse** (`workhorse`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Aptera Motors** (`aptera`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Elio Motors** (`elio`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Vanderhall** (`vanderhall`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Campagna** (`campagna`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Polaris Slingshot** (`slingshot`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Morgan 3 Wheeler** (`morgan`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **UAZ** (`uaz`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **GAZ** (`gaz`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **KAMAZ** (`kamaz`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Tatra** (`tatra`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **AvtoVAZ** (`avtovaz`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Zaporozhets** (`zaz`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **LuAZ** (`luaz`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **FSO** (`fso`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Trabant** (`trabant`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Wartburg** (`wartburg`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Barkas** (`barkas`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Multicar** (`multicar`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Holden** (`holden`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **FPV** (`fpv`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **HSV** (`hsv`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Proton** (`proton`) — O ícone corresponde ao serviço de email, não à marca automóvel.
+- auto: **Perodua** (`perodua`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Roewe** (`roewe`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Hongqi** (`hongqi`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Ventinove** (`venti`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Nippon Sharyo** (`nippon`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Kawasaki Heavy Industries** (`kawasaki`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Hitachi Rail** (`hitachi`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Alstom** (`alstom`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Siemens Mobility** (`siemens`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Bombardier Transportation** (`bombardier`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Talgo** (`talgo`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Stadler Rail** (`stadler`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **CAF** (`caf`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **CSR** (`csr`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **CNR** (`cnr`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **CRRC** (`crrc`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Hyundai Rotem** (`rotem`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Kinki Sharyo** (`kinki`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Valmet Automotive** (`valmet`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Magna Steyr** (`magna`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Heuliez** (`heuliez`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Wrightbus** (`wrightbus`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Alexander Dennis** (`alexander`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Optare** (`optare`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **VDL Bus & Coach** (`vdl`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Van Hool** (`vanhool`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Irizar** (`irizar`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Solaris Bus & Coach** (`solaris`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Neoplan** (`neoplan`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Setra** (`setra`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Bova** (`bova`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Prevost** (`prevost`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **MCI** (`mci`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Gillig** (`gillig`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **New Flyer** (`newflyer`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Blue Bird** (`bluebird`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Thomas Built Buses** (`thomas`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **IC Bus** (`icbus`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Nova Bus** (`novabus`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Orion Bus Industries** (`orion`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Flyer Industries** (`flyer`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Champion Bus** (`champion`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Glavryba** (`glav`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Meyer Werft** (`meyer`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Fincantieri** (`fincantieri`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Lurssen** (`lurssen`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Oceanco** (`oceanco`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Amels** (`amels`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Feadship** (`feadship`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Benetti** (`benetti`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Azimut** (`azimut`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Ferretti** (`ferretti`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Riva** (`riva`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Sunseeker** (`sunseeker`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Princess Yachts** (`princess`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Sanlorenzo** (`sanlorenzo`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Wally Yachts** (`wally`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Perini Navi** (`perini`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Royal Huisman** (`huisman`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Baltic Yachts** (`baltic`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Swan** (`nautorswan`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **HanseYachts** (`hanse`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Beneteau** (`beneteau`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Jeanneau** (`jeanneau`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Bavaria Yachts** (`bavaria`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Dufour Yachts** (`dufour`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Grand Soleil** (`grandsoleit`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Catalina Yachts** (`catalina`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Hunter Marine** (`hunter`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **MacGregor Yacht** (`macgregor`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Boston Whaler** (`bostonwhaler`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Grady-White** (`grady`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Bertram Yacht** (`bertram`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Hatteras Yachts** (`hatteras`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Viking Yachts** (`viking`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Sea Ray** (`searay`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Bayliner** (`bayliner`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Regal Boats** (`regal`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Chaparral Boats** (`chaparral`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Four Winns** (`fourwinns`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Glastron** (`glastron`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Cobalt Boats** (`cobalt`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **MasterCraft** (`mastercraft`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Malibu Boats** (`malibu`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Correct Craft** (`nautique`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Centurion Boats** (`centurion`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Tige Boats** (`tige`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Yamaha Jet Boats** (`yamaha`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Tracker Marine** (`tracker`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Ranger Boats** (`ranger`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Lund Boats** (`lund`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Alumacraft** (`alumacraft`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Crestliner** (`crestliner`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Smoker Craft** (`smokercraft`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Princecraft** (`princecraft`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Bennington Pontoons** (`bennington`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Harris Pontoons** (`harris`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Manitou Pontoons** (`manitou`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Sylvan Marine** (`sylvan`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Sun Tracker** (`suntracker`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Hobon** (`hobon`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Zodiac Marine** (`zodiac`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Avon Marine** (`avon`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Brig Inflatables** (`brig`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Williams Jet Tenders** (`williams`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Highfield Boats** (`highfield`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **AB Inflatables** (`abinflatables`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Caribe Inflatables** (`caribe`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Ribcraft** (`ribcraft`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Safe Boats International** (`safeboats`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Metal Shark** (`metalshark`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Brunswick Commercial** (`brunswick`) — Sem ícone correspondente verificado no pacote fixado.
+- auto: **Damen Group** (`damen`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Subway** (`subway`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Domino's** (`dominos`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Pizza Hut** (`pizzahut`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Nestle** (`nestle`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Danone** (`danone`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Kellogg's** (`kelloggs`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Pringles** (`pringles`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Red Bull** (`redbull`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Monster Energy** (`monsterenergy`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Budweiser** (`budweiser`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Heineken** (`heineken`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Guinness** (`guinness`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Corona** (`corona`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Carlsberg** (`carlsberg`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Chipotle** (`chipotle`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Wendy's** (`wendys`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Dunkin'** (`dunkin`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Krispy Kreme** (`krispykreme`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Lipton** (`lipton`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Nespresso** (`nespresso`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Nutella** (`nutella`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Oreo** (`oreo`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Doritos** (`doritos`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Heinz** (`heinz`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Campbell's** (`campbells`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Cadbury** (`cadbury`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Hershey's** (`hersheys`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Evian** (`evian`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Fanta** (`fanta`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Sprite** (`sprite`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Dr Pepper** (`drpepper`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Gatorade** (`gatorade`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Skittles** (`skittles`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **M&M's** (`mms`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Snickers** (`snickers`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Toblerone** (`toblerone`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Milka** (`milka`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Barilla** (`barilla`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Tabasco** (`tabasco`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Sriracha** (`sriracha`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Kikkoman** (`kikkoman`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Bacardi** (`bat`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Jack Daniel's** (`jackdaniels`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Chivas Regal** (`chivas`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Johnnie Walker** (`johnniewalker`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Absolut Vodka** (`absolut`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Smirnoff** (`smirnoff`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Grey Goose** (`greygoose`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Belvedere** (`belvedere`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Hennessy** (`hennessy`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Remy Martin** (`remymartin`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Martell** (`martell`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Courvoisier** (`courvoisier`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Tanqueray** (`tanqueray`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Bombay Sapphire** (`bombaysapphire`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Beefeater** (`beefeater`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Hendrick's** (`hendricks`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Gordon's** (`gordons`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Jose Cuervo** (`josecuervo`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Patron Tequila** (`patron`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Don Julio** (`donjulio`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Herradura** (`herradura`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Olmeca** (`olmeca`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Campari** (`campari`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Aperol** (`aperol`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Baileys** (`baileys`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Kahlua** (`kahlua`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Amaretto Disaronno** (`disaronno`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Cointreau** (`cointreau`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Grand Marnier** (`grandmarnier`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Malibu Rum** (`malibu`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Captain Morgan** (`captainmorgan`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Havana Club** (`havanaclub`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Mount Gay Rum** (`mountgay`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Sailor Jerry** (`sailorjerry`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Tullamore Dew** (`tullamoredew`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Bushmills** (`bushmills`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Glenfiddich** (`glenfiddich`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **The Macallan** (`themacallan`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **The Glenlivet** (`theglenlivet`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Laphroaig** (`laphroaig`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Lagavulin** (`lagavulin`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Taliskar** (`talisker`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Jim Beam** (`jimbeam`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Maker's Mark** (`makersmark`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Wild Turkey** (`wildturkey`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Woodford Reserve** (`woodfordreserve`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Bulleit Bourbon** (`bulleit`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Buffalo Trace** (`buffalotrace`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Southern Comfort** (`southerncomfort`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Jagermeister** (`jagermeister`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Fernet-Branca** (`fernetbranca`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Underberg** (`underberg`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Chartreuse** (`chartreuse`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Sambuca Molinari** (`molinari`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Ouzo 12** (`ouzo`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Pernod** (`pernod`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Ricard** (`ricard`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Sake One** (`sake`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Gekkeikan** (`gekkeikan`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Martini & Rossi** (`martini`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Noilly Prat** (`noillyprat`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **CinZano** (`cinzano`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Moet & Chandon** (`moet`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Dom Perignon** (`domperignon`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Veuve Clicquot** (`veuveclicquot`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Krug** (`krug`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Bollinger** (`bollinger`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Taittinger** (`taittinger`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Laurent-Perrier** (`laurentperrier`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Mumm** (`mumm`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Piper-Heidsieck** (`piperheidsieck`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Cristal Louis Roederer** (`cristal`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Freixenet** (`freixenet`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Martini Asti** (`martini`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Gancia** (`gancia`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Perrier** (`perrier`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **San Pellegrino** (`sanpellegrino`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Acqua Panna** (`acquapanna`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Fiji Water** (`fiji`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Voss** (`voss`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **SmartWater** (`smartwater`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Dasani** (`dasani`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Aquafina** (`aquafina`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Volvic** (`volvic`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Vittel** (`vittel`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Badoit** (`badoit`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Contrex** (`contrex`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Gerolsteiner** (`gerolsteiner`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Apollinaris** (`apollinaris`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Highland Spring** (`highlandspring`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Buxton Water** (`buxton`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Spa Water** (`spa`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Solan de Cabras** (`solandecabras`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Borjomi** (`borjomi`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Nongfu Spring** (`nongfuspring`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Wahaha** (`wahaha`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **C'estbon** (`cestbon`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Tropicana** (`tropicana`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Minute Maid** (`minutemaid`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Ocean Spray** (`oceanspray`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Welch's** (`welchs`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Capri Sun** (`caprisun`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Ribena** (`ribena`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Lucozade** (`lucozade`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Monster** (`monster`) — O ícone corresponde ao portal de emprego, não à bebida.
+- food: **Rockstar Energy** (`rockstar`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **NOS Energy** (`nos`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Full Throttle** (`fullthrottle`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Relentless** (`relentless`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Burn Energy** (`burn`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Adrenaline Rush** (`adrenaline`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Celsius Energy** (`celsius`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **V8 Juice** (`v8`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Yop** (`yop`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Actimel** (`actimel`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Yakult** (`yakult`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Nesquik** (`nesquik`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Ovaltine** (`ovaltine`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Milo** (`milo`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Horlicks** (`horlicks`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Cacao Barry** (`cacaobarry`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Callebaut** (`callebaut`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Valrhona** (`valrhona`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Ghirardelli** (`ghirardelli`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Lindt** (`lindt`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Godiva** (`godiva`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Leonidas** (`leonidas`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Neuhaus** (`neuhaus`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Guylian** (`guylian`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Ferrero Rocher** (`ferrerorocher`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Kinder** (`kinder`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Ritter Sport** (`rittersport`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Cote d'Or** (`cotedor`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Anthon Berg** (`anthonberg`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Schogetten** (`schogetten`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Geisha** (`geisha`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Fazer Blue** (`fazer`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Freia** (`freia`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Marabou** (`marabou`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Cadbury Dairy Milk** (`cadbury`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Galaxy** (`galaxy`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Dove** (`dove`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Hershey Bar** (`hersheys`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Reese's** (`reeses`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Kit Kat** (`kitkat`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Milky Way** (`milkyway`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Mars Bar** (`mars`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Twix** (`twix`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Bounty** (`bounty`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Maltesers** (`maltesers`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Starburst** (`starburst`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Haribo** (`haribo`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Trolli** (`trolli`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Mentos** (`mentos`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Tic Tac** (`tictac`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Wrigley's Doublemint** (`doublemint`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Spearmint** (`wrigleys`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Juicy Fruit** (`juicyfruit`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Orbit Gum** (`orbit`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Trident Gum** (`trident`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Hubba Bubba** (`hubbabubba`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Airheads** (`airheads`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Jelly Belly** (`jellybelly`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Sour Patch Kids** (`sourpatch`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Kerrygold** (`kerrygold`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **President Butter** (`president`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Lurpak** (`lurpak`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Arla Foods** (`arla`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Land O'Lakes** (`landolakes`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Philadelphia Cheese** (`philadelphia`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Laughing Cow** (`laughingcow`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Babybel** (`babybel`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Bresso** (`bresso`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Almette** (`almette`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Castello Cheese** (`castello`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Gorgonzola Consorzio** (`gorgonzola`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Parmigiano Reggiano** (`parmigiano`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Grana Padano** (`granapadano`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Zanetti Cheese** (`zanetti`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Galbani** (`galbani`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Belgioioso** (`belgioioso`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Chobani** (`chobani`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Fage** (`fage`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Yoplait** (`yoplait`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Activia** (`activia`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Danone Actimel** (`actimel`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Yakult Probiotic** (`yakult`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Oikos Yogurt** (`oikos`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Siggi's** (`siggis`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Skyr Icelandic** (`skyr`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Muller Corner** (`muller`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Alpro** (`alpro`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Oatly** (`oatly`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Silk Milk** (`silk`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Blue Diamond Almonds** (`bluediamond`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Califia Farms** (`califia`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Ripple Foods** (`ripple`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Violife** (`violife`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Daiya Foods** (`daiya`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Beyond Meat** (`beyondmeat`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Impossible Foods** (`impossible`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Quorn** (`quorn`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Gardenin** (`gardenin`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **MorningStar Farms** (`morningstar`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Amy's Kitchen** (`amys`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Tofurky** (`tofurky`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Linda McCartney Foods** (`lindamccartney`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Birds Eye** (`birdseye`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Iglo** (`iglo`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Findus** (`findus`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **McCain Foods** (`mccain`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Lamb Weston** (`lambweston`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Ore-Ida** (`oreida`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Green Giant** (`greengiant`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Del Monte** (`delmonte`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Libby's** (`libbys`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Dole Food** (`dole`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Chiquita** (`chiquita`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Fyffes** (`fyffes`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Zespri** (`zespri`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Pom Wonderful** (`pom`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Innocent Drinks** (`innocent`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Odwalla** (`odwalla`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Naked Juice** (`naked`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Bolthouse Farms** (`bolthouse`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Simply Orange** (`simply`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Welch's Grape** (`welchs`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Snapple** (`snapple`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Arizona Iced Tea** (`arizona`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Honest Tea** (`honest`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Gold Peak Tea** (`goldpeak`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Pure Leaf** (`pureleaf`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Nestea** (`nestea`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Lipton Ice Tea** (`lipton`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **San Pellegrino Soda** (`sanpellegrino`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Perrier Sparkling** (`perrier`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Evian Water** (`evian`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Voss Water** (`voss`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Liquid Death** (`liquiddeath`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Sodastream** (`sodastream`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **LaCroix** (`lacroix`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Bubly** (`bubly`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Spindrift** (`spindrift`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Polar Seltzer** (`polar`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Schweppes** (`schweppes`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Fever-Tree** (`fevertree`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Canada Dry** (`canadadry`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Seagram's** (`seagrams`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Coke Zero** (`cokezero`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Diet Coke** (`dietcoke`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Pepsi Max** (`pepsimax`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Mountain Dew** (`mountaindew`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Mello Yello** (`melloyello`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Surge Soda** (`surge`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **7Up** (`7up`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Sprite Zero** (`sprite`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Sierra Mist** (`sierramist`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Starry Soda** (`starry`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Fanta Orange** (`fanta`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Mirinda** (`mirinda`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Sunkist** (`sunkist`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Crush Soda** (`crush`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Orangina** (`orangina`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Pellegrino** (`sanpellegrino`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Vichy Catalan** (`vichycatalan`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Master Kong** (`masterkong`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Uni-President** (`unipresident`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Nissin Foods** (`nissin`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Maruchan** (`maruchan`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Indomie** (`indomie`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Samyang** (`samyang`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Nongshim** (`nongshim`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Knorr** (`knorr`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Maggi** (`maggi`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Oxo Cubes** (`oxo`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Bovril** (`bovril`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Marmite** (`marmite`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Vegemite** (`vegemite`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Nutella Spread** (`nutella`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Skippy Peanut Butter** (`skippy`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Jif Peanut Butter** (`jif`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Peter Pan** (`peterpan`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Peanut Butter Co** (`peanutbutterco`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Smucker's** (`smuckers`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Bonne Maman** (`bonnemaman`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Hero Group** (`hero`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Darbo** (`darbo`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Lotus Biscoff** (`lotus`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Gervais** (`gervais`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Philadelphia** (`philadelphia`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **President** (`president`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Castello** (`castello`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Appenzeller** (`appenzeller`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Emmentaler** (`emmentaler`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Le Gruyere** (`gruyere`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Parmigiano** (`parmigiano`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Pecorino Romano** (`pecorino`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Roquefort** (`roquefort`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Gorgonzola** (`gorgonzola`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Stilton** (`stilton`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Cheddar Cathedral City** (`cathedral`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Kerrygold Butter** (`kerrygold`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Anchor Butter** (`anchor`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **I Can't Believe It's Not Butter** (`icantbelieve`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Country Crock** (`countrycrock`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Becel** (`becel`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Flora Margarine** (`flora`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Blue Band** (`blueband`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Mazola** (`mazola`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Crisco** (`crisco`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Bertolli** (`bertolli`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Filippo Berio** (`filippoberio`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Colavita** (`colavita`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Monini** (`monini`) — Sem ícone correspondente verificado no pacote fixado.
+- food: **Carapelli** (`carapelli`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Gucci** (`gucci`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Louis Vuitton** (`louisvuitton`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Chanel** (`chanel`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Hermes** (`hermes`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Prada** (`prada`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Rolex** (`rolex`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Cartier** (`cartier`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Tiffany & Co.** (`tiffanyandco`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Burberry** (`burberry`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Armani** (`armani`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Versace** (`versace`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Calvin Klein** (`calvinklein`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Tommy Hilfiger** (`tommyhilfiger`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Ralph Lauren** (`ralphlauren`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Lacoste** (`lacoste`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Levi's** (`levis`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Uniqlo** (`uniqlo`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Gap** (`gap`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Vans** (`vans`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Converse** (`converse`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Supreme** (`supreme`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Oakley** (`oakley`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Ray-Ban** (`rayban`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Swarovski** (`swarovski`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Pandora** (`pandora`) — O ícone corresponde ao serviço de música, não à joalharia.
+- fashion: **Fossil** (`fossil`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Seiko** (`seiko`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Omega** (`omega`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Tag Heuer** (`tagheuer`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Patagonia** (`patagonia`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Columbia** (`columbia`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Timberland** (`timberland`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Dr. Martens** (`drmartens`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Birkenstock** (`birkenstock`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Crocs** (`crocs`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Asics** (`asics`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Champion** (`champion`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Balenciaga** (`balenciaga`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Givenchy** (`givenchy`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Fendi** (`fendi`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Saint Laurent** (`ysl`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Valentino** (`valentino`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Dolce & Gabbana** (`dolcegabbana`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Michael Kors** (`michaelkors`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Coach** (`coach`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Kate Spade** (`katespade`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Tory Burch** (`toryburch`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Marc Jacobs** (`marcjacobs`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Alexander McQueen** (`alexandermcqueen`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Balmain** (`balmain`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Bottega Veneta** (`bottegaveneta`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Bulgari** (`bulgari`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Chloe** (`chloe`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Kenzo** (`kenzo`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Loewe** (`loewe`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Miu Miu** (`miumiu`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Salvatore Ferragamo** (`ferragamo`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Tom Ford** (`tomford`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Venezia** (`venezia`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Moncler** (`moncler`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Stone Island** (`stoneisland`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Canada Goose** (`canadagoose`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Celine** (`celine`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Diesel** (`diesel`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **G-Star Raw** (`gstar`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Superdry** (`superdry`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Abercrombie & Fitch** (`abercrombie`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Hollister** (`hollister`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **American Eagle** (`americaneagle`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Lululemon** (`lululemon`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Gymshark** (`gymshark`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Skechers** (`skechers`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Kappa** (`kappa`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Umbro** (`umbro`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Mizuno** (`mizuno`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Speedo** (`speedo`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Arena** (`arena`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Salomon** (`salomon`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Mammut** (`mammut`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Jack Wolfskin** (`jackwolfskin`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Fjallraven** (`fjallraven`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Carhartt** (`carhartt`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Dickies** (`dickies`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Wrangler** (`wrangler`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Lee Jeans** (`lee`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Calzedonia** (`calzedonia`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Intimissimi** (`intimissimi`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Victoria's Secret** (`victoriassecret`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Tezenis** (`tezenis`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Mango** (`mango`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Pull&Bear** (`pullandbear`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Bershka** (`bershka`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Stradivarius** (`stradivarius`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Massimo Dutti** (`massimodutti`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **C&A** (`ca`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Primark** (`primark`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Marks & Spencer** (`marksandspencer`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Next** (`next`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **ASOS** (`asos`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Boohoo** (`boohoo`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Shein** (`shein`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Fashion Nova** (`fashionnova`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Forever 21** (`forever21`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Urban Outfitters** (`urbanoutfitters`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Anthropologie** (`anthropologie`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Free People** (`freepeople`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **PacSun** (`pacsun`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Quiksilver** (`quiksilver`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Billabong** (`billabong`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Rip Curl** (`ripcurl`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **O'Neill** (`oneill`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Hurley** (`hurley`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Element** (`element`) — O ícone corresponde ao mensageiro, não à marca de roupa.
+- fashion: **DC Shoes** (`dcshoes`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Etnies** (`etnies`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Emerica** (`emerica`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Volcom** (`volcom`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Obey** (`obey`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Stussy** (`stussy`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Palace** (`palace`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Bape** (`bape`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Off-White** (`offwhite`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Heron Preston** (`heronpreston`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Fear of God** (`fearofgod`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Palm Angels** (`palmangels`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Amiri** (`amiri`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Prada Linea Rossa** (`prada`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Y-3** (`adidas`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Stella McCartney** (`stellamccartney`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Alexander Wang** (`alexanderwang`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Rick Owens** (`rickowens`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Yeezy** (`adidas`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Christian Louboutin** (`louboutin`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Manolo Blahnik** (`manoloblahnik`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Jimmy Choo** (`jimmychoo`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Roger Vivier** (`rogervivier`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Tod's** (`tods`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Ugg** (`ugg`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Hunter Boots** (`hunter`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Sorel** (`sorel`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Barbour** (`barbour`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Belstaff** (`belstaff`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Woolrich** (`woolrich`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Alpha Industries** (`alphaindustries`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **L.L. Bean** (`llbean`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Eddie Bauer** (`eddiebauer`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Lands' End** (`landsend`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **J.Crew** (`jcrew`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Banana Republic** (`bananarepublic`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Madewell** (`madewell`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Everlane** (`everlane`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Reformation** (`reformation`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Muji** (`muji`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Desigual** (`desigual`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Superga** (`superga`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Keds** (`keds`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Sperry** (`sperry`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Toms Shoes** (`toms`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Clarks** (`clarks`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Geox** (`geox`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Ecco** (`ecco`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Camper** (`camper`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Havaianas** (`havaianas`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Ipanema** (`ipanema`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Teva** (`teva`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Chacos** (`chacos`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Keen** (`keen`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Merrell** (`merrell`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Danner** (`danner`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Red Wing Shoes** (`redwing`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Wolverine** (`wolverine`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Alden** (`alden`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Allen Edmonds** (`allenedmonds`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Church's** (`churchs`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **John Lobb** (`johnlobb`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Berluti** (`berluti`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Rimowa** (`rimowa`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Samsonite** (`samsonite`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Tumi** (`tumi`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Delsey** (`delsey`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Eastpak** (`eastpak`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **JanSport** (`jansport`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Herschel Supply Co.** (`herschel`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Kanken** (`fjallraven`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Longchamp** (`longchamp`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **MCM** (`mcm`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Furla** (`furla`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **A Bathing Ape** (`bape`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Chrome Hearts** (`chromehearts`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Audemars Piguet** (`audemarspiguet`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Patek Philippe** (`patek`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Vacheron Constantin** (`vacheron`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Breitling** (`breitling`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **IWC Schaffhausen** (`iwc`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Jaeger-LeCoultre** (`jlc`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Hublot** (`hublot`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Panerai** (`panerai`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Tudor** (`tudor`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Chopard** (`chopard`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Breguet** (`breguet`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Graff** (`graff`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Harry Winston** (`harrywinston`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Van Cleef & Arpels** (`vancleef`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Boucheron** (`boucheron`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Chaumet** (`chaumet`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Mikimoto** (`mikimoto`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Damiani** (`damiani`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Pomellato** (`pomellato`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Messika** (`messika`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **David Yurman** (`davidyurman`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **John Hardy** (`johnhardy`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Stephen Webster** (`stephenwebster`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Spinelli Kilcollin** (`spinelli`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Shay Jewelry** (`shay`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Anita Ko** (`anitako`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Jacquie Aiche** (`jacquieaiche`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Monica Vinader** (`monicavinader`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Mejuri** (`mejuri`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Astrid & Miyu** (`astridandmiyu`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Missoma** (`missoma`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Edge of Ember** (`edgeofember`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Otiumberg** (`otiumberg`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Maria Tash** (`mariatash`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Catbird** (`catbird`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Kendra Scott** (`kendrascott`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Alex and Ani** (`alexandani`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **BaubleBar** (`baublebar`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Kamik** (`kamik`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Baffin** (`baffin`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Muck Boot Company** (`muck`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Bog Boots** (`bogs`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Le Chameau** (`lechameau`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Aigle** (`aigle`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Dubarry of Ireland** (`dubarry`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Ariat** (`ariat`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Justin Boots** (`justin`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Lucchese** (`lucchese`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Tony Lama** (`tonylama`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Frye** (`frye`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Minnetonka** (`minnetonka`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Sperry Top-Sider** (`sperry`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Sebago** (`sebago`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **G.H. Bass** (`ghbass`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Cole Haan** (`colehaan`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Rockport** (`rockport`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Clarks Originals** (`clarks`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Solovair** (`solovair`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Grinders** (`grinders`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Underground England** (`underground`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **TUK Shoes** (`tuk`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Demonia** (`demonia`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **New Rock** (`newrock`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Fluevog** (`fluevog`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Irregular Choice** (`irregularchoice`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Melissa Shoes** (`melissa`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Jelly Beans** (`jellybeans`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Salt Water Sandals** (`saltwater`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Keen Footwear** (`keen`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Oboz** (`oboz`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Vasque** (`vasque`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Scarpa** (`scarpa`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **La Sportiva** (`lasportiva`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Five Ten** (`fiveten`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Evolv** (`evolv`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Mad Rock** (`madrock`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Boreal** (`boreal`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Tenaya** (`tenaya`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Salewa** (`salewa`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Dynafit** (`dynafit`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Atomic** (`atomic`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Rossignol** (`rossignol`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Nordica** (`nordica`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Tecnica** (`tecnica`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Lange** (`lange`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Fischer** (`fischer`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **K2 Sports** (`k2`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **ThirtyTwo** (`thirtytwo`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Vans Snow** (`vans`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **DC Snowboarding** (`dc`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Roxy** (`roxy`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **RVCA** (`rvca`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Dakine** (`dakine`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **ProLimit** (`prolimit`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Mystic Boarding** (`mystic`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Ion Products** (`ion`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Arc'teryx** (`arcteryx`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Marmot** (`marmot`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Mountain Hardwear** (`mountainhardwear`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Black Diamond** (`blackdiamond`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Petzl** (`petzl`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Camp Technical** (`camp`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Grivel** (`grivel`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Simond** (`simond`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Quechua** (`quechua`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Kalenji** (`kalenji`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Kiprun** (`kiprun`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Artengo** (`artengo`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Tribord** (`tribord`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Olaian** (`olaian`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Subea** (`subea`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **B'Twin** (`btwin`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Rockrider** (`rockrider`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Triban** (`triban`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Van Rysel** (`vanrysel`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Domyos** (`domyos`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Caperlan** (`caperlan`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Solognac** (`solognac`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Fouganza** (`fouganza`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Inesis** (`inesis`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Geologic** (`geologic`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Wedze** (`wedze`) — Sem ícone correspondente verificado no pacote fixado.
+- fashion: **Simond Chamonix** (`simond`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Disney** (`disney`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Marvel** (`marvel`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Star Wars** (`starwars`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Rockstar Games** (`rockstargames`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Universal Pictures** (`universal`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Paramount** (`paramount`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **MTV** (`mtv`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **National Geographic** (`nationalgeographic`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Discovery Channel** (`discovery`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Pixar** (`pixar`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **DreamWorks** (`dreamworks`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Studio Ghibli** (`studioghibli`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **DC Comics** (`dc`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **LEGO** (`lego`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Hasbro** (`hasbro`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Mattel** (`mattel`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Bandai Namco** (`bandainamco`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Capcom** (`capcom`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Blizzard Entertainment** (`blizzard`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **IGN** (`ign`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **GameSpot** (`gamespot`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Kotaku** (`kotaku`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Polygon** (`polygon`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Eurogamer** (`eurogamer`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Rock Paper Shotgun** (`rockpapershotgun`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Metacritic** (`metacritic`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Marvel Unlimited** (`marvel`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **ComiXology** (`comixology`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Vice Media** (`vice`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **The Verge** (`theverge`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Wired** (`wired`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **TechCrunch** (`techcrunch`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Mashable** (`mashable`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Gizmodo** (`gizmodo`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Digital Trends** (`digitaltrends`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **CNET** (`cnet`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Tom's Hardware** (`tomshardware`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **AnandTech** (`anandtech`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **NeoGAF** (`neogaf`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **ResetEra** (`resetera`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **VGC** (`vgc`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Gematsu** (`gematsu`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Siliconera** (`siliconera`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Pocket Gamer** (`pocketgamer`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **TouchArcade** (`toucharcade`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Chess.com** (`chessdotcom`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **MasterClass** (`masterclass`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **FanFiction.net** (`fanfiction`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **SiriusXM** (`siriusxm`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Napster** (`napster`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Fire TV** (`amazon`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **TiVo** (`tivo`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Sling TV** (`sling`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **FuboTV** (`fubo`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Pluto TV** (`plutotv`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Peacock** (`peacock`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Paramount Plus** (`paramountplus`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Discovery Plus** (`discoveryplus`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Disney Plus** (`disneyplus`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **ESPN** (`espn`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Sky Sports** (`sky`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Eurosport** (`eurosport`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **NFL** (`nfl`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **NHL** (`nhl`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **MLS** (`mls`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **MotoGP** (`motogp`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **NASCAR** (`nascar`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **UEFA** (`uefa`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Olympics** (`olympics`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Cannes Film Festival** (`cannes`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Oscars** (`oscars`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Grammys** (`grammy`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Emmys** (`emmys`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Tonys** (`tonys`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **BAFTA** (`bafta`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Golden Globes** (`goldenglobes`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Eurovision** (`eurovision`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **SXSW** (`sxsw`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Comic-Con** (`comiccon`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Gamescom** (`gamescom`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Tokyo Game Show** (`tgs`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **BlizzCon** (`blizzcon`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **QuakeCon** (`quakecon`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **DreamHack** (`dreamhack`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **EVO** (`evo`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **TwitchCon** (`twitchcon`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **VidCon** (`vidcon`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Playlist Live** (`playlist`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **RTX** (`roosterteeth`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Minecon** (`minecraft`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Fortnite** (`fortnite`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Apex Legends** (`apexlegends`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Dota 2** (`dota2`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **World of Warcraft** (`warcraft`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Overwatch** (`overwatch`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Hearthstone** (`hearthstone`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **StarCraft** (`starcraft`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Diablo** (`diablo`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Path of Exile** (`pathofexile`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Runescape** (`runescape`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Guild Wars 2** (`guildwars`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Final Fantasy** (`finalfantasy`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Dragon Quest** (`dragonquest`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Monster Hunter** (`monsterhunter`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Street Fighter** (`streetfighter`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Mortal Kombat** (`mortalkombat`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Tekken** (`tekken`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Super Smash Bros.** (`supersmashbros`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **The Legend of Zelda** (`zelda`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Super Mario** (`mario`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Sonic the Hedgehog** (`sonic`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Crash Bandicoot** (`crash`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Spyro the Dragon** (`spyro`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Tomb Raider** (`tombraider`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Uncharted** (`uncharted`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **The Last of Us** (`thelastofus`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **God of War** (`godofwar`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Halo** (`halo`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Gears of War** (`gearsofwar`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Forza** (`forza`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Gran Turismo** (`granturismo`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Need for Speed** (`needforspeed`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Grand Theft Auto** (`gta`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Red Dead Redemption** (`rdr`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Cyberpunk 2077** (`cyberpunk`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **The Witcher** (`witcher`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Assassin's Creed** (`assassinscreed`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Far Cry** (`farcry`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Tom Clancy** (`ubisoft`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Rainbow Six** (`rainbowsix`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Splinter Cell** (`splintercell`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Metal Gear Solid** (`metalgear`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Resident Evil** (`residentevil`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Silent Hill** (`silenthill`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Half-Life** (`halflife`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Portal** (`portal`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Team Fortress** (`tf2`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Left 4 Dead** (`l4d`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **BioShock** (`bioshock`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Borderlands** (`borderlands`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Civilization** (`civilization`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **The Sims** (`thesims`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **SimCity** (`simcity`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Cities: Skylines** (`paradox`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Cities XL** (`focus`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Tropico** (`kalypso`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Age of Empires** (`ageofempires`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Total War** (`sega`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **IndyCar** (`indycar`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Tour de France** (`tourdefrance`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Wimbledon** (`wimbledon`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **US Open** (`usopen`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Roland Garros** (`rolandgarros`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Australian Open** (`ao`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Ryder Cup** (`rydercup`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **PGA Tour** (`pgatour`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Masters Tournament** (`masters`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Ironman** (`ironman`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **X Games** (`xgames`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Red Bull Cliff Diving** (`redbull`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **GoPro** (`gopro`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Red Bull Media House** (`redbull`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Vice News** (`vice`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Al Jazeera** (`aljazeera`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Reuters** (`reuters`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Associated Press** (`ap`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Bloomberg** (`bloomberg`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **The Wall Street Journal** (`wsj`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **The New York Times** (`nytimes`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **The Guardian** (`guardian`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Daily Mail** (`dailymail`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **The Sun** (`thesun`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **USA Today** (`usatoday`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **People Magazine** (` people`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **National Enquirer** (`enquirer`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **The Onion** (`theonion`) — Sem ícone correspondente verificado no pacote fixado.
+- media: **Babylon Bee** (`babylonbee`) — Sem ícone correspondente verificado no pacote fixado.

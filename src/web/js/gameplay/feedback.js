@@ -5,6 +5,8 @@ function submitUserGuess() {
     const inputField = document.getElementById("input-guess");
     const guess = inputField ? inputField.value.trim() : "";
     if (!guess) return;
+    updateRoundClock();
+    if (GAME_STATE.roundStatus !== "playing") return;
     GAME_STATE.roundStatus = "pending";
     clearInterval(GAME_STATE.timerInterval);
 
