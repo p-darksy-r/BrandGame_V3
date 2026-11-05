@@ -3,6 +3,7 @@
 ## 3.3.0 — 2026-11-05
 
 - Atualizador online independente, com canais preview/stable, consulta, reparação da mesma versão e recuperação sem rede.
+- Código e downloads reunidos no repositório público BrandGame_V3, com tag da versão no main e pacotes nas Releases.
 - Manifestos RSA/SHA-256 e chave pública fixada; verificação do ZIP, limites de download/extração e rejeição de caminhos inseguros.
 - Substituição de app com backup, bloqueio partilhado e recuperação; compilação local mantida com --local/--watch.
 - Lançador incluído no pacote Windows; substituição do próprio update.exe feita com ele fechado.

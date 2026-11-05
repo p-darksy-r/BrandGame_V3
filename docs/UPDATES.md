@@ -11,7 +11,7 @@ Coloca `update.exe` ao lado da pasta `app`. O jogo é offline; o atualizador usa
 .\update.exe --recover --no-pause     # Recuperar interrupção, sem rede
 ```
 
-As releases são obtidas de **p-darksy-r/BrandGame_Releases**, um repositório público apenas de distribuição. O repositório de desenvolvimento BrandGame_V3 permanece privado. Não são usados tokens dos jogadores.
+As releases são obtidas do repositório público **p-darksy-r/BrandGame_V3**, que também contém o código e o README no `main`. Cada versão tem uma tag `vX.Y.Z` nesse histórico, com os pacotes anexados à respetiva Release. Não é necessário outro branch nem são usados tokens dos jogadores.
 
 O canal predefinido `preview` inclui releases estáveis e de desenvolvimento. A seleção usa a maior versão numérica `X.Y.Z`, com tag `vX.Y.Z`, ZIP Windows e ambos os ficheiros de manifesto. Drafts e releases antigas sem manifesto são ignorados. Nunca se instala uma versão inferior à instalada, mesmo com `--repair`. Se não existir uma release elegível no canal, a app instalada permanece.
 

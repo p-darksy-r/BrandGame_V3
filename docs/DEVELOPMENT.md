@@ -48,6 +48,8 @@ O atualizador prepara os recursos antes de publicar uma mudança; se essa prepar
 
 As primeiras verificações devem usar uma pasta isolada com uma cópia do lançador e `--install-package ZIP --manifest JSON --signature SIG`; depois de publicar, testa a instalação pela API pública numa pasta vazia. Nunca usa os saves reais nesses testes. Para atualizar o próprio lançador, distribui o novo `update.exe` e substitui-o quando estiver fechado.
 
-Os commits e o README de desenvolvimento continuam em `p-darksy-r/BrandGame_V3` (privado). Os downloads e manifestos são publicados em `p-darksy-r/BrandGame_Releases` (público), sem copiar fontes C#, ferramentas ou histórico. O pacote web inclui necessariamente o HTML/CSS/JavaScript de execução.
+O workflow manual `Published Windows release` permite testar a distribuição publicada noutro Windows. Indica a tag e os hashes SHA-256 dos dois executáveis assinados localmente. O runner verifica o lançador descarregado, instala pela API pública sem token e joga um nível com perfil isolado. Os registos ficam num artefacto do workflow; documenta separadamente eventuais bloqueios por políticas do Windows local.
 
-Cada versão concluída recebe uma nova tag `vX.Y.Z` no commit correspondente do `main` do repositório privado, preservando as tags anteriores. A release privada liga à release pública com a mesma versão. Não é usado um branch de downloads: a visibilidade do GitHub aplica-se ao repositório inteiro, e um branch do repositório privado também seria privado.
+O código, o README e as Releases ficam no mesmo repositório público `p-darksy-r/BrandGame_V3`. Os pacotes e manifestos são anexados às Releases, sem adicionar binários ao histórico Git. Não é necessário um branch de downloads.
+
+Cada versão concluída recebe uma nova tag `vX.Y.Z` no commit correspondente do `main`, preservando as tags anteriores. Depois dos testes e do CI, cria a tag, envia-a e publica a Release com essa tag. A visibilidade pública permite ao atualizador descarregar os pacotes sem conta ou token GitHub.

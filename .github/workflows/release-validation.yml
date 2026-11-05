@@ -1,0 +1,47 @@
+name: Published Windows release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Published version tag
+        required: true
+      updater_sha256:
+        description: SHA-256 of the locally signed update.exe
+        required: true
+      app_sha256:
+        description: SHA-256 of the locally signed BrandGame.exe
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+      - name: Download and test the published updater without GitHub authentication
+        shell: powershell
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+          UPDATER_SHA256: ${{ inputs.updater_sha256 }}
+          APP_SHA256: ${{ inputs.app_sha256 }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $version = (Get-Content -LiteralPath VERSION -Raw).Trim()
+          if ($env:RELEASE_TAG -ne "v$version" -or $env:RELEASE_TAG -notmatch '^v[0-9]+\.[0-9]+\.[0-9]+$') { throw 'Unexpected release tag.' }
+          if ($env:UPDATER_SHA256 -notmatch '^[a-fA-F0-9]{64}$' -or $env:APP_SHA256 -notmatch '^[a-fA-F0-9]{64}$') { throw 'Expected binary hashes are required.' }
+          Invoke-WebRequest -UseBasicParsing -Uri "https://github.com/p-darksy-r/BrandGame_V3/releases/download/$($env:RELEASE_TAG)/update.exe" -OutFile update.exe
+          if ((Get-FileHash -LiteralPath update.exe).Hash -ne $env:UPDATER_SHA256) { throw 'The downloaded updater differs from the signed build.' }
+          ./tests/online.Install.ps1 -Online -ExpectedAppSha256 $env:APP_SHA256
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: BrandGame-Published-Release-Validation
+          path: |
+            artifacts/install-test-*/results.json
+            artifacts/install-test-*/*.log

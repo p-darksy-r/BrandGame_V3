@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([switch]$Online)
+param([switch]$Online, [ValidatePattern('^[a-fA-F0-9]{64}$')][string]$ExpectedAppSha256)
 $ErrorActionPreference = 'Stop'
 $root = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 . (Join-Path $root 'scripts/lib/Deployment.ps1')
@@ -49,7 +49,8 @@ if ($Online) {
 }
 $installed = Get-Content -LiteralPath (Join-Path $fixture 'app/build-info.json') -Raw | ConvertFrom-Json
 if ($installed.version -ne $version) { throw 'Versao instalada inesperada.' }
-if ((Get-FileHash -LiteralPath (Join-Path $fixture 'app/BrandGame.exe')).Hash -ne (Get-FileHash -LiteralPath (Join-Path $root 'app/BrandGame.exe')).Hash) { throw 'O executavel instalado difere da distribuicao validada.' }
+if (-not $ExpectedAppSha256) { $ExpectedAppSha256 = (Get-FileHash -LiteralPath (Join-Path $root 'app/BrandGame.exe')).Hash }
+if ((Get-FileHash -LiteralPath (Join-Path $fixture 'app/BrandGame.exe')).Hash -ne $ExpectedAppSha256) { throw 'O executavel instalado difere da distribuicao validada.' }
 Invoke-Isolated -File 'app/BrandGame.exe' -Arguments @('--smoke-test') -Name 'installed-game-full-level'
 @{ version = $version; online = [bool]$Online; result = 'passed'; noDevelopmentToolsOnPath = $true } |
     ConvertTo-Json | Set-Content -LiteralPath (Join-Path $fixture 'results.json') -Encoding UTF8

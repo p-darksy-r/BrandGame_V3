@@ -2,15 +2,15 @@
 
 Jogo de adivinhar marcas, com 100 níveis por categoria, salas personalizadas e uma aplicação Windows em C# / WinForms / WebView2. **Versão atual: 3.3.0 — assinatura de desenvolvimento.**
 
-Código-fonte privado: [p-darksy-r/BrandGame_V3](https://github.com/p-darksy-r/BrandGame_V3). Downloads públicos: [BrandGame_Releases](https://github.com/p-darksy-r/BrandGame_Releases).
+Código-fonte, README e downloads no mesmo repositório público: [p-darksy-r/BrandGame_V3](https://github.com/p-darksy-r/BrandGame_V3). Cada versão recebe uma tag no commit correspondente do `main`; os executáveis e ZIPs ficam nas Releases.
 
 ## Abrir a aplicação
 
 Depois da compilação, abre **`app/BrandGame.exe`**. Os ficheiros HTML, CSS e JavaScript publicados estão em **`app/web/`**. A distribuição inclui o runtime .NET; o computador precisa do [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/microsoft-edge/webview2/).
 
-`BrandGame.exe` e `update.exe` têm assinatura Authenticode SHA-256 e timestamp RFC 3161. A identidade é **BrandGame Development, O=p-darksy-r**, criada para testes e confiada apenas no perfil Windows do autor. Os dois executáveis passaram testes de arranque reais neste PC. **Isto não garante aceitação noutros PCs**: SmartScreen, Smart App Control e políticas empresariais podem bloquear certificados de desenvolvimento. Não desatives as proteções nem instales certificados de desenvolvimento para contornar um bloqueio.
+`BrandGame.exe` e `update.exe` têm assinatura Authenticode SHA-256 e timestamp RFC 3161. A identidade é **BrandGame Development, O=p-darksy-r**, criada para testes e confiada apenas no perfil Windows do autor. **A assinatura não garante aceitação pelo Windows**: SmartScreen, Smart App Control e políticas empresariais podem bloquear certificados de desenvolvimento. A compilação final do atualizador 3.3.0 foi bloqueada pelo Smart App Control neste PC, apesar de a assinatura ser válida. Consulta a [validação](docs/VALIDATION.md) e as notas da release para os testes realizados. Não desatives as proteções nem instales certificados de desenvolvimento para contornar um bloqueio.
 
-Obtém a [versão 3.3.0](https://github.com/p-darksy-r/BrandGame_Releases/releases/tag/v3.3.0), ou usa o pacote web no navegador quando o Windows não permitir o executável. Consulta [como jogar](docs/PLAYTEST.md) e [assinatura Windows](docs/CODE_SIGNING.md).
+Obtém a [versão 3.3.0](https://github.com/p-darksy-r/BrandGame_V3/releases/tag/v3.3.0), ou usa o pacote web no navegador quando o Windows não permitir o executável. Consulta [como jogar](docs/PLAYTEST.md) e [assinatura Windows](docs/CODE_SIGNING.md).
 
 ## Novidades da versão 3.3.0
 
@@ -96,7 +96,7 @@ BrandGame_V3/
 └── update.exe                # Atualização online; --local para desenvolver
 ```
 
-Edita **`src/web`**, e publica com o atualizador. `app/web` é uma cópia de distribuição e será substituída na atualização seguinte. `app`, `artifacts` e os executáveis ficam fora do Git; os pacotes Windows podem ser publicados nas [releases](https://github.com/p-darksy-r/BrandGame_Releases/releases).
+Edita **`src/web`**, e publica com o atualizador. `app/web` é uma cópia de distribuição e será substituída na atualização seguinte. `app`, `artifacts` e os executáveis ficam fora do histórico Git; os pacotes são publicados nas [releases deste repositório](https://github.com/p-darksy-r/BrandGame_V3/releases).
 
 ## Testes
 

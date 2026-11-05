@@ -7,7 +7,7 @@ internal sealed record ReleaseCandidate(string Version, bool Preview, Uri Packag
 
 internal sealed class ReleaseClient : IDisposable
 {
-    internal const string Repository = "p-darksy-r/BrandGame_Releases";
+    internal const string Repository = "p-darksy-r/BrandGame_V3";
     private readonly HttpClient client;
     internal ReleaseClient(HttpMessageHandler? handler = null)
     {
