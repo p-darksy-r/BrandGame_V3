@@ -68,6 +68,14 @@ test('file distribution plays a full level with network offline, bundled fonts/l
     await page.waitForFunction(() => window.__brandGameReady);
     expect(await page.evaluate(() => GAME_STATE.saveData.levelsUnlocked.tech)).toBe(2);
     expect(await page.evaluate(() => GAME_STATE.saveData.globalScore)).toBe(score);
+    await expect(page.locator('#global-stars')).toHaveText('3');
+    expect(await page.evaluate(() => GAME_STATE.saveData.levelResults.tech[1].medium.stars)).toBe(3);
+    await page.locator('#btn-menu-start').click();
+    await page.locator('#category-cards-grid button').first().click();
+    await expect(page.locator('#level-buttons-grid button').first()).toContainText('★★★');
+    await expect(page.locator('#level-buttons-grid button').first()).toContainText('pts');
+    await page.locator('#btn-levels-back').click();
+    await page.locator('#btn-categories-back').click();
     expect(external).toEqual([]);
     expect(errors).toEqual([]);
     await page.screenshot({ path: 'artifacts/qa/offline-menu.png', fullPage: true });
@@ -162,4 +170,22 @@ test('custom rooms require bundled logos and preserve unavailable legacy rooms',
     await page.locator('#level-buttons-grid button').first().click();
     await expect(page.locator('#screen-levels')).toBeVisible();
     expect(await page.evaluate(() => GAME_STATE.saveData.customLevels[0].brands[0].slug)).toBe('old-unavailable-icon');
+});
+
+test('old saves keep scores and unlocks while showing unknown historical results honestly', async ({ page }) => {
+    await ready(page);
+    await page.evaluate(() => localStorage.setItem('brandgame_v3_savedata', JSON.stringify({
+        gameVersion: '3.2.0', globalScore: 1250, levelsUnlocked: { tech: 4 }, categoryScores: { tech: 1250 }
+    })));
+    await page.reload();
+    await page.waitForFunction(() => window.__brandGameReady);
+    await expect(page.locator('#global-score')).toHaveText('1250');
+    await expect(page.locator('#global-stars')).toHaveText('0');
+    await expect(page.locator('#legacy-progress-note')).toBeVisible();
+    await page.locator('#btn-menu-start').click();
+    await page.locator('#category-cards-grid button').first().click();
+    await expect(page.locator('#level-buttons-grid button').nth(0)).toContainText('Completed · no record');
+    await expect(page.locator('#level-buttons-grid button').nth(3)).toBeEnabled();
+    await expect(page.locator('#level-buttons-grid button').nth(4)).toBeDisabled();
+    await page.screenshot({ path: 'artifacts/qa/legacy-level-records.png', fullPage: true });
 });

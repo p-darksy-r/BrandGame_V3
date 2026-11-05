@@ -14,8 +14,11 @@ try {
     $artifacts = Get-WorkspacePath -Root $projectRoot -RelativePath 'artifacts'
     [IO.Directory]::CreateDirectory($artifacts) | Out-Null
     try {
-        $lock = [IO.File]::Open((Join-Path $artifacts 'update.lock'), [IO.FileMode]::OpenOrCreate, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None)
+        $onlineCache = Get-WorkspacePath -Root $projectRoot -RelativePath '.brandgame-updates'
+        [IO.Directory]::CreateDirectory($onlineCache) | Out-Null
+        $lock = [IO.File]::Open((Get-WorkspacePath -Root $projectRoot -RelativePath '.brandgame-updates/update.lock'), [IO.FileMode]::OpenOrCreate, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None)
     } catch { throw 'Ja existe uma atualizacao ou observacao em curso para este projeto.' }
+    if (Test-Path -LiteralPath (Join-Path $onlineCache 'pending.json')) { throw 'Execute update.exe --recover para recuperar primeiro a atualizacao online interrompida.' }
     Recover-PendingDeployment -Root $projectRoot
     if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) { throw 'Instale o .NET SDK 8 ou superior para compilar a app.' }
     if (-not ((& dotnet --list-sdks) -match '^(8|9|[1-9][0-9])\.')) { throw 'E necessario o .NET SDK 8 ou superior; o runtime sozinho nao compila a app.' }

@@ -28,7 +28,7 @@ function renderCategoryCards() {
                 <div class="text-xs font-bold text-white">${totalScore} Points</div>
             </div>
             <span class="absolute right-3 bottom-3 text-4xl font-black text-white/5 group-hover:text-white/10 transition">
-                ${Math.min(unlocked, 100)}/100
+                ${Math.min(unlocked - 1, 100)}/100
             </span>
         `;
         card.addEventListener("click", () => selectCategory(cat.id, cat.label));
@@ -101,11 +101,16 @@ function renderLevelButtonsList() {
         const btn = document.createElement("button");
 
         if (isLocked) {
+            btn.disabled = true;
             btn.className = "flex flex-col items-center justify-center p-3 bg-gray-950/60 border border-gray-900 rounded-xl opacity-40 cursor-not-allowed aspect-square";
             btn.innerHTML = `<span class="text-gray-600 text-lg">🔒</span><span class="gaming-font text-[9px] font-bold text-gray-600 mt-1">LVL ${i}</span>`;
         } else {
             btn.className = "flex flex-col items-center justify-center p-3 bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-blue-500 rounded-xl transition group aspect-square";
-            btn.innerHTML = `<span class="text-blue-400 text-sm group-hover:scale-110 transition">★</span><span class="gaming-font text-[10px] font-black text-white mt-1">LEVEL ${i}</span>`;
+            const record = resultSummary(GAME_STATE.saveData.levelResults[catId][i]);
+            const stars = '★'.repeat(record.stars) + '☆'.repeat(3 - record.stars);
+            const label = record.wins ? `${record.bestScore} pts · ${formatBestTime(record.bestTimeMs)}` : i < unlockedMax ? 'Completed · no record' : 'Not completed';
+            btn.innerHTML = `<span class="text-yellow-400 text-sm">${stars}</span><span class="gaming-font text-xs font-bold text-white mt-1">LEVEL ${i}</span><span class="text-xs text-gray-400 mt-2">${label}</span>`;
+            btn.setAttribute('aria-label', `Level ${i}, ${record.stars} stars, ${label}`);
             btn.addEventListener("click", () => launchLevel(i));
         }
         grid.appendChild(btn);

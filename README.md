@@ -1,8 +1,8 @@
 # BrandGame V3
 
-Jogo de adivinhar marcas, com 100 níveis por categoria, salas personalizadas e uma aplicação Windows em C# / WinForms / WebView2. **Versão atual: 3.2.0 — assinatura de desenvolvimento.**
+Jogo de adivinhar marcas, com 100 níveis por categoria, salas personalizadas e uma aplicação Windows em C# / WinForms / WebView2. **Versão atual: 3.3.0 — assinatura de desenvolvimento.**
 
-Repositório oficial: [p-darksy-r/BrandGame_V3](https://github.com/p-darksy-r/BrandGame_V3).
+Código-fonte privado: [p-darksy-r/BrandGame_V3](https://github.com/p-darksy-r/BrandGame_V3). Downloads públicos: [BrandGame_Releases](https://github.com/p-darksy-r/BrandGame_Releases).
 
 ## Abrir a aplicação
 
@@ -10,15 +10,28 @@ Depois da compilação, abre **`app/BrandGame.exe`**. Os ficheiros HTML, CSS e J
 
 `BrandGame.exe` e `update.exe` têm assinatura Authenticode SHA-256 e timestamp RFC 3161. A identidade é **BrandGame Development, O=p-darksy-r**, criada para testes e confiada apenas no perfil Windows do autor. Os dois executáveis passaram testes de arranque reais neste PC. **Isto não garante aceitação noutros PCs**: SmartScreen, Smart App Control e políticas empresariais podem bloquear certificados de desenvolvimento. Não desatives as proteções nem instales certificados de desenvolvimento para contornar um bloqueio.
 
-Obtém a [versão 3.2.0](https://github.com/p-darksy-r/BrandGame_V3/releases/tag/v3.2.0), ou usa o pacote web no navegador quando o Windows não permitir o executável. Consulta [como jogar](docs/PLAYTEST.md) e [assinatura Windows](docs/CODE_SIGNING.md).
+Obtém a [versão 3.3.0](https://github.com/p-darksy-r/BrandGame_Releases/releases/tag/v3.3.0), ou usa o pacote web no navegador quando o Windows não permitir o executável. Consulta [como jogar](docs/PLAYTEST.md) e [assinatura Windows](docs/CODE_SIGNING.md).
 
-## Novidades da versão 3.2.0
+## Novidades da versão 3.3.0
 
-- Recursos locais e manifesto SHA-256 para validar a distribuição.
-- Cronómetro baseado em tempo real, iniciado após carregar o logótipo. Falhas de imagem não gastam vidas.
-- Pausa pelo botão ou `Esc`; mudar de separador pausa a ronda e exige retoma explícita.
-- Movimento reduzido, respeitando também a preferência do sistema; removidos os controlos sem efeito de FPS e VSync.
-- Fontes, licenças e origens dos logótipos incluídas em `app/web/licenses`.
+- Atualização online pelo GitHub, com manifesto RSA/SHA-256 e chave pública fixada no lançador, sem SDK para jogar ou atualizar.
+- Estrelas conquistadas e recordes de pontuação/tempo por nível e dificuldade. As repetições não duplicam estrelas; os pontos acumulados continuam separados dos recordes.
+- Migração preserva pontos, níveis e salas antigas. Os resultados históricos desconhecidos não são inventados: aparece uma indicação para voltar a jogar esses níveis.
+- O jogo mantém todos os recursos offline. A atualização online usa Internet apenas quando executas o atualizador.
+
+## Atualizar a app instalada
+
+Extrai o pacote Windows com `update.exe` ao lado da pasta `app`. Fecha o jogo e executa:
+
+```powershell
+.\update.exe --check
+.\update.exe --no-pause
+.\update.exe --launch --no-pause
+```
+
+O canal predefinido `preview` inclui releases estáveis e de desenvolvimento autenticadas. Usa `--channel stable` para aceitar apenas estáveis; as releases antigas sem manifesto assinado são ignoradas. Não há regressão automática para versões anteriores. `--repair` permite reinstalar a mesma versão e `--recover` recupera uma troca interrompida sem rede.
+
+O atualizador verifica a assinatura do manifesto e o hash do ZIP, prepara uma pasta temporária e guarda a app anterior em `.brandgame-updates/backup-*`. Os saves em AppData são preservados. O `update.exe` que está em execução não se substitui: quando precisares de uma versão nova do próprio lançador, extrai-a da release com o lançador fechado. Consulta [atualizações](docs/UPDATES.md) e [progresso](docs/PROGRESS.md).
 
 ## Compilar e atualizar
 
@@ -39,18 +52,18 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup-signing.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1
 
 # Publicar as alterações locais mais recentes
-.\update.exe --no-pause
+.\update.exe --local --no-pause
 
 # Acompanhar alterações ao código e voltar a publicar automaticamente
 .\update.exe --watch
 
 # Atualizar e abrir a aplicação
-.\update.exe --launch --no-pause
+.\update.exe --local --launch --no-pause
 ```
 
-O atualizador recompila quando os conteúdos das fontes mudam. Prepara a nova versão numa pasta temporária, valida os recursos web e só depois substitui `app`. Se a aplicação estiver aberta, pede para a fechar; em `--watch`, tenta novamente automaticamente. Não termina processos nem apaga o progresso. A versão anterior fica em `artifacts/backups/`, e uma troca interrompida é recuperada na execução seguinte.
+No modo local, o atualizador recompila quando os conteúdos das fontes mudam. Prepara a nova versão numa pasta temporária, valida os recursos web e só depois substitui `app`. Se a aplicação estiver aberta, pede para a fechar; em `--watch`, tenta novamente automaticamente. Não termina processos nem apaga o progresso. A versão anterior fica em `artifacts/backups/`, e uma troca interrompida é recuperada na execução seguinte.
 
-**“Última versão” significa o código local atual.** O atualizador não faz `git pull`, não procura releases online e não corre em segundo plano depois de ser fechado. O modo `--watch` deve permanecer aberto para acompanhar alterações. Para atualizar o código remoto, sincroniza primeiro o repositório, preservando as tuas alterações locais.
+**No modo `--local`, “última versão” significa o código local atual.** Este modo não faz `git pull` nem descarrega releases. O modo `--watch` deve permanecer aberto para acompanhar alterações. Para atualizar o código remoto, sincroniza primeiro o repositório, preservando as tuas alterações locais.
 
 O script de publicação também pode ser usado diretamente no desenvolvimento:
 
@@ -58,7 +71,7 @@ O script de publicação também pode ser usado diretamente no desenvolvimento:
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/update.ps1
 ```
 
-O `update.exe` precisa das pastas `scripts` e `src` ao seu lado; não é um instalador independente. Para recompilar o próprio atualizador, executa `scripts/build.ps1`.
+Apenas o modo `--local` precisa das pastas `scripts` e `src` e das ferramentas de desenvolvimento. O modo online funciona com o lançador independente. Para recompilar o próprio atualizador, executa `scripts/build.ps1`.
 
 As compilações locais exigem assinatura e verificam o certificado esperado antes de substituir os executáveis. Se a assinatura ou o timestamp falharem, a nova publicação é rejeitada. O GitHub Actions usa explicitamente `-SigningMode None` e gera artefactos identificados como `Unsigned-CI`; não recebe a chave privada nem publica esses ficheiros como releases assinadas.
 
@@ -80,10 +93,10 @@ BrandGame_V3/
 ├── docs/                     # Arquitetura, desenvolvimento e melhorias
 ├── artifacts/                # Temporários, backups e pacotes; não versionados
 ├── VERSION                   # Versão da distribuição
-└── update.exe                # Gerado na raiz
+└── update.exe                # Atualização online; --local para desenvolver
 ```
 
-Edita **`src/web`**, e publica com o atualizador. `app/web` é uma cópia de distribuição e será substituída na atualização seguinte. `app`, `artifacts` e os executáveis ficam fora do Git; os pacotes Windows podem ser publicados nas [releases](https://github.com/p-darksy-r/BrandGame_V3/releases).
+Edita **`src/web`**, e publica com o atualizador. `app/web` é uma cópia de distribuição e será substituída na atualização seguinte. `app`, `artifacts` e os executáveis ficam fora do Git; os pacotes Windows podem ser publicados nas [releases](https://github.com/p-darksy-r/BrandGame_Releases/releases).
 
 ## Testes
 

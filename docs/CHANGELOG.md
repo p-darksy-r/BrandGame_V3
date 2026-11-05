@@ -1,5 +1,15 @@
 # Histórico de versões
 
+## 3.3.0 — 2026-11-05
+
+- Atualizador online independente, com canais preview/stable, consulta, reparação da mesma versão e recuperação sem rede.
+- Manifestos RSA/SHA-256 e chave pública fixada; verificação do ZIP, limites de download/extração e rejeição de caminhos inseguros.
+- Substituição de app com backup, bloqueio partilhado e recuperação; compilação local mantida com --local/--watch.
+- Lançador incluído no pacote Windows; substituição do próprio update.exe feita com ele fechado.
+- Estrelas e recordes por nível e dificuldade, sem duplicação de estrelas em repetições ou criação de salas.
+- Saves anteriores preservam pontos, níveis e salas; resultados históricos desconhecidos identificados na interface.
+- Testes de assinatura do pacote, downgrade, falhas de rede, ZIP inseguro, rollback e migração do progresso.
+
 ## 3.2.0 — 2026-11-02
 
 - Jogo offline com CSS compilado, fontes e logótipos locais; licenças e origens incluídas.

@@ -11,4 +11,7 @@
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <DebugType>none</DebugType>
   </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="release-public-key.xml" LogicalName="BrandGame.ReleasePublicKey" />
+  </ItemGroup>
 </Project>

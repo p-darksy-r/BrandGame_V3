@@ -18,9 +18,14 @@
 - Carregamento de logótipos antes do cronómetro, erros recuperáveis, pausa e tempo monotónico.
 - Testes de partida completa, derrota, persistência, cancelamento e falhas de imagem.
 
+## Implementadas na versão 3.3.0
+
+- Atualizador online com verificação de manifesto assinado, canais, reparação e recuperação; sem SDK no PC do jogador.
+- Estrelas realmente conquistadas e recordes de pontuação/tempo por nível e dificuldade, com migração dos saves antigos.
+
 ## Próximas prioridades
 
-1. **Atualização online para jogadores.** Descarregar releases estáveis verificadas, preservar saves e recuperar de falhas. O atualizador atual continua a compilar fontes locais.
+1. **Evolução do atualizador.** Atualização automática do próprio lançador, interface gráfica de progresso, rotação planeada de chaves e política de retenção de backups.
 2. **Distribuição pública.** Preparar certificado publicamente confiável ou distribuição pela Microsoft Store. A identidade atual continua a ser de desenvolvimento.
 3. **Mais marcas verificadas e dificuldade por marca.** Ampliar sobretudo moda e alimentação com recursos adequados e rever repetições entre níveis próximos. O catálogo original permanece disponível para esta revisão.
 4. **Acessibilidade e localização.** Português de Portugal, textos maiores, foco de teclado completo e testes de escalas 125%/150% do Windows. A janela continua WinForms/WebView2.

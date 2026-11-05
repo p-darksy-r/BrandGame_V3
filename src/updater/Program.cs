@@ -1,62 +1,108 @@
 using System.Diagnostics;
+using BrandGame.Updater;
 
-namespace BrandGame.Updater;
+return await UpdaterProgram.RunAsync(args);
 
-internal static class Program
+internal static class UpdaterProgram
 {
-    private static int Main(string[] args)
+    internal static async Task<int> RunAsync(string[] args)
     {
-        if (args.Contains("--help"))
-        {
-            Console.WriteLine("BrandGame local updater\n\nupdate.exe [--watch] [--launch] [--no-pause]\n\nCompila o codigo local mais recente e publica em app/.\n--watch     Observa alteracoes e volta a publicar (Ctrl+C para terminar).\n--launch    Abre a app depois de uma atualizacao bem-sucedida.\n--no-pause  Termina sem esperar por uma tecla.\n\nRequer o projeto completo, PowerShell e .NET SDK 8 ou superior.\nNao descarrega alteracoes do GitHub. Feche a app para aplicar atualizacoes.");
-            return 0;
-        }
-
-        var allowed = new[] { "--watch", "--launch", "--no-pause" };
-        if (args.Any(arg => !allowed.Contains(arg)))
-        {
-            Console.Error.WriteLine("Opcao desconhecida. Use update.exe --help.");
-            return 2;
-        }
-
-        int exitCode;
+        int code = 0;
         try
         {
-            var root = AppContext.BaseDirectory;
-            var script = Path.Combine(root, "scripts", "update.ps1");
-            if (!File.Exists(script))
-                throw new FileNotFoundException("Mantenha update.exe na raiz do projeto, junto da pasta scripts.", script);
-
-            var info = new ProcessStartInfo
+            if (args.Contains("--help")) { Console.WriteLine(Help); return 0; }
+            var options = UpdaterOptions.Parse(args);
+            string root = AppContext.BaseDirectory;
+            if (options.Local) return LocalBuild.Run(root, options.Watch, options.Launch);
+            string cache = PackageInstaller.SafePath(root, ".brandgame-updates");
+            Directory.CreateDirectory(cache);
+            using var updateLock = new FileStream(PackageInstaller.SafePath(root, ".brandgame-updates/update.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+            if (File.Exists(PackageInstaller.SafePath(root, "artifacts/pending-update.json")))
+                throw new IOException("Existe uma compilacao local interrompida. Execute update.exe --local para a recuperar primeiro.");
+            if (File.Exists(PackageInstaller.SafePath(root, ".brandgame-updates/pending.json")))
             {
-                FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System),
-                    "WindowsPowerShell", "v1.0", "powershell.exe"),
-                WorkingDirectory = root,
-                UseShellExecute = false
-            };
-            foreach (var argument in new[] { "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", script })
-                info.ArgumentList.Add(argument);
-            if (args.Contains("--watch")) info.ArgumentList.Add("-Watch");
-            if (args.Contains("--launch")) info.ArgumentList.Add("-Launch");
-
-            using var process = Process.Start(info) ?? throw new InvalidOperationException("Nao foi possivel iniciar a atualizacao.");
-            // PowerShell receives the same console Ctrl+C event and cleans up its lock.
-            Console.CancelKeyPress += (_, e) => e.Cancel = true;
-            process.WaitForExit();
-            exitCode = process.ExitCode;
+                PackageInstaller.AssertGameClosed(root);
+                PackageInstaller.Recover(root);
+            }
+            if (options.Recover) { Console.WriteLine("Recuperacao concluida."); return 0; }
+            using var cancellation = new CancellationTokenSource();
+            Console.CancelKeyPress += (_, e) => { e.Cancel = true; cancellation.Cancel(); };
+            ReleaseManifest manifest;
+            string? zipPath = options.Package;
+            bool downloaded = false;
+            try
+            {
+                if (zipPath != null)
+                {
+                    if (new FileInfo(options.Manifest!).Length > 32768 || new FileInfo(options.Signature!).Length > 1024)
+                        throw new InvalidDataException("Manifesto demasiado grande.");
+                    manifest = ReleaseManifest.Verify(await File.ReadAllBytesAsync(options.Manifest!), await File.ReadAllBytesAsync(options.Signature!), ReleaseManifest.PublicKey);
+                    if (manifest.Channel == "preview" && options.Channel == "stable") throw new InvalidDataException("O pacote de desenvolvimento nao pertence ao canal stable.");
+                }
+                else
+                {
+                    Console.WriteLine($"A consultar releases do GitHub (canal {options.Channel})...");
+                    using var client = new ReleaseClient();
+                    var release = await client.FindLatestAsync(options.Channel == "preview", cancellation.Token);
+                    if (release == null) { Console.WriteLine("Nao existem releases compativeis com manifesto assinado neste canal."); return 0; }
+                    manifest = await client.GetManifestAsync(release, cancellation.Token);
+                    var installed = PackageInstaller.InstalledVersion(root);
+                    var target = ReleaseManifest.ParseVersion(manifest.Version);
+                    Console.WriteLine($"Instalada: {installed?.ToString() ?? "nenhuma"}. Disponivel: {manifest.Version} ({manifest.Channel}).");
+                    if (installed != null && target < installed) { Console.WriteLine("A versao instalada e mais recente. Nao sera feito downgrade."); return 0; }
+                    if (installed == target && !options.Repair) { Console.WriteLine("A app ja esta atualizada."); Launch(root, options.Launch); return 0; }
+                    if (options.Check) return 0;
+                    PackageInstaller.AssertGameClosed(root);
+                    zipPath = PackageInstaller.SafePath(root, $".brandgame-updates/download-{Guid.NewGuid():N}.zip");
+                    downloaded = true;
+                    await using (var output = new FileStream(zipPath, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+                    {
+                        int last = -10;
+                        await client.DownloadAsync(release.Package, output, manifest.Size, bytes => {
+                            int percent = (int)(bytes * 100 / manifest.Size);
+                            if (percent >= last + 10) { last = percent; Console.WriteLine($"Download: {percent}%"); }
+                        }, cancellation.Token);
+                    }
+                }
+                cancellation.Token.ThrowIfCancellationRequested();
+                PackageInstaller.Install(root, zipPath, manifest, options.Repair);
+                Launch(root, options.Launch);
+            }
+            finally
+            {
+                if (downloaded && zipPath != null && File.Exists(zipPath))
+                    File.Delete(PackageInstaller.SafePath(root, Path.GetRelativePath(root, zipPath)));
+            }
         }
-        catch (Exception exception)
+        catch (OperationCanceledException) { Console.Error.WriteLine("Atualizacao cancelada ou tempo de rede excedido. A app anterior foi preservada."); code = 1; }
+        catch (Exception ex) { Console.Error.WriteLine($"Falha na atualizacao: {ex.Message}"); code = 1; }
+        finally
         {
-            Console.Error.WriteLine($"Falha na atualizacao: {exception.Message}");
-            exitCode = 1;
+            if (args.Length == 0 && !Console.IsInputRedirected)
+            {
+                Console.WriteLine("Prima uma tecla para fechar.");
+                Console.ReadKey(true);
+            }
         }
-
-        // Keep a double-clicked console readable; command line automation never pauses.
-        if (args.Length == 0 && !Console.IsInputRedirected)
-        {
-            Console.WriteLine("\nPrima uma tecla para fechar.");
-            Console.ReadKey(intercept: true);
-        }
-        return exitCode;
+        return code;
     }
+
+    private static void Launch(string root, bool enabled)
+    {
+        if (enabled) Process.Start(new ProcessStartInfo(PackageInstaller.SafePath(root, "app/BrandGame.exe")) { UseShellExecute = true });
+    }
+
+    private const string Help = """
+        BrandGame updater
+        update.exe [--check] [--channel preview|stable] [--repair] [--launch] [--no-pause]
+        Descarrega e verifica releases assinadas de p-darksy-r/BrandGame_Releases.
+        O canal predefinido preview inclui versoes de desenvolvimento e estaveis.
+        --check     Consulta sem instalar. --repair reinstala a mesma versao; nunca regride.
+        --recover   Recupera uma instalacao interrompida, sem rede.
+        --local     Compila fontes locais (requer scripts, .NET SDK, Node/npm e SignTool).
+        --watch     Observa as fontes locais; implica --local.
+        --install-package ZIP --manifest JSON --signature SIG  Instala um pacote local autenticado.
+        Feche o jogo para atualizar. Saves em AppData ficam preservados.
+        O lancador em execucao nao e substituido; as releases incluem o update.exe atualizado.
+        """;
 }

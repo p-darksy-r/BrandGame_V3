@@ -1,5 +1,18 @@
 # Validação
 
+## Versão 3.3.0
+
+- 94 verificações passaram: 14 testes web, 22 verificações nativas, 36 verificações do atualizador online, 19 do atualizador local e 3 de assinatura.
+- Sete testes Playwright passaram, incluindo uma partida offline com estrelas persistidas, resultados nos níveis e migração de um save 3.2.0 sem inventar resultados históricos.
+- O novo atualizador foi testado contra manifesto alterado, chave errada, metadata inválida, redirecionamentos externos, limites de download, ZIP inseguro, downgrade, reparação e falha/interrupção durante a substituição.
+- O jogo Windows assinado completou um nível, validou as respostas pela ponte nativa e gravou três estrelas no disco, num perfil isolado.
+- Instalação real pelo novo `update.exe`, numa pasta sem fontes e com PATH limitado ao Windows: manifesto alterado rejeitado, pacote assinado instalado e partida completa executada na app resultante. Evidência em `artifacts/install-test-*/results.json`; teste reproduzível em `tests/online.Install.ps1`.
+- O repositório de código foi confirmado como privado; os downloads são separados para o repositório público `BrandGame_Releases`, por escolha do proprietário.
+- A variante `tests/online.Install.ps1 -Online` permite confirmar o download público depois da publicação; esse resultado é registado nas notas da release.
+- As assinaturas Authenticode continuam a usar SHA-256 com timestamp; o manifesto do pacote usa RSA/SHA-256 com chave pública fixada.
+
+Os testes nativos foram feitos neste PC. A assinatura permanece de desenvolvimento e o atualizador não modifica a confiança ou as proteções do Windows. O próprio lançador continua a ser substituído manualmente, com ele fechado.
+
 ## Versão 3.2.0
 
 - 10 testes web, 22 verificações C#, 19 testes do atualizador e 3 testes de assinatura passaram.

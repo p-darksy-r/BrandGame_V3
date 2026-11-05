@@ -23,7 +23,7 @@ function Get-WorkspacePath {
 
 function Get-SourceFingerprint {
     param([string]$Root)
-    $paths = @('src/csharp', 'src/cpp', 'src/web', 'scripts')
+    $paths = @('src/csharp', 'src/cpp', 'src/web', 'src/updater', 'scripts')
     $files = @(
         foreach ($path in $paths) {
             Get-ChildItem -LiteralPath (Join-Path $Root $path) -Recurse -File |

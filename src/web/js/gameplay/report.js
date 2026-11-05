@@ -1,6 +1,8 @@
 /* BrandGame_V3 - https://github.com/p-darksy-r/BrandGame_V3 - Copyright (c) darksy */
 
 function triggerLevelEnd(completed) {
+    if (GAME_STATE.levelRecorded) return;
+    GAME_STATE.levelRecorded = true;
     clearInterval(GAME_STATE.timerInterval);
     GAME_STATE.roundStatus = "idle";
     const starsEl = document.getElementById("report-stars");
@@ -13,20 +15,20 @@ function triggerLevelEnd(completed) {
     if (scoreEl) scoreEl.textContent = GAME_STATE.currentLevelScore;
 
     const isCustom = GAME_STATE.currentCategory === "custom";
-    const passingThreshold = Math.ceil(totalBrands * 0.75);
+    const difficulty = isCustom ? GAME_STATE.saveData.customLevels[GAME_STATE.currentLevel]?.difficulty : GAME_STATE.saveData.difficulty;
+    const recorded = recordLevelResult(GAME_STATE.saveData, GAME_STATE.currentCategory, GAME_STATE.currentLevel,
+        difficulty, GAME_STATE.currentLevelCorrectCount, totalBrands, completed, GAME_STATE.currentLevelScore, GAME_STATE.currentLevelElapsedMs);
 
     const reportHeader = document.querySelector("#screen-report h2");
 
-    if (completed && GAME_STATE.currentLevelCorrectCount >= passingThreshold) {
+    if (recorded.stars > 0) {
         sfx.playFanfare();
         if (reportHeader) {
             reportHeader.textContent = "LEVEL CLEAR!";
             reportHeader.className = "gaming-font text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-500 uppercase tracking-widest";
         }
 
-        let stars = "★☆☆";
-        if (GAME_STATE.currentLevelCorrectCount === totalBrands) stars = "★★★";
-        else if (GAME_STATE.currentLevelCorrectCount >= passingThreshold) stars = "★★☆";
+        const stars = '★'.repeat(recorded.stars) + '☆'.repeat(3 - recorded.stars);
 
         if (starsEl) {
             starsEl.textContent = stars;
@@ -56,13 +58,7 @@ function triggerLevelEnd(completed) {
         }
     }
 
-    if (highEl) {
-        if (isCustom) {
-            highEl.textContent = `${GAME_STATE.saveData.customScore || 0} (Custom Arena Total)`;
-        } else {
-            highEl.textContent = GAME_STATE.saveData.categoryScores[GAME_STATE.currentCategory];
-        }
-    }
+    if (highEl) highEl.textContent = `${recorded.best.bestScore} points · ${formatBestTime(recorded.best.bestTimeMs)}`;
 
     sendNativeRequest({ Action: "write_save", Data: GAME_STATE.saveData });
     updateGlobalStatsHUD();

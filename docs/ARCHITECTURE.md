@@ -29,7 +29,7 @@ Os saves mantêm o caminho antigo em AppData. O perfil WebView2 fica em LocalApp
 
 ## Atualização local
 
-`update.exe` é um lançador .NET que chama `scripts/update.ps1` com argumentos estruturados. O script adquire um bloqueio exclusivo, recupera uma publicação interrompida, calcula o hash das fontes e publica para `artifacts/staging`.
+`update.exe --local` chama `scripts/update.ps1` com argumentos estruturados. O script adquire um bloqueio exclusivo, recupera uma publicação interrompida, calcula o hash das fontes e publica para `artifacts/staging`.
 
 Uma compilação bem-sucedida só é instalada se as fontes não tiverem mudado entretanto, o conjunto de ficheiros estiver completo e a assinatura esperada com timestamp for válida. O processo de assinatura usa uma identidade previamente preparada; não cria confiança durante o build. A troca guarda a instalação anterior em `artifacts/backups`. Um registo em `artifacts/pending-update.json` permite recuperar uma interrupção entre as duas operações de mover pastas. As operações recusam caminhos fora do projeto e ligações de diretório nos destinos.
 
@@ -44,3 +44,11 @@ A preparação web usa Tailwind 3, Fontsource e Simple Icons em versões fixadas
 A política de conteúdo permite recursos locais e bloqueia ligações de dados externas. O frontend continua compatível com `file://`. O teste Playwright abre esse modo com a rede desligada; o smoke test Windows joga um nível pela ponte nativa e confirma a gravação no perfil isolado.
 
 A ronda passa por `loading`, `playing`, `paused`, `pending`, `feedback` e `idle`; `asset-error` permite repetir uma imagem sem penalização. Um token de ronda ignora carregamentos tardios depois de sair do nível. O relógio usa `performance.now()` e exclui o tempo de pausa.
+
+## Atualização online e recordes (3.3.0)
+
+O modo predefinido de `update.exe` é um cliente .NET independente. `ReleaseClient` consulta releases públicas e limita downloads HTTPS aos servidores do GitHub; `ReleaseManifest` valida a assinatura RSA e os metadados; `PackageInstaller` valida o ZIP e faz uma troca recuperável de `app`. Os modos online e local partilham o bloqueio `.brandgame-updates/update.lock`. Os seus registos de recuperação são distintos, e cada modo recusa começar se o outro tiver uma transação interrompida.
+
+A assinatura do manifesto cobre versão, canal, nome, tamanho e hash de todo o ZIP. A chave pública está embebida no executável. Não se altera o armazenamento de confiança do Windows. O processo de atualização não substitui o lançador em execução. Ver `UPDATES.md`.
+
+`js/core/results.js` normaliza e agrega recordes por categoria, nível e dificuldade, e por sala personalizada. `progressSchema: 2` preserva os totais antigos sem inferir estrelas inexistentes. A ronda acumula apenas tempo de jogo e o relatório grava uma única conclusão. Ver `PROGRESS.md`.

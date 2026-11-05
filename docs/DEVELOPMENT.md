@@ -4,7 +4,7 @@
 
 1. Prepara a assinatura uma vez com `scripts/setup-signing.ps1`, ou configura uma identidade pública; altera as fontes em `src`.
 2. Instala as dependências com `npm ci --ignore-scripts`; executa `npm run build:web` depois de editar o frontend ou o catálogo. Usa `scripts/test.ps1` e `npm run test:e2e` para verificar o comportamento (prepara o Chromium uma vez com `npx playwright install chromium`).
-3. Executa `scripts/build.ps1` para criar o atualizador e a distribuição, ou `update.exe --watch` durante o desenvolvimento.
+3. Executa `scripts/build.ps1` para criar o atualizador e a distribuição, ou `update.exe --watch` durante o desenvolvimento. O modo pontual de compilação é agora `update.exe --local`; sem essa opção, o lançador procura releases online.
 4. Abre `app/BrandGame.exe` e verifica os fluxos alterados.
 
 O VS Code tem tarefas separadas para compilar em Debug, publicar e testar. O motor C++ não é obrigatório para o arranque. Se o compilares com o toolchain C++ do Visual Studio, coloca a DLL x64 atual em `src/csharp/BrandEngine.dll` antes de publicar. Uma DLL antiga pode ter regras incompatíveis; não a reutilizes depois de alterar o motor.
@@ -26,7 +26,7 @@ O proprietário pediu que as versões concluídas sejam enviadas para **https://
 3. Executa testes, publicação, `scripts/verify-signatures.ps1` e `scripts/smoke-windows.ps1`. Regista limitações de validação, como um bloqueio de execução pelo Windows.
 4. Revê `git diff` e preserva alterações locais existentes.
 5. Faz commit e push para o repositório indicado, sem force-push. Se a branch estiver protegida, usa uma branch `codex/` e um pull request.
-6. Executa `scripts/package.ps1` depois da assinatura e anexa os ZIPs Windows/web, checksums, atualizador e relatório de assinaturas à release. Identifica releases com certificado autoassinado como versões de desenvolvimento. Não adiciona binários pesados nem chaves privadas ao histórico Git.
+6. Executa `scripts/package.ps1` depois da assinatura e anexa os ZIPs Windows/web, checksums, atualizador e relatório de assinaturas e `release-manifest.json`/`release-manifest.sig` à release. Identifica releases com certificado autoassinado como versões de desenvolvimento. Não adiciona binários pesados nem chaves privadas ao histórico Git.
 
 ## Recuperação
 
@@ -41,3 +41,13 @@ Em caso de falha de compilação, a instalação existente permanece. Se uma tro
 Os ficheiros por categoria em `src/web/js/data` preservam o catálogo original. `scripts/lib/catalog.cjs` resolve nomes, aplica aliases explícitos e exclui identidades sem correspondência ou ambíguas. Para incluir uma marca nova, confirma a origem do ícone e a pista, adiciona-a à categoria e regenera. A auditoria completa fica em `docs/CATALOG_AUDIT.md`. O jogo carrega apenas `offline-catalog.js` e não solicita recursos externos.
 
 O atualizador prepara os recursos antes de publicar uma mudança; se essa preparação falhar, conserva a app instalada. A publicação verifica cada hash do manifesto offline. Os backups anteriores continuam a usar o formato da respetiva versão.
+
+## Publicar atualizações online
+
+`scripts/package.ps1` inclui o lançador no pacote Windows e, por defeito, assina o manifesto para o canal `preview`. Só usa `-Channel stable` se a release do GitHub também for estável. Anexa os dois ficheiros de manifesto sem os editar: a assinatura cobre os bytes exatos do JSON. O modo `-AllowUnsigned` do CI não cria manifestos assinados e não fornece atualizações elegíveis.
+
+As primeiras verificações devem usar uma pasta isolada com uma cópia do lançador e `--install-package ZIP --manifest JSON --signature SIG`; depois de publicar, testa a instalação pela API pública numa pasta vazia. Nunca usa os saves reais nesses testes. Para atualizar o próprio lançador, distribui o novo `update.exe` e substitui-o quando estiver fechado.
+
+Os commits e o README de desenvolvimento continuam em `p-darksy-r/BrandGame_V3` (privado). Os downloads e manifestos são publicados em `p-darksy-r/BrandGame_Releases` (público), sem copiar fontes C#, ferramentas ou histórico. O pacote web inclui necessariamente o HTML/CSS/JavaScript de execução.
+
+Cada versão concluída recebe uma nova tag `vX.Y.Z` no commit correspondente do `main` do repositório privado, preservando as tags anteriores. A release privada liga à release pública com a mesma versão. Não é usado um branch de downloads: a visibilidade do GitHub aplica-se ao repositório inteiro, e um branch do repositório privado também seria privado.

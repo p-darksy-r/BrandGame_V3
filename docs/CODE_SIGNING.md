@@ -50,3 +50,9 @@ O certificado público não é criado por este projeto: exige emissão e valida�
 Não exportar a chave privada para GitHub. O workflow de CI compila explicitamente sem assinatura e identifica os artefactos como `Unsigned-CI`. As releases de desenvolvimento são assinadas no PC do autor e indicam claramente os seus limites. Não pedir a jogadores que instalem o certificado de desenvolvimento.
 
 Referências Microsoft: [assinatura para Smart App Control](https://learn.microsoft.com/en-us/windows/apps/develop/smart-app-control/code-signing-for-smart-app-control), [opções de assinatura](https://learn.microsoft.com/en-us/windows/apps/package-and-deploy/code-signing-options), [reputação no SmartScreen](https://learn.microsoft.com/en-us/windows/apps/package-and-deploy/smartscreen-reputation).
+
+## Manifestos de atualização (3.3.0)
+
+Além de Authenticode, `scripts/sign-release.ps1` assina os bytes do manifesto de download com RSA/SHA-256 (PKCS#1). Usa a chave não exportável já existente e verifica a assinatura contra `src/updater/release-public-key.xml`; esse ficheiro contém **apenas a chave pública** e é embebido em `update.exe`. O manifest não instala certificados e não altera as decisões de execução do Windows.
+
+Uma mudança de certificado Authenticode pode também mudar a chave RSA. Nesse caso, o empacotamento recusa assinar com uma chave incompatível. A rotação exige planear e distribuir um novo lançador com a chave pública adequada; não editar silenciosamente o pin nem descarregar chaves de confiança da mesma release que se quer verificar.

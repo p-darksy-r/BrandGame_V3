@@ -7,7 +7,7 @@ const root = path.resolve(__dirname, '../src/web');
 
 function context(files, additions = {}) {
     const sandbox = vm.createContext({ window: {}, console, ...additions });
-    for (const file of [...new Set(["js/core/version.js", ...files])]) vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), sandbox, { filename: file });
+    for (const file of [...new Set(["js/core/version.js", "js/core/results.js", ...files])]) vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), sandbox, { filename: file });
     return sandbox;
 }
 const dataFiles = ['js/data/offline-catalog.js', 'js/data/brands.js'];

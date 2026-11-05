@@ -26,6 +26,7 @@ EBWebView/
 # Published app and local build/update workspaces (recreated by scripts/build.ps1)
 /app/
 /artifacts/
+/.brandgame-updates/
 /.vs/
 *.log
 

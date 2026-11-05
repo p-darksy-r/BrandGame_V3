@@ -5,6 +5,8 @@ function launchLevel(levelNum) {
     GAME_STATE.currentBrandIndex = 0;
     GAME_STATE.currentLevelCorrectCount = 0;
     GAME_STATE.currentLevelScore = 0;
+    GAME_STATE.currentLevelElapsedMs = 0;
+    GAME_STATE.levelRecorded = false;
     GAME_STATE.lives = 3;
 
     // Seeds our brand compiler dynamically
@@ -26,6 +28,8 @@ function launchCustomLevel(customIndex) {
     GAME_STATE.currentBrandIndex = 0;
     GAME_STATE.currentLevelCorrectCount = 0;
     GAME_STATE.currentLevelScore = 0;
+    GAME_STATE.currentLevelElapsedMs = 0;
+    GAME_STATE.levelRecorded = false;
     GAME_STATE.lives = 3;
 
     GAME_STATE.activeBrands = targetRoom.brands;

@@ -12,7 +12,7 @@ test('delayed timer callbacks expire by elapsed time; pause excludes its duratio
         setInterval() { return 1; }, clearInterval() {},
         processLossOfLife() { lost++; vm.runInContext('GAME_STATE.roundStatus="feedback"', ctx); }
     });
-    for (const file of ['core/version', 'core/state', 'gameplay/clock'])
+    for (const file of ['core/version', 'core/results', 'core/state', 'gameplay/clock'])
         vm.runInContext(fs.readFileSync(path.join(__dirname, `../src/web/js/${file}.js`), 'utf8'), ctx);
     ctx.startRoundClock();
     now = 4000;
@@ -34,7 +34,7 @@ test('delayed timer callbacks expire by elapsed time; pause excludes its duratio
 
 test('legacy settings migrate without erasing scores, rooms or completed levels', () => {
     const ctx = vm.createContext({ window: {} });
-    for (const file of ['version', 'state']) vm.runInContext(fs.readFileSync(path.join(__dirname, `../src/web/js/core/${file}.js`), 'utf8'), ctx);
+    for (const file of ['version', 'results', 'state']) vm.runInContext(fs.readFileSync(path.join(__dirname, `../src/web/js/core/${file}.js`), 'utf8'), ctx);
     const old = { gameVersion: '3.1.1', globalScore: 1234, levelsUnlocked: { tech: 101 }, fpsLimit: '30', vsync: false,
         customLevels: [{ name: 'Old room', brands: [{ name: 'Old', slug: 'missing-old-icon' }] }] };
     const save = ctx.normalizeSaveData(old);

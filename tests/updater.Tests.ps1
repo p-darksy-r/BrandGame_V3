@@ -36,7 +36,7 @@ function Test-Case {
 
 function New-TestWorkspace {
     $path = Join-Path $fixtureRoot ([Guid]::NewGuid().ToString('N'))
-    foreach ($relative in @('src/csharp', 'src/cpp', 'src/web', 'scripts', 'artifacts/staging')) {
+    foreach ($relative in @('src/csharp', 'src/cpp', 'src/web', 'src/updater', 'scripts', 'artifacts/staging')) {
         [IO.Directory]::CreateDirectory((Join-Path $path $relative)) | Out-Null
     }
     Set-Content -LiteralPath (Join-Path $path 'VERSION') -Value '3.1.0' -Encoding UTF8

@@ -1,5 +1,5 @@
 {
-  "version": "3.2.0",
+  "version": "3.3.0",
   "sources": {
     "simpleIcons": "9.21.0",
     "fontsource": "5.3.0",
@@ -7,7 +7,7 @@
   },
   "sha256": {
     "js/data/offline-catalog.js": "d979c1b92cfb46c6c8255e0253b53b8cba4324f240bf7271b1d12cea2dba73cb",
-    "js/core/version.js": "9e148efb71ae6106229409ce492bfe2d2e825104d170351f17e20818e4d470df",
+    "js/core/version.js": "835d98410d1fc926d30d9c3dec9df33acc7f7c5fcd6b3d6813e6dbeb38302e4d",
     "assets/logos/google.svg": "d8cf9fb2d5e234e03254f1d6400d8cc8160c309b010d031a64f37084b5a21d01",
     "assets/logos/apple.svg": "2a1509dccd25e6d2bc7a11a8e52941077e1a48555e192ce638699b9f083c2a7c",
     "assets/logos/microsoft.svg": "f0fdaef83e59660c4da6e3988ca41fbe907e420cb86b48a94746caefec015bf9",
@@ -513,6 +513,6 @@
     "licenses/tailwindcss-MIT.txt": "60e0b68c0f35c078eef3a5d29419d0b03ff84ec1df9c3f9d6e39a519a5ae7985",
     "licenses/logo-sources.json": "7a709ab0b191137c9838a7442d0ece3af63122778af2120a4171949db183ca66",
     "licenses/README.txt": "619b04d832fd292e2d1302b2f359d17c3c0d03339d57b78f44136e0d21371ad4",
-    "styles/tailwind.css": "7b8fc550daed6312673cbd6f0a2cbe6e244eb07717e1e762ee7afb051df48ad7"
+    "styles/tailwind.css": "615ddf17d6cf379db0814544651509f859b9928f7077c6987fd287053cea114a"
   }
 }

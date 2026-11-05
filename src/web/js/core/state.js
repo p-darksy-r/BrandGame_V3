@@ -9,6 +9,9 @@ function createDefaultSaveData() {
         categoryScores: { tech: 0, auto: 0, food: 0, fashion: 0, media: 0 },
         levelsUnlocked: { tech: 1, auto: 1, food: 1, fashion: 1, media: 1 },
         customLevels: [],
+        progressSchema: 2,
+        levelResults: emptyLevelResults(),
+        customResults: {},
         difficulty: "medium",
         volume: 0.5,
         resolution: "1024x768",
@@ -48,6 +51,7 @@ function normalizeSaveData(value) {
     for (const key of ['vibration', 'reducedMotion']) result[key] = typeof data[key] === 'boolean' ? data[key] : defaults[key];
     delete result.fpsLimit;
     delete result.vsync;
+    normalizeProgressResults(data, result);
     return result;
 }
 
@@ -58,6 +62,8 @@ const GAME_STATE = {
     currentBrandIndex: 0,
     currentLevelCorrectCount: 0,
     currentLevelScore: 0,
+    currentLevelElapsedMs: 0,
+    levelRecorded: false,
     activeBrands: [],
     elapsedTime: 0,
     timerInterval: null,

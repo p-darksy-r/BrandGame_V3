@@ -26,13 +26,7 @@ function clearCustomThemeClasses() {
 }
 
 function updateGlobalStatsHUD() {
-    let globalStars = 0;
-    ["tech", "auto", "food", "fashion", "media"].forEach(cat => {
-        const unlocked = GAME_STATE.saveData.levelsUnlocked[cat] || 1;
-        globalStars += (unlocked - 1) * 2;
-    });
-    const customCount = GAME_STATE.saveData.customLevels.length;
-    globalStars += customCount * 2;
+    const globalStars = totalEarnedStars(GAME_STATE.saveData);
 
     const starsEl = document.getElementById("global-stars");
     if (starsEl) starsEl.textContent = globalStars;
@@ -45,6 +39,7 @@ function renderMainMenuProgress() {
     if (!catList) return;
 
     catList.innerHTML = "";
+    document.getElementById("legacy-progress-note")?.classList.toggle("hidden", !hasLegacyCompletions(GAME_STATE.saveData));
     const categories = [
         { id: "tech", label: "Technology" },
         { id: "auto", label: "Automotive" },

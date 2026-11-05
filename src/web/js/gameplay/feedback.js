@@ -26,6 +26,7 @@ function submitUserGuess() {
 function onMatchResult(result) {
     if (GAME_STATE.roundStatus !== "pending") return;
     GAME_STATE.roundStatus = "feedback";
+    GAME_STATE.currentLevelElapsedMs += Math.round(Math.min(GAME_STATE.elapsedTime, GAME_STATE.timeLimit) * 1000);
     const badge = document.getElementById("feedback-badge");
     const overlay = document.getElementById("feedback-overlay");
     const textAns = document.getElementById("feedback-answer");
@@ -79,6 +80,7 @@ window.onMatchResult = onMatchResult;
 function processLossOfLife() {
     if (GAME_STATE.roundStatus !== "playing") return;
     GAME_STATE.roundStatus = "feedback";
+    GAME_STATE.currentLevelElapsedMs += Math.round(Math.min(GAME_STATE.elapsedTime, GAME_STATE.timeLimit) * 1000);
     sfx.playWrong();
     triggerVibration();
     GAME_STATE.lives--;

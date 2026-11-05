@@ -10,6 +10,8 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Falharam os testes web.' }
     & dotnet run --project tests/native/BrandGame.NativeTests.csproj -c Release
     if ($LASTEXITCODE -ne 0) { throw 'Falharam os testes nativos.' }
+    & dotnet run --project tests/online/BrandGame.UpdaterTests.csproj -c Release
+    if ($LASTEXITCODE -ne 0) { throw 'Falharam os testes de atualizacao online.' }
     & powershell -NoProfile -ExecutionPolicy Bypass -File tests/updater.Tests.ps1
     if ($LASTEXITCODE -ne 0) { throw 'Falharam os testes do atualizador.' }
     & powershell -NoProfile -ExecutionPolicy Bypass -File tests/signing.Tests.ps1

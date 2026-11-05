@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([switch]$AllowUnsigned)
+param([switch]$AllowUnsigned, [ValidateSet('preview', 'stable')][string]$Channel = 'preview')
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'lib/Deployment.ps1')
 . (Join-Path $PSScriptRoot 'lib/Signing.ps1')
@@ -18,7 +18,7 @@ $output = Get-WorkspacePath -Root $projectRoot -RelativePath 'artifacts/packages
 $version = (Get-Content -LiteralPath (Join-Path $projectRoot 'VERSION') -Raw).Trim()
 $archive = Get-WorkspacePath -Root $projectRoot -RelativePath "artifacts/packages/BrandGame-$version-win-x64.zip"
 $instructions = Join-Path $projectRoot 'docs/PLAYTEST.md'
-Compress-Archive -LiteralPath @((Join-Path $projectRoot 'app'), $instructions) -DestinationPath $archive -Force
+Compress-Archive -LiteralPath @((Join-Path $projectRoot 'app'), (Join-Path $projectRoot 'update.exe'), $instructions) -DestinationPath $archive -Force
 $webArchive = Get-WorkspacePath -Root $projectRoot -RelativePath "artifacts/packages/BrandGame-$version-web.zip"
 Compress-Archive -LiteralPath @((Join-Path $projectRoot 'app/web'), $instructions) -DestinationPath $webArchive -Force
 foreach ($package in @($archive, $webArchive)) {
@@ -28,3 +28,6 @@ foreach ($package in @($archive, $webArchive)) {
 }
 Write-Host "Pacote Windows: $archive"
 Write-Host "Pacote web: $webArchive"
+if (-not $AllowUnsigned) {
+    & (Join-Path $PSScriptRoot 'sign-release.ps1') -Package $archive -Channel $Channel
+}
